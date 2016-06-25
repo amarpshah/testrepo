@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Institute.Entities
+{
+    public class Question : IEntityBase
+    {
+        public Question()
+        {
+        }
+        [Column("Id")]
+        public int Id { get; set; }
+        [Column("Topic_Id")]
+        public int TopicId { get; set; }
+        public virtual Topic Topic { get; set; }
+        public int Type { get; set; }
+        public int DifficultyLevel { get; set; }
+        public int Points { get; set; }
+        public int Status { get; set; }
+        public int Randomize { get; set; }
+        public string Code { get; set; }
+        public string Text { get; set; }
+        public string Hint { get; set; }
+        [Column("Is_Active")]
+        public bool IsActive { get; set; }
+    }
+}
