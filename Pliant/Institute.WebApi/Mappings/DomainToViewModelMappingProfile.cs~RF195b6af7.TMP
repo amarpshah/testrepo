@@ -1,0 +1,76 @@
+﻿using AutoMapper;
+using Institute.Entities;
+using Institute.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Institute.Web.Mappings
+{
+    public class DomainToViewModelMappingProfile : Profile
+    {
+        public virtual string ProfileName
+        {
+            get { return "DomainToViewModelMappings"; }
+        }
+
+        protected override void Configure()
+        {
+            Mapper.CreateMap<Movie, MovieViewModel>()
+                .ForMember(vm => vm.Genre, map => map.MapFrom(m => m.Genre.Name))
+                .ForMember(vm => vm.GenreId, map => map.MapFrom(m => m.Genre.ID))
+                .ForMember(vm => vm.IsAvailable, map => map.MapFrom(m => m.Stocks.Any(s => s.IsAvailable)))
+                .ForMember(vm => vm.NumberOfStocks, map => map.MapFrom(m => m.Stocks.Count))
+                .ForMember(vm => vm.Image, map => map.MapFrom(m => string.IsNullOrEmpty(m.Image) == true ? "unknown.jpg" : m.Image));
+
+            Mapper.CreateMap<Standard, StandardViewModel>()
+                .ForMember(vm => vm.Standard, map => map.MapFrom(m => m.Name))
+                .ForMember(vm => vm.Code, map => map.MapFrom(m => m.Code))
+                .ForMember(vm => vm.ID, map => map.MapFrom(m => m.ID))
+                .ForMember(vm => vm.Division, map => map.MapFrom(m => m.Division));
+
+            Mapper.CreateMap<Subject, SubjectViewModel>()
+                .ForMember(vm => vm.Subject, map => map.MapFrom(m => m.Name))
+                .ForMember(vm => vm.Code, map => map.MapFrom(m => m.Code))
+                .ForMember(vm => vm.ID, map => map.MapFrom(m => m.ID));
+
+            Mapper.CreateMap<Topic, TopicViewModel>()
+                .ForMember(vm => vm.Code, map => map.MapFrom(m => m.Code))
+                .ForMember(vm => vm.ID, map => map.MapFrom(m => m.ID))
+                .ForMember(vm => vm.IsActive, map => map.MapFrom(m => m.IsActive))
+                .ForMember(vm => vm.Name, map => map.MapFrom(m => m.Name))
+                .ForMember(vm => vm.Standard, map => map.MapFrom(m => m.Mapping.Standard.Name))
+                .ForMember(vm => vm.Subject, map => map.MapFrom(m => m.Mapping.Subject.Name))
+                .ForMember(vm => vm.Objective, map => map.MapFrom(m => m.Objective))
+                .ForMember(vm => vm.MappingID, map => map.MapFrom(m => m.MappingId))
+                .ForMember(vm => vm.MappingID, map => map.MapFrom(m => m.Mapping.ID));
+
+            Mapper.CreateMap<Question, QuestionViewModel>()
+                .ForMember(vm => vm.Code, map => map.MapFrom(m => m.Code))
+                .ForMember(vm => vm.ID, map => map.MapFrom(m => m.ID))
+                .ForMember(vm => vm.IsActive, map => map.MapFrom(m => m.IsActive))
+                .ForMember(vm => vm.Points, map => map.MapFrom(m => m.Points))
+                .ForMember(vm => vm.Type, map => map.MapFrom(m => m.Type))
+                .ForMember(vm => vm.Status, map => map.MapFrom(m => m.Status))
+                .ForMember(vm => vm.Randomize, map => map.MapFrom(m => m.Randomize))
+                .ForMember(vm => vm.Text, map => map.MapFrom(m => m.Text))
+                .ForMember(vm => vm.TopicID, map => map.MapFrom(m => m.TopicId))
+                .ForMember(vm => vm.TopicID, map => map.MapFrom(m => m.Topic.ID))
+                .ForMember(vm => vm.DifficultyLevel, map => map.MapFrom(m => m.DifficultyLevel))
+                .ForMember(vm => vm.Hint, map => map.MapFrom(m => m.Hint));
+
+            Mapper.CreateMap<StandardSubjectMapping, MappingViewModel>()
+                .ForMember(vm => vm.Subject, map => map.MapFrom(m => m.Subject.Name))
+                .ForMember(vm => vm.SubjectID, map => map.MapFrom(m => m.Subject.ID))
+                .ForMember(vm => vm.Standard, map => map.MapFrom(m => m.Standard.Name))
+                .ForMember(vm => vm.StandardID, map => map.MapFrom(m => m.Standard.ID))
+                .ForMember(vm => vm.IsActive, map => map.MapFrom(m => m.IsActive))
+                .ForMember(vm => vm.ID, map => map.MapFrom(m => m.ID));
+
+            Mapper.CreateMap<Student, StudentViewModel>()
+                .ForMember(vm => vm.Standard, map => map.MapFrom(m => m.Standard.Name))
+                .ForMember(vm => vm.StandardId, map => map.MapFrom(m => m.Standard.ID));
+        }
+    }
+}

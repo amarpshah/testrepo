@@ -1,0 +1,111 @@
+﻿<div class="row" style="margin-bottom: 15px;">
+    <div class="col-lg-12">
+        <h2 class="page-header">
+            Roles Creation
+        </h2>
+    </div>
+</div>
+
+<!--------ADD role Start------------->
+
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">Create Role</h4>
+        </div>
+        <div class="panel-body">
+            <form role="form" novalidate angular-validator name="addCustomerForm">
+                <div class="">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2 col-sm-2">
+                                <label class="control-label" for="roleCode">Role Code</label>
+                                <input class="form-control" type="text" ng-model="newRole.Code" name="code" id="code" placeholder="Code"
+                                       validate-on="blur" required>
+                                <span style="color:#a94442;font-weight: bold;" ng-if="vCode" ng-show="addCustomerForm.code.$error.required">
+                                    Code is required
+                                </span>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label class="control-label" for="role">Role Description</label>
+                                <input type="text" class="form-control" ng-model="newRole.Name" name="name" id="name" placeholder="Role"
+                                       validate-on="blur" required>
+                                <span style="color:#a94442;font-weight: bold;" ng-if="vName" ng-show="addCustomerForm.name.$error.required">
+                                    Role is required
+                                </span>
+                            </div>
+                            <div class="col-md-2 col-sm-2">
+                                <div class="row">
+                                    <label>Action</label>
+                                </div>
+                                <div class="row">
+                                    <button id="btnAdd" type="button" class="btn btn-success" ng-if="!IsEditMode" ng-click="addRole();">Add</button>
+                                    <button id="Button1" type="button" class="btn btn-success" ng-if="IsEditMode" ng-click="updateRole();">Update</button>
+                                    <button type="button" class="btn btn-danger" ng-click="clearRole();">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--------ADD role End------------->
+<div class="row questionControl active">
+    <div class="col-lg-12">
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <div>
+                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
+                        <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Search Role Code" />
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
+                        <input type="text" ng-model="SearchText.Name" class="form-control adv-question" placeholder="Search Role" />
+                    </div>
+                   
+                </div>
+                <div class="searchBlock active">
+                    <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
+                    <a ng-click="search(0, SearchText);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
+                </div>
+            </div>
+            <!--questionList-->
+            <div class="panel-body questionList">
+                <div ng-repeat="role in Roles">
+                    <div class="list-group">
+                        <div class="questionItem">
+                            <span class="questionCheck">
+                                <input type="checkbox"></input>
+                                <!--id="checkbox1"-->
+                            </span>
+                            <span class="questionDetail">
+                                <label for="checkbox1" href="" class="list-group-item question">
+                                    <h5>
+                                        Code:<span class="questionCode">{{role.Code}}</span>,
+                                        Role:<span class="questionText">{{role.Name}}</span>,
+                                    </h5>
+                                </label>
+                            </span>
+                            <span class="modifiedBy text-right">
+                                <p> <label style="color:green"> Total Users:</label><span style="color:red">{{role.UserCount}}</span></p>
+                            </span>
+                            <span class="questionItemAction">
+
+                                <a ng-click="editRoles(role)" class="btn btn-primary edittestt pull-right" tooltip="Edit"><i class="fa fa-edit"></i></a>
+                                <a ng-click="deleteRole(role)" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+        <div class="panel-footer">
+            <div class="text-center">
+                <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page, SearchText);"></custom-pager>
+            </div>
+        </div>
+      </div>
+</div>

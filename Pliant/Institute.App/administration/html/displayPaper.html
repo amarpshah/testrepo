@@ -1,0 +1,100 @@
+﻿<div class="col-lg-12">
+    <div class="row panel panel-default">
+        <div class="panel-heading">
+            <p>Question Paper</p>
+              
+            <div class="addBlock" style="position: relative; bottom: 32px;">
+                <button type="button" ui-sref="AdminGeneratePaper({testid:TestID,testname:TestName})" class="btn btn-warning cancel pull-right"><i class="fa fa-fw fa-share"></i>Back</button>
+                <button ng-click="finalize();" ng-if="!IsFinalized" class="btn btn-primary pull-right"></i>Finalize</button>
+
+            </div>
+              <span class="displayFinalizeText" ng-if="IsFinalized"><i class="fa fa-check-square-o"></i> Finalized</span>
+        </div>
+
+
+        <div ng-repeat="question in Questions">
+            <hr />
+            Test Set No : {{question.TestSetNo}}
+        <div ng-repeat="testSetPool in question.TestSetPools">
+            -------------------------------------------------------------
+                {{$index + 1}}. Pool Name :{{testSetPool.PoolName}}
+            -------------------------------------------------------------
+            <div ng-repeat="testSetQuestion in testSetPool.TestSetQuestions" style="margin-top: 10px;">
+                {{$index + 1}}. Question Text:{{testSetQuestion.QuestionText}}
+                <div ng-if="testSetQuestion.QuestionType == 1">
+                    <textarea></textarea>
+                </div>
+
+                <div ng-if="testSetQuestion.QuestionType == 2">
+                    <input type="radio">True</input>
+                    <input type="radio">False</input>
+                </div>
+
+                <div ng-if="testSetQuestion.QuestionType == 3">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Choice A</th>
+                                <th></th>
+                                <th>Choice B</th>
+                            </tr>
+                        </thead>
+
+                        <tr ng-repeat="match in testSetQuestion.Matches">
+                            <td>{{$index + 1}}.</td>
+                            <td>{{match.ChoiceA}} </td>
+                            <td>  &nbsp &nbsp</td>
+                            <td>{{match.DisplayB}}</td>
+                        </tr>
+
+
+
+
+                    </table>
+                </div>
+                <div ng-if="testSetQuestion.QuestionType == 4">
+                    <p>Single Choice</p>
+                    <div ng-repeat="choice in testSetQuestion.Choices">
+                        <table>
+
+                            <tr>
+                                <td>{{$index + 1}}</td>
+                                <td>
+                                    <input type="radio" /></td>
+                                <td>{{choice.Text}}</td>
+
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </div>
+
+                <div ng-if="testSetQuestion.QuestionType == 5">
+                    <p>Multi Choice</p>
+                    <div ng-repeat="choice in testSetQuestion.Choices">
+                        <table>
+
+                            <tr>
+                                <td>{{$index + 1}}</td>
+                                <td>
+                                    <input type="checkbox" /></td>
+                                <td>{{choice.Text}}</td>
+
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+    </div>
+</div>
+
+</div>

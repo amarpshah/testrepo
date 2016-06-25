@@ -1,0 +1,103 @@
+﻿<div class="row" style="margin-bottom: 15px;">
+    <div class="col-lg-12">
+        <h2 class="page-header">Permission
+        </h2>
+    </div>
+</div>
+
+
+<div class="row questionControl active">
+    <div class="col-lg-12">
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <div>
+                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
+                        <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Search Role" />
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
+                        <input type="text" ng-model="SearchText.Name" class="form-control adv-question" placeholder="Search Form" />
+                    </div>
+
+                </div>
+                <div class="searchBlock active">
+                    <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
+                    <a ng-click="search(0, SearchText);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
+                </div>
+            </div>
+            <!--questionList-->
+            <div class="panel-body questionList">
+                <div ng-repeat="permission in Permissions">
+                    <div class="list-group">
+                        <div class="questionItem">
+
+                            <span class="questionDetail">
+                                <label for="checkbox1" href="" class="list-group-item question">
+                                    <h5>Role:<span class="questionCode">{{permission.sRole}}</span>,
+                                        Form:<span class="questionText">{{permission.sForm}}</span>,
+                                        <table>
+                                            <tr>
+                                                <td ng-repeat="action in permission.ActionList" style="padding: 5px;">{{action}}
+                                                   
+                                                    <span class="questionCheck">
+                                                        <input type="checkbox" ng-checked="permission.IsPermissionList[$index]"></input>
+
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </h5>
+                                </label>
+                            </span>
+
+                          <!--  <span class="questionDetail">
+                                <label for="checkbox1" href="" class="list-group-item question">
+                                    <h5>Role:<span class="questionCode">{{permission.RoleID}}</span>,
+                                        Form:<span class="questionText">{{permission.FormID}}</span>,
+                                        Action:<span class="questionText">{{permission.Action}}</span>,
+                                        <span class="questionCheck">
+                                            <input type="checkbox" ng-checked="permission.IsPermission"></input>
+
+                                        </span>
+                                       <table>
+                                            <tr>
+                                                <td ng-repeat="action in permission.ActionList" style="padding: 5px;">{{action}}
+                                                   
+                                                    <span class="questionCheck">
+                                                        <input type="checkbox" ng-checked="permission.IsPermissionList[$index]"></input>
+
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </h5>
+                                </label>
+                            </span>-->
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div>
+                <a ng-click="" class="btn btn-danger pull-right">Cancel</a>
+            </div>
+            <div>
+                <a ng-click="savePermission();" style="margin-right: 10px;" class="btn btn-success pull-right"><i class="fa fa-fw fa-plus-circle"></i>Save</a>
+            </div>
+
+            <div class="text-center">
+                <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page, SearchText);"></custom-pager>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

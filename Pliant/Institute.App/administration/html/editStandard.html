@@ -1,0 +1,52 @@
+﻿<div class="row"> 
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">Standard</h4>
+        </div>
+        <div class="panel-body">
+            <form role="form" novalidate angular-validator name="addCustomerForm" angular-validator-submit="Register()">
+                <div class="">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2 col-sm-2">
+                                <label class="control-label" for="standardCode">Code</label>
+                                <input class="form-control" type="text" ng-model="EditedStudent.Code" name="code" id="code" placeholder="Code"
+                                       validate-on="blur" required required-message="'Code is required'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <label class="control-label" for="standard">Standard</label>
+                                <input type="text" class="form-control" ng-model="EditedStudent.Standard" name="standard" id="standard" placeholder="Standard"
+                                       validate-on="blur" required required-message="'Standard is required'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <label class="control-label" for="division">Division</label>
+                                <input class="form-control" type="text" ng-model="EditedStudent.Division" name="division" id="division" placeholder="Division"
+                                       validate-on="blur" required required-message="'Division is required'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <button id="btnUpdate" type="button" class="btn btn-success" ng-click="UpdateStandard();">Update</button>
+                                <button type="button" class="btn btn-danger">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="button" class="btn btn-danger" ng-click="cancelEdit()">Close</button>
+        </div>
+    </div>
+</div>

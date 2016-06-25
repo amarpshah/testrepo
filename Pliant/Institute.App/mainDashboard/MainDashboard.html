@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>School Admin Template</title>
+    <link href="../Content/css/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="../Content/css/toastr.css" rel="stylesheet" />
+    <link href="../Content/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="../Content/css/ag-grid.css" rel="stylesheet" />
+    <link href="../Content/css/theme-fresh.css" rel="stylesheet" />
+    <link href="../Content/css/select2.css" rel="stylesheet" />
+    <link href="../Content/css/application.css" rel="stylesheet" />
+
+
+</head>
+<body ng-app="app-main">
+    <div ng-controller="mainCtrl">
+        
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+            <div id="sidebar" class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li><a href="../system/configuration.html"><i class="fa fa-gears"></i>System Configuration</a></li>
+                    <li><a href="../administration/Administration.html"><i class="fa fa-university"></i>Administration</a></li>
+                    <li><a href="../examination/exam.html"><i class="fa fa-file-text"></i>Examination</a></li>
+                    <li><a href="../library/Library.html"><i class="fa fa-book"></i>Library</a></li>
+                </ul>
+            </div>
+
+            <top-bar></top-bar>
+        </nav>
+
+            <!--<nav class="navbar navbar-inverse" role="navigation">
+                <div class="navbar-header">
+                    <a class="navbar-brand" ui-sref="#">home</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="Administration">Administration</a></li>
+                    <li><a ui-sref="Library">Library</a></li>
+                </ul>
+            </nav>-->
+        <div ng-if="!isUserLoggedIn">
+            <h1> Plz login </h1>
+        </div>
+
+        <div id="curtain" class="translucent"><span class="spinner fa fa-gear fa-spin fa-5x"></span></div>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div id="main">
+                    <div class="row">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading clearfix">
+                                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Dashboard</h4>
+                            </div>
+                            <div class="panel-body">
+                                <section class="content">
+                                    <!-- Small boxes (Stat box) -->
+                                    <div class="row">
+                                        <div class="col-lg-3 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-aqua">
+                                                <div class="inner">
+                                                    <h3>1</h3>
+                                                    <p>System Configuration</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fa fa-gears"></i>
+                                                </div>
+                                                <a href="../system/configuration.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-3 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-blue" >
+                                                <div class="inner">
+                                                    <h3>2</h3>
+                                                    <p>Administration</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fa fa-university"></i>
+                                                </div>
+                                                <a href="../administration/Administration.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-3 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-olive">
+                                                <div class="inner">
+                                                    <h3>3</h3>
+                                                    <p>Examination</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fa fa-file-text"></i>
+                                                </div>
+                                                <a href="../examination/exam.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-3 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-green">
+                                                <div class="inner">
+                                                    <h3>4</h3>
+                                                    <p>Library</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fa fa-book"></i>
+                                                </div>
+                                                <a href="../library/Library.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor Script-->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery.fancybox.js"></script>
+    <script src="../js/jquery.fancybox-media.js"></script>
+    <script src="../js/angular.js"></script>
+    <script src="../js/angular-route.js"></script>
+    <script src="../js/angular-cookies.js"></script>
+    <script src="../js/angular-validator.js"></script>
+    <script src="../js/angular-base64.js"></script>
+    <script src="../js/angular-file-upload.js"></script>
+    <script src="../js/angucomplete-alt.min.js"></script>
+    <script src="../js/angular-ui-router.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/toastr.js"></script>
+    <script src="../js/ui-bootstrap-tpls-0.13.1.js"></script>
+    <script src="../js/underscore.js"></script>
+    <script src="../js/loading-bar.js"></script>
+    <script src="../js/ag-grid.js"></script>
+    <script src="../js/modernizr.js"></script>
+
+    <!-- Common scripts to be used accross -->    
+    <script src="../common/common.core.js"></script>
+    <script src="../common/common.ui.js"></script>
+    <script src="../common/services/apiService.js"></script>
+    <script src="../common/services/fileUploadService.js"></script>
+    <script src="../common/services/membershipService.js"></script>
+    <script src="../common/services/permissionService.js"></script>
+    <script src="../common/services/notificationService.js"></script>
+    <script src="../common/services/apiLocationService.js"></script>
+    <script src="../common/layout/topBar.directive.js"></script>
+    <script src="../common/layout/topBarCtrl.js"></script>
+    
+    <script src="../account/js/loginCtrl.js"></script>
+    <script src="../account/js/registerCtrl.js"></script>
+
+
+    <!-- Self Module files-->
+    <script src="/mainDashboard/MainDashboardCtrl.js"></script>
+    <script src="/mainDashboard/mainCtrl.js"></script>
+
+    <script src="../administration/app-administration.js"></script>
+    <script src="../administration/js/standardCtrl.js"></script>
+    <script src="../administration/js/subjectCtrl.js"></script>
+    <script src="../administration/js/configurationCtrl.js"></script>
+    <script src="../administration/js/questionCtrl.js"></script>
+    <script src="../administration/js/ssMappingCtrl.js"></script>
+    <script src="../administration/js/topicCtrl.js"></script>
+
+    <script src="../system/app-sysconfig.js"></script>
+</body>
+</html>
