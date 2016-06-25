@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>School Admin Template</title>
+    <link href="../Content/css/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="../Content/css/toastr.css" rel="stylesheet" />
+    <link href="../Content/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="../Content/css/ag-grid.css" rel="stylesheet" />
+    <link href="../Content/css/theme-fresh.css" rel="stylesheet" />
+    <link href="../Content/css/select2.css" rel="stylesheet" />
+    <link href="../Content/css/application.css" rel="stylesheet" />
+    <link href="../system/css/applicationSystem.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div ng-app="app-sysconfig">
+        <div>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+                <div id="sidebar" class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li class="active">
+                        <li class="nav-divider"></li>
+                        <li><a href="../mainDashboard/MainDashboard.html"><i class="fa fa-home fa-fw"></i>Home</a></li>
+                        <li class="nav-divider"></li>
+                        <li><a ui-sref="ConfigUserCreation"><i class="fa fa-gears fa-fw"></i>User Creation</a></li>
+                        <li><a ui-sref="ConfigRoleCreation"><i class="fa fa-users fa-fw"></i>Role Creation</a></li>
+                        <li><a ui-sref="ConfigPermission"><i class="fa fa-user-plus fa-fw"></i>Permissions</a></li>
+                        <li><a ui-sref="ConfigCompanyRegistration"><i class="fa fa-users fa-fw"></i>Company Registration</a></li>
+                    </ul>
+                </div>
+
+                <top-bar></top-bar>
+            </nav>
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div id="main">
+                        <!--<div>
+                            This is the System Configuration page
+                        </div>-->
+                        <div class="page {{pageClass}}" ui-view></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery.fancybox.js"></script>
+    <script src="../js/jquery.fancybox-media.js"></script>
+    <script src="../js/angular.js"></script>
+    <script src="../js/angular-route.js"></script>
+    <script src="../js/angular-cookies.js"></script>
+    <script src="../js/angular-validator.js"></script>
+    <script src="../js/angular-base64.js"></script>
+    <script src="../js/angular-file-upload.js"></script>
+    <script src="../js/angucomplete-alt.min.js"></script>
+    <script src="../js/angular-ui-router.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/toastr.js"></script>
+    <script src="../js/ui-bootstrap-tpls-0.13.1.js"></script>
+    <script src="../js/underscore.js"></script>
+    <script src="../js/loading-bar.js"></script>
+    <script src="../js/ag-grid.js"></script>
+    <script src="../js/modernizr.js"></script>
+
+    <!-- Common scripts to be used accross -->
+    <script src="../common/common.core.js"></script>
+    <script src="../common/common.ui.js"></script>
+    <script src="../common/services/apiService.js"></script>
+    <script src="../common/services/fileUploadService.js"></script>
+    <script src="../common/services/membershipService.js"></script>
+    <script src="../common/services/notificationService.js"></script>
+    <script src="../common/services/apiLocationService.js"></script>
+    <script src="../common/layout/topBar.directive.js"></script>
+    <script src="../common/layout/topBarCtrl.js"></script>
+    <script src="../common/layout/customPager.directive.js"></script>
+    <script src="../account/js/loginCtrl.js"></script>
+    <script src="../account/js/registerCtrl.js"></script>
+
+    <script src="../system/app-sysconfig.js"></script>
+    <script src="../system/js/compRegistrationCtrl.js"></script>
+    <script src="../system/js/permissionCtrl.js"></script>
+    <script src="../system/js/roleCreationCtrl.js"></script>
+    <script src="../system/js/userCreationCtrl.js"></script>
+</body>
+</html>
