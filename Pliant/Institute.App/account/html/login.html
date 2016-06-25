@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>School Admin Template</title>
+    <link href="../../Content/css/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../../Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="../../Content/css/toastr.css" rel="stylesheet" />
+    <link href="../../Content/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="../../Content/css/ag-grid.css" rel="stylesheet" />
+    <link href="../../Content/css/theme-fresh.css" rel="stylesheet" />
+    <link href="../../Content/css/select2.css" rel="stylesheet" />
+    <link href="../../Content/css/application.css" rel="stylesheet" />
+</head>
+<body>
+    <div ng-app="app-administration">
+        <div ng-controller="loginCtrl">
+            <div id="curtain" class="translucent"><span class="spinner fa fa-gear fa-spin fa-5x"></span></div>
+            <div id="login" class="active">
+                <div class="heading popUp translucent active">
+                    <h2>Rastra School Management System</h2>
+                    <button class="loginBtn btn btn-primary"><i class="fa fa-fw fa-key"></i> Login</button>
+                </div>
+                <div class="login-popup popUp">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-lock fa-fw"></i> Login</h3>
+                        </div>
+                        <div class="panel-body translucent">
+                            <form role="form" novalidate angular-validator name="userLoginForm" angular-validator-submit="login()">
+                                <div class="form-group">
+                                    <label for="inputUsername" class="sr-only">Username</label>
+                                    <input type="text" id="inputUsername" name="inputUsername" class="form-control" ng-model="user.username" placeholder="Username"
+                                           validate-on="blur" required required-message="'Username is required'">
+                                    <label for="inputPassword" class="sr-only">Password</label>
+                                    <input type="password" id="inputPassword" name="inputPassword" class="form-control" ng-model="user.password" placeholder="Password"
+                                           validate-on="blur" required required-message="'Password is required'">
+                                </div>
+                                <div class="next-step">
+                                    <button class="btn btn-lg btn-primary proceed" type="submit">Sign in</button>
+                                    <button type="button" class="btn btn-lg btn-default cancel">Cancel</button>
+                                    <div class="pull-right">
+                                        <a ng-href="#/register" class="control-label">Register</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<form class="form-signin" role="form" novalidate angular-validator name="userLoginForm" angular-validator-submit="login()">
+                <h3 class="form-signin-heading">Sign in</h3>
+                <div class="form-group">
+                    <label for="inputUsername" class="sr-only">Username</label>
+                    <input type="text" id="inputUsername" name="inputUsername" class="form-control" ng-model="user.username" placeholder="Username"
+                           validate-on="blur" required required-message="'Username is required'">
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" id="inputPassword" name="inputPassword" class="form-control" ng-model="user.password" placeholder="Password"
+                           validate-on="blur" required required-message="'Password is required'">
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <div class="pull-right">
+                    <a ng-href="#/register" class="control-label">Register</a>
+                </div>
+            </form>-->
+        </div>
+    </div>
+    <script src="../../js/jquery.js"></script>
+    <script src="../../js/jquery.fancybox.js"></script>
+    <script src="../../js/jquery.fancybox-media.js"></script>
+    <script src="../../js/angular.js"></script>
+    <script src="../../js/angular-route.js"></script>
+    <script src="../../js/angular-cookies.js"></script>
+    <script src="../../js/angular-validator.js"></script>
+    <script src="../../js/angular-base64.js"></script>
+    <script src="../../js/angular-file-upload.js"></script>
+    <script src="../../js/angucomplete-alt.min.js"></script>
+    <script src="../../js/angular-ui-router.min.js"></script>
+    <script src="../../js/bootstrap.js"></script>
+    <script src="../../js/toastr.js"></script>
+    <script src="../../js/ui-bootstrap-tpls-0.13.1.js"></script>
+    <script src="../../js/underscore.js"></script>
+    <script src="../../js/loading-bar.js"></script>
+    <script src="../../js/ag-grid.js"></script>
+    <script src="../../js/modernizr.js"></script>
+
+    <!-- Common scripts to be used accross -->
+    <script src="../../common/common.core.js"></script>
+    <script src="../../common/common.ui.js"></script>
+    <script src="../../common/services/apiService.js"></script>
+    <script src="../../common/services/fileUploadService.js"></script>
+    <script src="../../common/services/membershipService.js"></script>
+    <script src="../../common/services/permissionService.js"></script>
+    <script src="../../common/services/notificationService.js"></script>
+    <script src="../../common/services/apiLocationService.js"></script>
+    <script src="../../common/layout/topBar.directive.js"></script>
+    <script src="../../common/layout/topBarCtrl.js"></script>
+    <script src="../../account/js/loginCtrl.js"></script>
+    <script src="../../account/js/registerCtrl.js"></script>
+    <script src="../../administration/app-administration.js"></script>
+    <script src="../account/js/application.js"></script>
+</body>
+</html>

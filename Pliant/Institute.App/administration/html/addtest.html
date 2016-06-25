@@ -1,0 +1,100 @@
+﻿<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Test <small>Add or Edit Test</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <section class="questionForm active">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 ng-if="!IsEditMode" class="panel-title"><i class="fa fa-question-circle fa-fw"></i> Add Test</h3>
+                <h3 ng-if="IsEditMode" class="panel-title"><i class="fa fa-question-circle fa-fw"></i> Edit Test</h3>
+            </div>
+            <div class="panel-body translucent">
+                <form role="form" id="questionForm" name="questionForm">
+                    <div class="panel panel-default formSection">
+                        <div class="panel-body">
+                            <div class="form-group col-lg-2 col-md-2 ">
+                                <label>Code: </label>
+                                <input ng-model="newTest.Code" type="text" name="code" class="form-control code"
+                                     placeholder="Add Code Here..." ng-pattern="/^[a-zA-Z0-9]+$/"  validate-on="blur"
+                                     required="required" ng-readonly="{{IsLock}}"/>
+                             
+                             
+                            </div>
+                            <div class="form-group col-lg-10 col-md-10">
+                                <label>Name: </label>
+                                <input type="text" ng-model="newTest.Text" class="form-control question" placeholder="Add Test Name Here..."  validate-on="blur" required required-message="'Name is required'" ng-readonly="{{IsLock}}"></input>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6">
+                                <label>Description: </label>
+                                <textarea ng-model="newTest.Description" class="form-control description" placeholder="Add Description Here..." maxlength="500"  ng-readonly="{{IsLock}}"></textarea>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6">
+                                <label>Objective: </label>
+                                <textarea ng-model="newTest.Objective" class="form-control objective" placeholder="Add Objective Here..." maxlength="500" ng-readonly="{{IsLock}}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default formSection">
+                        <div class="panel-body">
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Status: </label>
+                                    <select ng-model="newTest.Status" class="form-control status" ng-disabled="{{IsLock}}"
+                                            ng-options="option.value as option.Text for option in Test.status" >
+                                        <option value="" selected>Select Status</option>
+                                    </select>
+                                </div>
+                                <!--<div class="form-group col-lg-4 col-md-4">
+                                    <label>Points per question: </label>
+                                    <input type="number" ng-model="newTest.PointsPerQuestion"
+                                           class="form-control points" placeholder="Add points here..." />
+                                </div>-->
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Difficulty Level: </label>
+                                    <span class="easy btn-success">Easy</span>
+                                    <span class="medium btn-warning">Medium</span>
+                                    <span class="difficult btn-danger">Difficult</span>
+
+                                    <select ng-model="newTest.Difficulty" class="form-control difficulty" ng-disabled="{{IsLock}}"
+                                            ng-options="option.value as option.Text for option in Test.difficulty">
+                                        <option value="" selected>Select Difficulty Level</option>
+                                    </select>
+                                </div>
+                                </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Total Marks: </label>
+                                    <input type="number" ng-model="newTest.TotalMarks"
+                                           class="form-control points" placeholder="Add Total Marks Here..." max="200" min="0" ng-readonly="{{IsLock}}" required />
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Passing Marks: </label>
+                                    <input type="number" ng-model="newTest.PassingMarks"
+                                           class="form-control points" placeholder="Add Passing Marks Here..." max="200" min="0" ng-readonly="{{IsLock}}" />
+                                </div>
+                                
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="next-step pull-right">
+                       <button type="button" ng-if="IsEditMode" ng-hide="{{IsLock}}" ng-click=" UpdateTest();" class="btn btn-primary proceedd" ><i class="fa fa-fw fa-edit"></i> <span class="addCurrentQuestion active"></span> <span class="save">Update</span> </button>
+                        <button type="button" ng-if="!IsEditMode" ng-click=" AddTest();" class="btn btn-primary proceedd"><i class="fa fa-fw fa-plus"></i> <span class="addCurrentQuestion active"></span> <span class="save">Save</span> </button>
+                        <button type="button" ui-sref="AdminTest" class="btn btn-danger cancel">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+</div>

@@ -1,0 +1,399 @@
+/* Reset the page header */
+.page-header {
+    margin: 0;
+}
+#main #page-wrapper {
+    height: calc(100vh - 70px);
+}
+/* open collapsible icon in navigation */
+
+.nav.navbar-nav.side-nav>li>ul>li>a {
+    padding: 10px 15px 10px 20px;
+}
+.selectStdAndSubject{
+    font-size: 12px;
+    position: absolute;
+    right: 27px;
+    z-index: 2;
+    padding: 0;
+}
+.standardBlue {
+    background: #337ab7;
+}
+.subjectRed {
+    background: #d9534f;
+}
+.topicOrange {
+    background: #f0ad4e;
+}
+.topic, .standard {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+}
+.standardSubjectBanner {
+    color: #fff;
+    width: calc(100% - 490px);
+    margin-right: 10px;
+    position: absolute;
+}
+.standardSubjectBanner .huge.standard {
+	border-radius: 5px 0 0 5px;
+}
+.standardSubjectBanner .huge.topic {
+	border-radius: 0 5px 5px 0;
+}
+.standardSubjectBanner .huge {
+    font-size: 16px;
+    padding: 7px 5px;
+}
+.standardSubjectBanner .huge:active {
+	-webkit-box-shadow: inset 0px 0px 35px 5px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 0px 0px 35px 5px rgba(0,0,0,0.3);
+    box-shadow: inset 0px 0px 35px 5px rgba(0,0,0,0.3);
+}
+
+.selectQuestionWrap, .searchQuestionWrap {
+    margin-right: 10px;
+    width: 250px;
+}
+.deleteQuestion {
+    align-items: stretch;
+}
+.questionItemAction i {
+    padding: 15px 0;
+    font-size: 16px;
+}
+.questionList .question {
+    padding: 5px;
+}
+/* this is duplicate of the .studentForm.popUp */
+.stdForm {
+    width: 500px;
+    z-index: 99999;
+}
+/* this is duplicate of the .studentForm .form-group */
+.stdForm .form-group {
+    width: 49%;
+}
+.stdForm .next-step button {
+    width: 49%;
+}
+.stdForm .panel-body {
+    max-height: 490px;
+}
+
+.questionForm .questionType {
+    display: none;
+}
+
+.questionForm .panel.panel-primary > .panel-body {
+    height: calc(100vh - 170px);
+    overflow: auto;
+}
+
+.questionForm .questionType.active {
+    display: block;
+}
+.fillInTheBlankSelect {
+    display: none;
+    background: #ececec;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+.fillInTheBlankSelect.active {
+    display: block;
+}
+span.clickableWords {
+    margin-right: 5px;
+    cursor: copy;
+}
+span.clickableWords.fillBlank {
+    cursor: pointer;
+}
+span.clickableWords.fillBlank {
+    color: transparent;
+    border-bottom: 1px solid #000;
+    height: 12px;
+    display: inline-block;
+    width: 50px;
+}
+.questionForm, .questionControl {
+    display: none;
+}
+.questionForm.active, .questionControl.active {
+    display: block;
+}
+.questionControl .panel-heading {
+    height: 55px;
+    overflow: hidden;
+}
+.questionControl .addBlock {
+    margin-bottom: 45px;
+}
+.questionControl .addBlock, .questionControl .searchBlock {
+    display: none;
+}
+.questionControl .addBlock.active, .questionControl .searchBlock.active {
+    display: block;
+}
+.questionControl .toggleSearch, .questionControl .toggleAdvancedSearch, .questionControl .toggleAdd {
+    margin-left: 10px;
+}
+.addQuestion {
+    padding: 6px 15px;
+}
+.searchQuestion {
+    padding: 6px 5px;
+}
+.clear {
+    clear: both;
+}
+#status {
+    height: 20px;
+    width: 20px;
+}
+#status + label {
+    vertical-align: bottom;
+}
+.questionList .question.list-group-item {
+    border: 0;
+}
+.easy, .medium, .difficult {
+    padding:       1px 10px;
+    border-radius: 2px;
+    display:       none;
+}
+.easy.active, .medium.active, .difficult.active {
+    display: inline;
+}
+.form-group-inner {
+    margin: 15px -15px;
+}
+.addMoreMatcher, .addMoreOption {
+    margin: 0 0 15px;
+}
+.matchWrap::after {
+    margin-bottom: 15px;
+    display: block;
+    content: " ";
+    min-height: 1px;
+    clear: both;
+}
+.choiceWrapper {
+    padding: 15px 0;
+}
+.choiceWrapper .input-group-addon {
+    padding: 6px 10px 4px;
+}
+.choiceWrapper .input-group-addon input {
+    height: 20px;
+    width: 20px;
+}
+.questionItem {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+}
+.questionList > div:first-child .questionItem{
+    border-radius: 5px 5px 0 0;
+    border-bottom: 0;
+}
+.questionList > div:last-child .questionItem{
+    border-radius: 0 0 5px 5px;
+}
+.questionItem h5 {
+    font-weight: bold;
+    margin: 0;
+}
+.questionItem p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.1;
+}
+.questionItem .questionItemAction {
+    display: flex;
+}
+.questionItem .questionItemAction a {
+    border-radius: 0;
+}
+.questionItem .questionDetail {
+    flex: 2;
+    position: relative;
+}
+.modifiedBy {
+    font-size: 12px;
+    margin: 10px 20px;
+}
+.questionItem > span:not(.questionItemAction) {
+    align-self: center;
+}
+.questionCheck, .questionTypeIcon {
+    width: 40px;
+    text-align: center;
+}
+.questionTypeIcon {
+    background: green;
+    color: #fff;
+    border-radius: 5px;
+    padding: 3px;
+    font-size: 10px;
+    margin: 0 5px;
+}
+.ui-autocomplete {
+    list-style-type: none;
+    -webkit-padding-start: 0;
+    width: 27%!important;
+    padding: 5px;
+    box-shadow: 0 5px 10px 0px #ccc;
+}
+#ui-id-2.ui-autocomplete {
+    width: 16%!important;
+    z-index: 99999;
+}
+.ui-autocomplete li {
+    padding: 5px;
+    cursor: pointer;
+}
+.modifiedDate {
+    display: block;
+    background: #ccc;
+    padding: 5px;
+    color: #fff;
+    border-radius: 5px;
+}
+.formSection {
+    background: #f7f7f7;
+}
+.topic + i {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    color: #ccc;
+}
+input[name="trueOrFalse"], input[name="yesOrNo"] {
+    display: none;
+}
+input[name="trueOrFalse"]:checked + label, input[name="yesOrNo"]:checked + label {
+    background-image: -webkit-linear-gradient(top, #5cb85c 0%, #419641 100%);
+    background-image: -o-linear-gradient(top, #5cb85c 0%, #419641 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5cb85c), to(#419641));
+    background-image: linear-gradient(to bottom, #5cb85c 0%, #419641 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5cb85c', endColorstr='#ff419641', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    background-repeat: repeat-x;
+    border-color: #3e8f3e;
+    color: #fff;
+}
+input[name="trueOrFalse"]:checked + label:hover, input[name="yesOrNo"]:checked + label:hover {
+    background-color: #419641;
+}
+#true + label, #yes + label {
+    border-radius: 4px 0 0 4px;
+}
+.displayGroup {
+    display: none;
+}
+.displayGroup.active {
+    display: block;
+}
+.displayGroup label::first-letter {
+    text-transform: capitalize;
+}
+.displayGroup label {
+    width: 80px;
+}
+.removeMatchh, .removeOption {
+    position: absolute;
+    right: -10px;
+    font-size: 18px;
+    color: red;
+    bottom: 5px;
+}
+
+
+
+.removeOption {
+    right: -26px;
+}
+.singleChoiceOptions > div:nth-of-type(odd), .multiChoiceOptions > div:nth-of-type(odd) {
+    padding-right: 30px;
+}
+.choiceWrapper .optionChoice {
+    border-radius: 0 4px 4px 0!important;
+}
+.topicText {
+    color: #f0ad4e;
+}
+.standardInfo .standardText {
+    color: #337ab7;
+}
+.standardInfo .subjectText {
+    color: #d9534f;
+}
+.topicWrap { position: relative;  }
+.questionForm .proceed span { display: none; }
+.questionForm .proceed span.active { display: inline; }
+.questionControl .showAdvance {
+    height: 145px;
+}
+.questionControl .panel-heading {
+    /* -webkit-transition: height 0.2s;
+    transition: height 0.2s;
+    transition-timing-function: ease-in; */
+}
+.advanceBlock {
+    margin-top: 45px;
+}
+.questionList {
+    clear: both;
+    overflow: auto;
+    height: calc(100vh - 270px);
+}
+.bulkAction {
+    height: 0;
+    overflow: hidden;
+    margin-left: calc(50% - 88px);
+    margin-top: 15px;
+    -webkit-transition: height 0.5s;
+    transition: height 0.5s;
+    transition-timing-function: ease-in;
+}
+.bulkAction.active {
+    height: 34px;
+}
+.questionList .list-group {
+    margin-bottom: 0;
+    background: #fff;
+}
+.btn.view {
+    padding: 6px 9px;
+}
+.advanceBlock label {
+    display: inline-block;
+    width: 80px;
+}
+.advanceBlock input,  .advanceBlock select {
+    width: 185px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.showAdvance ~ .questionList {
+    height: calc(100vh - 360px);
+}
+.questionControl .panel-footer {
+    padding: 0;
+    background: none;
+    border: 0;
+    margin-top: -14px;
+}
+.questionControl .pagination {
+    margin: 0;
+}
+@media (max-width: 948px) {
+    .questionControl .showAdvance {
+        height: 190px;
+    }
+}

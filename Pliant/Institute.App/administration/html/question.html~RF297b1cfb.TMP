@@ -1,0 +1,430 @@
+﻿<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Question Bank <small>Add or edit questions</small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row questionControl active">
+            <div class="col-lg-12">
+                <div class="row panel panel-default">
+                    <div class="panel-heading">
+                        <div class="standardSubjectBanner" data-target="selectStdForm">
+                            <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                                <div class="row">
+                                    <div class="huge standard standardBlue"><span class="standardValue"></span> <span class="subText standardBlue">{{newQuestion.StandardName}} Standard</span></div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                                <div class="row">
+                                    <div class="huge subject subjectRed">{{newQuestion.SubjectName}} Subject</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                                <div class="row">
+                                    <div class="huge topic topicOrange">{{newQuestion.TopicName}} Topic</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="addBlock">
+                            <a href="" class="btn btn-primary toggleAdd pull-right"><i class="fa fa-fw fa-search"></i></a>
+                            <a href="" class="btn btn-success addQuestion pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
+                            <h3 class="panel-title selectQuestionWrap pull-right">
+
+                                <select ng-model="newQuestion.QuestionType" class="form-control type"
+                                        ng-options="option.value as option.Text for option in question.questiontype"></select>
+
+                                <!--<select class="form-control">
+                                    <option ng-repeat="qtype in question.questiontype" value="{{qtype.value}}">{{qtype.Text}}</option>
+                                </select>-->
+                            </h3>
+                        </div>
+                        <div class="searchBlock active">
+                            <a href="" class="btn btn-primary toggleSearch pull-right"><i class="fa fa-fw fa-plus-circle"></i></a><a href="" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
+                            <h3 class="panel-title searchQuestionWrap pull-right">
+                                <input class="form-control searchInput" placeholder="Please enter to search..." />
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="panel-body questionList">
+                        <div ng-repeat="user in Questions">
+
+                        </div>
+                        <div class="list-group">
+                            <div class="questionItem">
+                                <span class="questionCheck">
+                                    <input type="checkbox" id="checkbox1"></input>
+                                </span>
+                                <span class="questionTypeIcon">DES</span>
+                                <span class="questionDetail">
+                                    <label for="checkbox1" href="" class="list-group-item question">
+                                        <h5>
+                                            <span class="questionCode">GK-1-QST001</span>:
+                                            <span class="questionText">What is the name of the school?</span>
+                                        </h5>
+                                        <p class="topicText">General Knowledge - Education</p>
+                                        <p class="standardInfo">
+                                            <span class="standardText">7<sup>th</sup> - </span>
+                                            <span class="subjectText">General Knowledge</span>
+                                        </p>
+                                        <p class="questionState">
+                                            <span class="statusText">Draft</span> - <span class="difficultyText">Medium</span>
+                                        </p>
+                                    </label>
+                                </span>
+                                <span class="modifiedBy text-right">
+                                    <span class="modifiedByName">Amar Shah</span> <span class="modifiedDate">26th March 2016</span>
+                                </span>
+                                <span class="questionItemAction">
+                                    <a href="" class="btn btn-primary editQuestion pull-right"><i class="fa fa-edit"></i></a>
+                                    <a href="" class="btn btn-warning lockQuestion pull-right"><i class="fa fa-lock"></i></a>
+                                    <a href="" class="btn btn-danger deleteQuestion pull-right"><i class="fa fa-trash"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <section class="questionForm">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-question-circle fa-fw"></i> Add Question</h3>
+                </div>
+                <div class="panel-body translucent">
+                    <form role="form" id="questionForm">
+                        <div class="panel panel-default formSection">
+                            <div class="panel-body">
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Standard: </label>
+                                    <!--<select class="form-control selectStd">
+                                        <option ng-repeat="standard in question.questionstandard" 
+                                        ng-model="newQuestion.StandardId" value="{{standard.value}}" 
+                                        ng-change="StandardChange(true);" required>{{standard.Text}}
+                                        </option>
+                                    </select>-->
+                                    <select ng-model="newQuestion.StandardId" class="form-control selectStd"
+                                            ng-options="option.ID as option.Standard for option in question.questionstandard"
+                                            ng-change="StandardChange(true)"></select>
+                                    <input type="hidden" name="StandardId" ng-value="newQuestion.StandardId" />
+                                </div>
+                                <div class="form-group col-lg-8 col-md-8">
+                                    <label>Subject: </label>
+                                    <!--<select class="form-control selectSubject">
+                                        <option ng-repeat="subject in question.questionsubject" 
+                                                ng-model="newQuestion.SubjectId" value="{{subject.value}}" 
+                                                ng-change="SubjectChange(true);" required>{{subject.Text}}</option>
+                                    </select>-->
+                                    <select ng-model="newQuestion.SubjectId" class="form-control selectSubject"
+                                            ng-options="option.ID as option.Subject for option in question.questionsubject"
+                                            ng-change="SubjectChange(true);" required></select>
+                                    <input type="hidden" name="SubjectId" ng-value="newQuestion.SubjectId" />
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4 ui-widget">
+                                    <div>
+                                        <label>Topic: </label>
+                                        <input class="form-control topic" id="topic" ng-model="newQuestion.TopicId" autocomplete="on" placeholder="Search topic here..." ng-change="TopicChange();" />
+                                        <i class="fa fa-fw fa-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default formSection">
+                            <div class="panel-body">
+                                <div class="form-group col-lg-2 col-md-2">
+                                    <label>Code: </label>
+                                    <input ng-model="newQuestion.Code" type="text" class="form-control code" placeholder="Add code here..." />
+                                </div>
+                                <div class="form-group col-lg-10 col-md-10">
+                                    <label>Question: </label>
+                                    <textarea ng-model="newQuestion.Question" class="form-control question" placeholder="Add Question here..." oninput="generateFillInTheBlank()"></textarea>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <label>Objective: </label>
+                                    <textarea ng-model="newQuestion.Objective" class="form-control objective" placeholder="Add Objective here..." maxlength="500"></textarea>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <label>Hint: </label>
+                                    <textarea ng-model="newQuestion.Hint" class="form-control hint" maxlength="500" placeholder="Add Hint here..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default formSection">
+                            <div class="panel-body">
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Question type: </label>
+
+                                    <select id="qqtype" ng-model="newQuestion.QuestionType" class="form-control type"
+                                            ng-options="option.value as option.Text for option in question.questiontype"></select>
+                                    <!--<select class="form-control type">
+                                        <option ng-model="newQuestion.QuestionType" 
+                                                ng-repeat="qtype in question.questiontype" 
+                                                value="{{qtype.value}}" 
+                                                data-type="{{qtype.type}}">{{qtype.Text}}</option>
+                                    </select>-->
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Points for question: </label>
+                                    <input type="number" ng-model="newQuestion.Points" 
+                                           class="form-control points" placeholder="Add points here..." />
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Status: </label>
+                                    <select ng-model="newQuestion.Status" class="form-control status"
+                                            ng-options="option.value as option.Text for option in question.questionstatus"></select>
+
+                                    <!--<select class="form-control status">
+                                        <option ng-model="newQuestion.Status" 
+                                                ng-repeat="status in question.questionstatus" 
+                                                value="{{status.value}}">{{status.Text}}</option>
+                                    </select>-->
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Difficulty level: </label>
+                                    <span class="easy btn-success">Easy</span>
+                                    <span class="medium btn-warning">Medium</span>
+                                    <span class="difficult btn-danger">Difficult</span>
+
+                                    <select ng-model="newQuestion.Difficulty" class="form-control difficulty"
+                                            ng-options="option.value as option.Text for option in question.questiondifficulty">
+                                    </select>
+
+                                    <!--<select class="form-control difficulty">
+                                        <option ng-model="newQuestion.Difficulty" 
+                                                ng-repeat="difficulty in question.questiondifficulty" 
+                                                value="{{difficulty.value}}">{{difficulty.Text}}</option>
+                                    </select>-->
+                                </div>
+
+                                <div class="form-group descriptive questionType clear" data-type="1">
+                                    <div class="form-group col-lg-12">
+                                        <label>Answer keywords: </label>
+                                        <textarea ng-model="newQuestion.AnsKeywords" class="form-control keywords" 
+                                                  placeholder="Add Keywords here..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group trueOrFalse questionType clear" data-type="2">
+                                    <div class="form-group col-lg-4 col-md-4">
+                                        <label>Display type: </label>
+
+                                        <select ng-model="newQuestion.QuestionDisplayType" class="form-control displayType"
+                                                ng-options="option.value as option.Text for option in question.questionDisplayType">
+                                        </select>
+
+                                        <!--<select class="form-control displayType">
+                                            <option ng-model="newQuestion.QuestionDisplayType" 
+                                            ng-repeat="display in question.questionDisplayType" 
+                                            value="{{display.value}}" data-name="{{display.name}}" data-value1="{{display.val1}}" data-value2="{{display.val2}}">{{display.Text}}</option>
+                                        </select>-->
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 displayGroup">
+                                        <label>Display: </label>
+                                        <div class="radioGroup text-center btn-group show" role="group">
+                                            <input ng-model="newQuestion.TFAnswer" type="radio" name="trueOrFalse" value="true" id="true" class="correct"></input>
+                                            <label class="btn btn-default" for="true">True</label>
+                                            <input ng-model="newQuestion.TFAnswer" type="radio" name="trueOrFalse" value="false" id="false" class="wrong"></input>
+                                            <label class="btn btn-default" for="false">False</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group matchTheFollowing questionType clear" data-type="3">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group-inner">
+                                            <div class="col-lg-6 col-md-6">
+                                                <label>Choice A: </label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <label>Choice B: </label>
+                                            </div>
+
+                                            <div class="matchWrap" ng-repeat="match in newQuestion.Matches">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <input id="{{match.ID}}" ng-model="match.choiceA" type="text" class="form-control choiceA optionMatch optionMatch1" />
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <input ng-model="match.choiceB" type="text" class="form-control choiceB optionAns optionAns1" />
+                                                    <a ng-click="RemoveMatch(match.ID)" class="removeMatchh"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <!--<div class="matchWrap">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <input type="text" class="form-control choiceA optionMatch optionMatch1" />
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <input type="text" class="form-control choiceB optionAns optionAns1" />
+                                                    <a href="#" class="removeMatch"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="matchWrap">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <input type="text" class="form-control choiceA optionMatch optionMatch2" />
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <input type="text" class="form-control choiceB optionAns optionAns2" />
+                                                    <a href="#" class="removeMatch"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                        <button ng-click="AddMatch();" class="btn btn-primary pull-right addMoreMatcher1"><i class="fa fa-fw fa-plus-circle"></i> Add more option</button>
+                                    </div>
+                                </div>
+                                <div class="form-group singleChoice questionType clear" data-type="4">
+                                    <div class="">
+                                        <div class="col-lg-12 col-md-12 singleChoiceOptions">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.Choices">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input id="{{choice.ID}}" ng-model="cIsAnswer" ng-value="choice.ID" type="radio" class="optionChoiceAns optionChoiceAns1" name="singleChoice">
+                                                    </span>
+                                                    <input type="text" ng-model="choice.Text" class="form-control optionChoice optionChoice1" />
+                                                    <a ng-click="RemoveChoice(choice, choice.ID)" class="removeOptionn"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <!--<div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input type="radio" class=" optionChoiceAns optionChoiceAns1" name="singleChoice">
+                                                    </span>
+                                                    <input type="text" class="form-control optionChoice optionChoice1" />
+                                                    <a href="#" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input type="radio" class=" optionChoiceAns optionChoiceAns2" name="singleChoice">
+                                                    </span>
+                                                    <input type="text" class="form-control optionChoice optionChoice2" />
+                                                    <a href="#" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                        <div class="form-group clear">
+                                            <button ng-click="AddChoice();" class="btn btn-primary addMoreOptionn pull-right"><i class="fa fa-fw fa-plus-circle"></i> Add more option</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group multiChoice questionType clear" data-type="5">
+                                    <div class="form-group col-lg-4 col-md-6">
+                                        <label>Points per choice: </label>
+                                        <input type="number" class="form-control pointsPerChoice"></input>
+                                    </div>
+                                    <div class="">
+                                        <div class="col-lg-12 col-md-12 multiChoiceOptions">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.MChoices">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input id="{{choice.ID}}" ng-model="choice.IsAnswer" type="checkbox" class=" optionChoiceAns optionChoiceAns1" name="multiChoice">
+                                                    </span>
+                                                    <input type="text" ng-model="choice.Text"  class="form-control optionChoice optionChoice1" />
+                                                    <a ng-click="RemoveMChoice(choice, choice.ID)" class="removeOptionn"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <!--<div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.MChoices">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" class=" optionChoiceAns optionChoiceAns1" name="multiChoice">
+                                                    </span>
+                                                    <input type="text" class="form-control optionChoice optionChoice1" />
+                                                    <a href="#" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" class=" optionChoiceAns optionChoiceAns2" name="multiChoice">
+                                                    </span>
+                                                    <input type="text" class="form-control optionChoice optionChoice2" />
+                                                    <a href="#" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                        <div class="form-group clear">
+                                            <button ng-click="AddMChoice();" class="btn btn-primary addMoreOption pull-right">Add more option</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group fillInTheBlank questionType clear" data-type="6">
+                                    <div class="clear">
+                                        <div class="fillInTheBlankSelect">
+                                            <label class="info">Please click on the word to empty/ make it blank</label>
+                                            <div class="generatedQuestion"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="next-step pull-right">
+                            <button type="button" ng-click="AddQuestion();" class="btn btn-primary proceed"><i class="fa fa-fw fa-plus"></i> <span class="addCurrentQuestion active">Add</span> <span class="save">Save</span> </button>
+                            <button type="button" class="btn btn-default cancel"><i class="fa fa-fw fa-share"></i> Back to list</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- /.selectStdForm -->
+        <div class="selectStdForm stdForm popUp" data-open="selectStdForm">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-sliders fa-fw"></i> Select standard, subject and topic</h3>
+                </div>
+                <div class="panel-body translucent">
+                    <form role="form">
+                        <div class="form-group pull-left">
+                            <label>Standard: </label>
+                            <!--<select class="form-control selectStd">
+                                <option ng-repeat="standard in question.questionstandard" 
+                                        value="{{standard.ID}}">{{standard.Standard}}</option>
+                            </select>-->
+                            <select id="selectStd" ng-model="newQuestion.StandardId" class="form-control"
+                                    ng-options="option.ID as option.Standard for option in question.questionstandard"
+                                    ng-change="StandardChange(true)"></select>
+                            <input type="hidden" name="StandardId" ng-value="newQuestion.StandardId" />
+                            {{newQuestion.StandardId}} -- {{newQuestion.StandardName}}
+                        </div>
+                        <div class="form-group pull-right">
+                            <label>Subject: </label>
+                            <!--<select class="form-control selectSubject">
+                                <option ng-repeat="subject in question.questionsubject" 
+                                        value="{{subject.ID}}">{{subject.Subject}}</option>
+                            </select>-->
+                            <select id="selectSubject" ng-model="newQuestion.SubjectId" class="form-control"
+                                    ng-options="option.ID as option.Subject for option in question.questionsubject"
+                                    ng-change="SubjectChange(true);" required></select>
+                            <input type="hidden" name="SubjectId" ng-value="newQuestion.SubjectId" />
+                            {{newQuestion.SubjectId}} -- {{newQuestion.SubjectName}}
+                        </div>
+                        <div class="form-group pull-left topicWrap">
+                            <label>Topic: </label>
+                            <!--<input class="form-control topic" id="topicPopup" 
+                                   autocomplete="on" placeholder="Search topic here..." />
+                            <i class="fa fa-fw fa-search"></i>-->
+                            <select id="selectTopic" ng-model="newQuestion.TopicId" class="form-control select2"
+                                    ng-options="option.ID as option.Name for option in question.questiontopic"
+                                    ng-change="TopicChange();" required>
+                                <!--ng-options="option.ID as option.Name for option in Topics" select2-->
+                                <!--<option ng-options="option.ID as option.Name for option in Topics" value="{{option.ID}}">({{option.Name}})</option>-->
+                            </select>
+                            <input type="hidden" name="TopicId" ng-value="newQuestion.TopicId" />
+
+                        </div>
+                        <div class="next-step">
+                            <button type="button" class="btn btn-primary proceed">Select</button>
+                            <button type="button" class="btn btn-default cancel pull-right">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.studentForm -->
+    </div>
+    <!-- /.container-fluid -->
+</div>

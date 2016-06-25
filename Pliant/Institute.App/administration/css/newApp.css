@@ -1,0 +1,95 @@
+﻿.totalCount
+{
+    margin: 10px 20px;
+    padding: 10px;
+    display: block;
+    /*background: #ccc;
+    border-radius: 5px;*/
+}
+
+.countText
+{
+    color: blue;
+    font-weight: bold;
+}
+
+.countValue
+{
+    color: green;
+    font-weight: bold;
+}
+
+.countLable
+{
+
+border:1px solid #ccc; 
+padding:14px 10px 14px 10px;
+ margin:15px; 
+ border-radius: 5px 5px 5px 5px; 
+ background-color:#f7f7f7;
+}
+
+.finalizeText
+{
+float:right;
+position: relative;
+bottom: 18px;
+right:10px;
+/*color:green;*/
+font:bold;
+
+
+}
+.displayFinalizeText
+{
+float:left;
+position: relative;
+bottom: 28px;
+left:10%;
+
+color:green;
+font:bold;
+
+
+}
+
+.addedLabel
+{
+
+    color:blue;
+    margin-right:5%;
+    
+}
+.msgLabel
+{
+position:fixed;
+top:50%;
+left:38%;
+font-weight: normal;
+    line-height: 1;
+    color: #777;
+
+}
+
+/*AddPoolQuestion Css starts*/
+
+.questionControl .showAdvanceAddPoolQuestion {
+    height: 140px;
+}
+.showAdvanceAddPoolQuestion ~ .questionList {
+    height: calc(100vh - 360px);
+}
+
+@media (max-width: 948px) {
+    .questionControl .showAdvanceAddPoolQuestion {
+        height: 190px;
+    }
+}
+
+/*AddPoolQuestion Css ends*/
+
+
+.standardSubjectBanner > button, input, optgroup, select, textarea
+{
+    margin-bottom: 10px;
+}

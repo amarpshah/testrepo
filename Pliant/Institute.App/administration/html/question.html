@@ -1,0 +1,144 @@
+﻿<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Questions <small></small>
+        </h2>
+    </div>
+</div>
+<!-- /.row -->
+<div class="row" style="margin-bottom: 15px;">
+    <div class="col-lg-12">
+        <div class="addBlock">
+            <a ui-sref="AdminAddQuestion" class="btn btn-success pull-left"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
+        </div>
+
+        <div class="addBlock">
+            <a data-ng-click="showSelected('lock');" class="btn btn-warning pull-left" style="margin-left: 10px;"><i class="fa fa-fw fa-lock"></i>Lock</a>
+        </div>
+        <div class="addBlock">
+            <a data-ng-click="showSelected('unLock');" class="btn btn-primary pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
+        </div>
+        <div class="addBlock">
+            <a class="btn btn-danger pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row questionControl active">
+    <div class="col-lg-12">
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <div class="standardSubjectBanner" data-target="selectStdForm">
+                    <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                       <select class="form-control adv-type" ng-model="SearchText.StandardId" ng-options="option.ID as (option.Standard + ':' + option.Division)  for option in question.questionstandard"
+                            ng-change="StandardChange(true);" >
+                    <option value="" selected>Select Standard</option>
+                </select>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                         <select class="form-control adv-type" ng-model="SearchText.SubjectId" ng-options="option.ID as option.Subject for option in question.questionsubject"
+                             ng-change="SubjectChange(true);"   >
+                    <option value="" selected>Select Subject</option>
+                </select>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                        <select class="form-control adv-type" ng-model="SearchText.TopicId" ng-options="option.ID as option.Name for option in question.questiontopic"
+                             >
+                    <option value="" selected>Select Topic</option>
+                </select>
+                    </div>
+                </div>
+              
+                <div class="searchBlock active">
+                     <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right" toolTip="Clear Search">Clear</a>
+                    <a href="" ng-click="ShowAdvancedSearch()" class="btn btn-primary toggleAdvancedSearch pull-right" toolTip="Advance Search"><i class="fa fa-fw fa-search-plus"></i></a>
+                    <a ng-click="search(0, SearchText);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
+                    
+                  
+                </div>
+      <div class="advanceBlock">
+            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                <label ng-hide="true">Code: </label>
+                <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Add Code Here..." />
+            </div>
+            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                <label ng-hide="true">Text: </label>
+                <input type="text" ng-model="SearchText.Text" class="form-control adv-question" placeholder="Add Question String Here..." />
+            </div>
+           
+            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                <label ng-hide="true">Type: </label>
+                <select class="form-control adv-type" ng-model="SearchText.Type" ng-options="option.value as option.Text for option in question.questiontype">
+                    <option value="" selected>Select Question Type</option>
+                </select>
+            </div>
+            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                <label ng-hide="true">Status: </label>
+                <select class="form-control adv-status" ng-model="SearchText.Status" ng-options="option.value as option.Text for option in question.questionstatus">
+                    <option value="" selected>Select Status</option>
+                </select>
+            </div>
+            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                <label ng-hide="true">Difficulty: </label>
+                <select class="form-control adv-difficulty" ng-model="SearchText.DifficultyLevel" ng-options="option.value as option.Text for option in question.questiondifficulty">
+                    <option value="" selected>Select Difficulty Level</option>
+                </select>
+            </div>
+        </div>
+            </div>
+            <div>{{question.selected}}</div>
+            <div class="bulkAction btn-group" ng-class="{'active': question.selected}">
+                <a href="" class="btn btn-warning lockQuestionAll"><i class="fa fa-lock"></i>Lock All</a>
+                <a href="" class="btn btn-danger deleteQuestionAll"><i class="fa fa-trash"></i>Delete All</a>
+            </div>
+            <div class="panel-body questionList">
+                <div ng-if="!Questions">There are no Questions to be displayed</div>
+                <div ng-repeat="question in Questions">
+                    <div class="list-group">
+                        <div class="questionItem">
+                            <span class="questionCheck">
+                                <input type="checkbox" ng-model="question.selected" ng-value="{{question.ID}}" ang-disabled="{{question.LockedBy != checkId && question.IsLock != 0}}"></input>
+                                <!--id="checkbox1"-->
+                            </span>
+                            <span class="questionTypeIcon" toolTip="{{question.sType}}">{{question.sTypeShort}}</span>
+                            <span class="questionDetail">
+                                <label for="checkbox1" href="" class="list-group-item question">
+                                    <h5>
+                                     <span class="questionCode">{{question.Code}}</span>:
+                                <span class="questionText">{{question.Text}}</span>
+                                    </h5>
+                                    <p class="topicText">{{question.TopicName}}</p>
+                                    <p class="standardInfo">
+                                        <span class="standardText">{{question.Standard}}<sup>th</sup> - </span>
+                                        <span class="subjectText">{{question.Subject}}</span>
+                                    </p>
+                                    <p class="questionState">
+                                        <span class="statusText">{{question.sStatus}}</span> - <span class="difficultyText">{{question.sDifficultyLevel}}</span>
+                                    </p>
+                                </label>
+                            </span>
+                            <span class="modifiedBy text-right">
+                                <span class="modifiedByName">{{userName}}</span> <span class="modifiedDate">{{question.OnCreated| date:"dd-MMM-yyyy 'at' h:mma"}}</span>
+                            </span>
+                            <span class="questionItemAction">
+                                <a ui-sref="AdminEditQuestion({questionid:question.ID, islock:question.IsLock})" class="btn btn-primary editQuestionn pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
+                                <!--<a ng-click="questionLock(question);" class="btn btn-warning lockQuestion pull-right" toolTip="Lock / Unlock"><i ng-class="appliedClass(question)"></i></a>-->
+                                   <a ng-click="questionLock(question);" ng-if="question.IsLock"  class="btn btn-warning lockQuestion pull-right" ><i ng-show="{{question.LockedBy == checkId }}" class="fa fa-key" toolTip="Locked"></i><i ng-show="!{{question.LockedBy == checkId }}" class="fa fa-lock" toolTip="Locked By : {{question.UserName}}"></i></a>
+                                   <a ng-click="questionLock(question);" ng-if="!question.IsLock" class="btn btn-warning lockQuestion pull-right" toolTip="Unlock"><i class="fa fa-unlock"></i></a>
+                                <a ng-click="deleteQuestion(question.ID);" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="panel-footer">
+            <div class="text-center">
+                <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page, SearchText);"></custom-pager>
+            </div>
+        </div>
