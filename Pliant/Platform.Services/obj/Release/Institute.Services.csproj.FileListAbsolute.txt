@@ -1,0 +1,5 @@
+C:\github\testrepo\Pliant\bin\Institute.Services.dll
+C:\github\testrepo\Pliant\bin\Institute.Services.pdb
+C:\github\testrepo\Pliant\Platform.Services\obj\Release\Institute.Services.csprojResolveAssemblyReference.cache
+C:\github\testrepo\Pliant\Platform.Services\obj\Release\Institute.Services.dll
+C:\github\testrepo\Pliant\Platform.Services\obj\Release\Institute.Services.pdb
