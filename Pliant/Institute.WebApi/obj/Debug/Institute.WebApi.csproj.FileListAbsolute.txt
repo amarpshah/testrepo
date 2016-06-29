@@ -1,0 +1,1 @@
+C:\github\testrepo\Pliant\Institute.WebApi\obj\Debug\Institute.WebApi.csprojResolveAssemblyReference.cache

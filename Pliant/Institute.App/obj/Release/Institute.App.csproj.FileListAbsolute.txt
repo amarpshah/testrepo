@@ -1,0 +1,6 @@
+C:\github\testrepo\Pliant\bin\Institute.App.dll.config
+C:\github\testrepo\Pliant\bin\Institute.App.dll
+C:\github\testrepo\Pliant\bin\Institute.App.pdb
+C:\github\testrepo\Pliant\Institute.App\obj\Release\Institute.App.csprojResolveAssemblyReference.cache
+C:\github\testrepo\Pliant\Institute.App\obj\Release\Institute.App.dll
+C:\github\testrepo\Pliant\Institute.App\obj\Release\Institute.App.pdb

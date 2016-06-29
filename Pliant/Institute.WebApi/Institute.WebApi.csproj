@@ -25,7 +25,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,7 +33,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -59,18 +59,6 @@
     </Reference>
     <Reference Include="FluentValidation">
       <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
-    </Reference>
-    <Reference Include="Institute.BizComponent, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\output_lib\Platform\bin\Institute.BizComponent.dll</HintPath>
-    </Reference>
-    <Reference Include="Institute.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\output_lib\Platform\bin\Institute.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Institute.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\output_lib\Platform\bin\Institute.Services.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -241,6 +229,20 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Platform.Entities\Institute.Entities.csproj">
+      <Project>{be2e06f4-7910-41de-a012-4400431d683b}</Project>
+      <Name>Institute.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform.Infrastructure\Institute.BizComponent.csproj">
+      <Project>{c5c9fea7-0516-49a0-b41c-c52bee06ffdd}</Project>
+      <Name>Institute.BizComponent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform.Services\Institute.Services.csproj">
+      <Project>{69ae5ccc-95f9-42ee-9e3f-73f34ab069ec}</Project>
+      <Name>Institute.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
