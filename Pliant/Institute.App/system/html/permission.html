@@ -36,48 +36,24 @@
                                         Form:<span class="questionText">{{permission.sForm}}</span>,
                                         <table>
                                             <tr>
-                                                <td ng-repeat="action in permission.ActionList" style="padding: 5px;">{{action}}
+                                                <td ng-repeat="action in permission.APVMList" style="padding: 5px;">{{action.Action}}
                                                    
                                                     <span class="questionCheck">
-                                                        <input type="checkbox" ng-checked="permission.IsPermissionList[$index]"></input>
+                                                        <input type="checkbox"  ng-checked="{{action.Permission}}" ng-click="permissionClicked(permission,action)"></input>
 
                                                     </span>
                                                 </td>
+                                                
+                                                 
                                             </tr>
+                                            
                                         </table>
 
                                     </h5>
                                 </label>
                             </span>
 
-                          <!--  <span class="questionDetail">
-                                <label for="checkbox1" href="" class="list-group-item question">
-                                    <h5>Role:<span class="questionCode">{{permission.RoleID}}</span>,
-                                        Form:<span class="questionText">{{permission.FormID}}</span>,
-                                        Action:<span class="questionText">{{permission.Action}}</span>,
-                                        <span class="questionCheck">
-                                            <input type="checkbox" ng-checked="permission.IsPermission"></input>
-
-                                        </span>
-                                       <table>
-                                            <tr>
-                                                <td ng-repeat="action in permission.ActionList" style="padding: 5px;">{{action}}
-                                                   
-                                                    <span class="questionCheck">
-                                                        <input type="checkbox" ng-checked="permission.IsPermissionList[$index]"></input>
-
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                    </h5>
-                                </label>
-                            </span>-->
-
-
-
-
+         
                         </div>
                     </div>
                 </div>
