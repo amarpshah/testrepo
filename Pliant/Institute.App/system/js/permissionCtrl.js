@@ -11,8 +11,12 @@
         $scope.page = 0;
         $scope.pagesCount = 0;
         $scope.Permissions = [];
+        $scope.AddPermission = [];
+        $scope.newPermission = {}
         $scope.search = search;
         $scope.savePermission = savePermission;
+        $scope.permissionClicked = permissionClicked;
+     
 
         membershipService.redirectIfNotLoggedIn();
         var baseUrl = webApiLocationService.get('webapi');
@@ -32,12 +36,12 @@
                 };
 
                 apiService.get(baseUrl + '/api/permissions/search/', config,
-                    standardLoadCompleted,
-                    standardLoadFailed);
+                    permissionLoadCompleted,
+                    permissionLoadFailed);
           
         }
 
-        function standardLoadCompleted(result) {
+        function permissionLoadCompleted(result) {
             $scope.Permissions = result.data.Items;
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
@@ -46,15 +50,52 @@
            
         }
 
-        function standardLoadFailed(response) {
+        function permissionLoadFailed(response) {
             notificationService.displayError(response.data);
         }
 
+        function permissionClicked(permission, actionPermission)
+        {
+            var newPermission = {};
+                newPermission.RoleID = permission.RoleID;
+                newPermission.FormID = permission.FormID;
+                newPermission.Action = actionPermission.Action;
+            if (actionPermission.Permission) {
+                newPermission.IsPermission = 0;
+            }
+            else {
+                newPermission.IsPermission = 1;
+            }
+            newPermission.ID = permission.ID;
+            $scope.AddPermission.push(newPermission);
+
+
+            
+        }
+
+     
+
         function savePermission()
         {
-
-            console.log("Save");
+                           
+            var UpdatePermissions = $scope.AddPermission;
+          
+           
+            apiService.post(baseUrl + '/api/permissions/update/', UpdatePermissions,
+               savePermissionCompleted,
+               savePermissionFailed);
         }
+        function savePermissionCompleted(response)
+        {
+            console.log(response);
+            notificationService.displayInfo('Data Updated successfully');
+        }
+        function savePermissionFailed(response)
+        {
+            console.log(response);
+
+        }
+        
 
     }
 })(angular.module('app-sysconfig'));

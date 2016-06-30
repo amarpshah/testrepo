@@ -24,6 +24,7 @@ namespace Institute.WebApi.Controllers
         private readonly IEntityBaseRepository<Permission> _permissionRepository;
         private readonly IEntityBaseRepository<Role> _roleRepository;
         private readonly IEntityBaseRepository<Form> _formRepository;
+            
 
         public PermissionController(IEntityBaseRepository<Permission> permissionRepository,
             IEntityBaseRepository<Role> roleRepository,
@@ -75,45 +76,13 @@ namespace Institute.WebApi.Controllers
 
                     totalPermission = _permissionRepository.GetAll().Count();
                 }
+        
+             
 
-              //  PermissionSplit(permission);
-                List<PermissionViewModel> newPermission = new List<PermissionViewModel>();
-                List<string> ActionList = new List<string>();
-                List<int> IsPermissionList = new List<int>();
-                var count = 4;
-                foreach (var p in permission)
-                {
-                    PermissionViewModel P = new PermissionViewModel();
-                    P.ID = p.ID;
-                    P.RoleID = p.RoleID;
-                    P.FormID = p.FormID;
-                    P.sRole = _roleRepository.GetAll().Single(r => r.ID == P.RoleID).Name.ToString();
-                    var formName = _formRepository.GetAll().Where(r => r.FormID == P.FormID).ToList();
-                    P.sForm = formName[0].Name;
-                    
-                        ActionList.Add(p.Action);
-                        IsPermissionList.Add(p.IsPermission);
-                        count--;
-                    
-                    
-                if(count == 0)
-                {
-                    P.ActionList = new List<string>();
-                    //P.ActionList = ActionList;
-                    string[] tempAction = new string[4];
-                    ActionList.CopyTo(tempAction);
-                    int[] tempIsPermission = new int[4];
-                    IsPermissionList.CopyTo(tempIsPermission);
-                    P.ActionList = tempAction.ToList<string>();
-                    P.IsPermissionList = tempIsPermission.ToList<int>();
-                    
-                    newPermission.Add(P);
-                    ActionList.Clear();
-                    IsPermissionList.Clear();
-                    count = 4;
-                }
-                }
+                List<PermissionViewModel> newPermission =  PermissionSplit(permission);
 
+
+             
                 IEnumerable<PermissionViewModel> permissionsVM = Mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionViewModel>>(permission);
 
                 
@@ -132,19 +101,132 @@ namespace Institute.WebApi.Controllers
             });
         }
 
-        private void PermissionSplit(List<Permission> permission)
-        {
-            List<int> rollList = new List<int>();
-            List<int> formList = new List<int>();
 
+
+        private List<PermissionViewModel> PermissionSplit(List<Permission> permission)
+        {
+            List<PermissionViewModel> newPermission = new List<PermissionViewModel>();
+            List<string> ActionList = new List<string>();
+            List<int> IsPermissionList = new List<int>();
+
+            var tempRoleID = 0;
+            var tempFormID = 0;
+
+
+            var temp1RoleID = 0;
+            var temp1FormID = 0;
+
+            List<ActionPermissionViewModel> tempAPVMList = new List<ActionPermissionViewModel>();
             foreach (var p in permission)
             {
-                rollList.Add(p.RoleID);
-                rollList.Add(p.FormID);
-            
+
+
+                PermissionViewModel P = new PermissionViewModel();
+                P.ID = p.ID;
+                //P.RoleID = p.RoleID;
+                //P.FormID = p.FormID;
+
+
+                if (tempRoleID == 0 || tempRoleID == p.RoleID && tempFormID == 0 || tempFormID == p.FormID)
+                {
+                    ActionPermissionViewModel APVM = new ActionPermissionViewModel();
+
+                    APVM.Action = p.Action;
+                    APVM.Permission = p.IsPermission;
+
+
+                    P.RoleID = p.RoleID;
+                    P.FormID = p.FormID;
+
+                    tempAPVMList.Add(APVM);
+                    P.APVMList = tempAPVMList.ToList();
+                    P.sRole = _roleRepository.GetAll().Single(r => r.ID == P.RoleID).Name.ToString();
+                    var formName = _formRepository.GetAll().Where(r => r.FormID == P.FormID).ToList();
+                    P.sForm = formName[0].Name;
+                    if (newPermission.Count() == 0 || p.RoleID != temp1RoleID || p.FormID != temp1FormID)
+                    {
+                        newPermission.Add(P);
+                    }
+                    else
+                    {
+                        newPermission.RemoveAt(newPermission.Count - 1);
+                        newPermission.Add(P);
+                    }
+                    tempRoleID = p.RoleID;
+                    tempFormID = p.FormID;
+
+                    temp1RoleID = p.RoleID;
+                    temp1FormID = p.FormID;
+                }
+                else
+                {
+
+
+
+
+                    tempAPVMList.Clear();
+                    ActionPermissionViewModel APVM = new ActionPermissionViewModel();
+
+                    APVM.Action = p.Action;
+                    APVM.Permission = p.IsPermission;
+
+                    tempAPVMList.Add(APVM);
+
+                    tempRoleID = p.RoleID;
+                    tempFormID = p.FormID;
+
+
+                }
             }
-        
+
+            return newPermission;
+
         }
+
+
+
+           
+        [HttpPost]
+        [Route("update")]
+        public HttpResponseMessage Update(HttpRequestMessage request, List<UpdatePermissionViewModel> permissionVM)
+          {
+            return CreateHttpResponse(request, () =>
+         {
+             HttpResponseMessage response = null;
+             if (!ModelState.IsValid)
+             {
+                 response = request.CreateResponse(HttpStatusCode.BadRequest,
+                     ModelState.Keys.SelectMany(k => ModelState[k].Errors)
+                           .Select(m => m.ErrorMessage).ToArray());
+             }
+             else
+             {
+                
+                
+                 foreach (var p in permissionVM)
+                 {
+                     Permission permission = new Permission();
+                     var permissions = _permissionRepository.FindBy(
+                         pp => pp.FormID == p.FormID && pp.RoleID == p.RoleID && pp.Action == p.Action);
+                     foreach (var t in permissions)
+                     {
+
+                         permission = t;
+                     }
+                     permission.IsPermission = p.IsPermission;
+                     _permissionRepository.Edit(permission);
+                 }
+
+                                 
+                 _unitOfWork.Commit();
+                 response = request.CreateResponse(HttpStatusCode.OK);
+             }
+             return response;
+         });
+        }
+        
+        
+        
 
     }
 }
