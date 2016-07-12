@@ -168,7 +168,7 @@
 
             apiService.get(baseUrl + '/api/roles/', null,
             rolesLoadCompleted,
-            rolesardLoadFailed);
+            rolesLoadFailed);
 
         }
 
@@ -177,7 +177,7 @@
            
         }
 
-        function rolesardLoadFailed(response) {
+        function rolesLoadFailed(response) {
             notificationService.displayError(response.data);
         }
 
@@ -203,7 +203,7 @@
                 var config = {
                     params: {
                         page: page,
-                        pageSize: 5,
+                        pageSize: 3,
                         roleid: item.RoleId,
                         username: item.Username,
                         email: item.Email,

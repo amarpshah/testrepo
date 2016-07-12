@@ -15,6 +15,7 @@ namespace Institute.WebApi.Models
         public int ID { get; set; }
         public int RoleID { get; set; }
         public int FormID { get; set; }
+        public string FormName { get; set; }
         public string Action { get; set; }
         public int IsPermission { get; set; }
         public string sRole { get; set; }
@@ -41,5 +42,13 @@ namespace Institute.WebApi.Models
         public int IsPermission { get; set; }
     }
 
+
+    public class UserFormActionPermissionViewModels
+    {
+        public string FormName { get; set; }
+        public string Action { get; set; }
+        public int IsPermission { get; set; }
+    
+    }
  
 }

@@ -1,4 +1,3 @@
-C:\github\testrepo\Pliant\bin\Institute.App.dll.config
 C:\github\testrepo\Pliant\bin\Institute.App.dll
 C:\github\testrepo\Pliant\bin\Institute.App.pdb
 C:\github\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.csprojResolveAssemblyReference.cache
