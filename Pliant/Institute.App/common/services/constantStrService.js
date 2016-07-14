@@ -77,7 +77,7 @@
 
 ///////////////////////////////////////////////////////
         function STD_SUB_MAP() {
-            return "STDSUBMAP";
+            return "VIEWSTDSUBMAP";
         }
 
 ///////////////////////////////////////////////////////
@@ -142,7 +142,7 @@
 ///////////////////////////////////////////////////////
 
         function POOL_QUESTION_MAP() {
-            return "POOLQUEMAP";
+            return "VIEWPOOLQUEMAP";
         }
 
         return service;

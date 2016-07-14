@@ -24,17 +24,20 @@ namespace Institute.WebApi.Controllers
         private readonly IEntityBaseRepository<Permission> _permissionRepository;
         private readonly IEntityBaseRepository<Role> _roleRepository;
         private readonly IEntityBaseRepository<Form> _formRepository;
+        private readonly IEntityBaseRepository<UserRole> _userRoleRepository;
             
 
         public PermissionController(IEntityBaseRepository<Permission> permissionRepository,
             IEntityBaseRepository<Role> roleRepository,
             IEntityBaseRepository<Form> formRepository,
+            IEntityBaseRepository<UserRole> userRoleRepository,
              IEntityBaseRepository<Error> _errorsRepository, IUnitOfWork _unitOfWork)
             : base(_errorsRepository, _unitOfWork)
         {
             _permissionRepository = permissionRepository;
             _roleRepository = roleRepository;
             _formRepository = formRepository;
+            _userRoleRepository = userRoleRepository;
 
         }
 
@@ -160,9 +163,6 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-
-
-
 
                     tempAPVMList.Clear();
                     ActionPermissionViewModel APVM = new ActionPermissionViewModel();
@@ -311,18 +311,23 @@ namespace Institute.WebApi.Controllers
             });
         }
 
+
         [AllowAnonymous]
-        [Route("getpermissions")]
-        public HttpResponseMessage GetPermissions(HttpRequestMessage request)
+        [HttpGet]
+        [Route("getpermissions/{userid:int}")]
+        public HttpResponseMessage GetPermissions(HttpRequestMessage request, int userid)
         {
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
+
+                var userRole = _userRoleRepository.GetAll().Where(x => x.UserId == userid).ToList();
+                var roleid = userRole[0].RoleId;
                 List<UserFormActionPermissionViewModels> UFVMList = new List<UserFormActionPermissionViewModels>();
-                var permissions = _permissionRepository.GetAll().ToList();
-                //var permissions = _permissionRepository.GetAll().Where(x => x.RoleID == id).ToList();
-             
-            
+                //var permissions = _permissionRepository.GetAll().ToList();
+                var permissions = _permissionRepository.GetAll().Where(x => x.RoleID == roleid).ToList();
+
+
                 foreach (var p in permissions)
                 {
                     UserFormActionPermissionViewModels UFVM = new UserFormActionPermissionViewModels();
@@ -330,17 +335,18 @@ namespace Institute.WebApi.Controllers
                     UFVM.Action = p.Action;
                     UFVM.IsPermission = p.IsPermission;
                     UFVMList.Add(UFVM);
-                                    
+
                 }
-                
-                
-                
-               // IEnumerable<PermissionViewModel> PermissionVM = Mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionViewModel>>(permissions);
+
+
+
+                // IEnumerable<PermissionViewModel> PermissionVM = Mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionViewModel>>(permissions);
 
                 response = request.CreateResponse<IEnumerable<UserFormActionPermissionViewModels>>(HttpStatusCode.OK, UFVMList);
 
                 return response;
             });
         }
+
     }
 }

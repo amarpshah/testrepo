@@ -6,10 +6,9 @@
     permissionService.$inject = ['$http', '$rootScope', '$cookieStore', 'webApiLocationService', 'apiService', 'notificationService'];
 
     function permissionService($http, $rootScope, $cookieStore, webApiLocationService, apiService, notificationService) {
-   
-        var userId = 0;
+     
         var baseUrl = webApiLocationService.get('webapi');
-       // loadPermission();
+   
         var service = {
             loadPermission: loadPermission,
             get: get,
@@ -24,22 +23,10 @@
             $cookieStore.remove('permission');
         };
 
-        //function get(accessname) {
-        //    $rootScope.temp = $cookieStore.get('permission') || {};
-        //    if ($rootScope.temp.hasOwnProperty('userAccess')) {
-        //        if ($rootScope.temp.userAccess.hasOwnProperty(accessname)) {
-        //            return $rootScope.temp.userAccess[accessname];
-        //        }
-        //        else {
-        //            return 0;
-        //        }
-        //    }
-        //    else {
-        //        return 0;
-        //    }
-        //}
+     
       
         function get(accessname) {
+           
             $rootScope.temp = $cookieStore.get('permission') || {};
             for (var i = 0; i < $rootScope.temp.length; i++)
             {
@@ -54,11 +41,7 @@
 
 
         function set() {
-            
-            //  loadPermission();
-          
-          
-                        
+                     
             //   $rootScope.permission = {
             //    userAccess: {
             //        STANDARD: 1,
@@ -85,10 +68,19 @@
         loadPermission();
         function loadPermission()
         {
-            apiService.get(baseUrl + '/api/permissions/getpermissions/', null,
+            if (!angular.isUndefined($rootScope.repository.loggedUser)) {
+            var userid = $rootScope.repository.loggedUser.userid;
+            
+            var config = {
+                params: {
+                userid: userid
+            }
+            };
+
+            apiService.get(baseUrl + '/api/permissions/getpermissions/'+ userid, null,
                loadPermissionCompleted,
                 loadPermissionFailed);
-
+        }
         }
       
   

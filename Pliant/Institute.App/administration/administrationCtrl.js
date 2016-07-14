@@ -8,7 +8,7 @@
     function administrationCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, permissionService, constantStrService) {
 
         membershipService.redirectIfNotLoggedIn();
-
+       
         $scope.permissionSTD = permissionService.get(constantStrService.STANDARD());
         $scope.permissionSUBJECT = permissionService.get(constantStrService.SUBJECT());
         $scope.permissionSTDSUBMAP = permissionService.get(constantStrService.STD_SUB_MAP());
