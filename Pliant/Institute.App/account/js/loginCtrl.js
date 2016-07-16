@@ -22,7 +22,7 @@
                 notificationService.displaySuccess('Hello ' + $scope.user.username);
                
                 permissionService.removePermissions();
-                permissionService.set();
+            //    permissionService.set();
 
                 //$scope.userData.displayUserInfo();
                 ////if ($scope.userData == null)

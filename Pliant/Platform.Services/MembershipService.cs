@@ -124,7 +124,7 @@ namespace Institute.Services
             {
                 foreach (var role in roles)
                 {
-                    addUserToRole(user, role);
+                    updateUserToRole(user, role);
                 }
             }
 
@@ -171,6 +171,26 @@ namespace Institute.Services
                 UserId = user.ID
             };
             _userRoleRepository.Add(userRole);
+        }
+
+        private void updateUserToRole(User user, int roleId)
+        {
+            var role = _roleRepository.GetSingle(roleId);
+            if (role == null)
+            {
+                throw new ApplicationException("Role doesn't exist.");
+            }
+                  
+       
+
+            UserRole userRole = new UserRole();
+            var  userRoles = _userRoleRepository.GetAll().Where(x => x.UserId == user.ID).ToList();
+            userRole = userRoles[0];
+
+              userRole.RoleId = role.ID;
+                            
+             _userRoleRepository.Edit(userRole);
+
         }
 
         private bool isPasswordValid(User user, string password)

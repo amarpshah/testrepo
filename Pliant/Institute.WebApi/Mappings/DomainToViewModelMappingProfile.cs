@@ -277,11 +277,18 @@ namespace Institute.WebApi.Mappings
 
             Mapper.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(vm => vm.ID, map => map.MapFrom(m => m.ID))
-                .ForMember(vm => vm.FormID, map => map.MapFrom(m => m.FormID))
+                .ForMember(vm => vm.FormID, map => map.MapFrom(m => m.Form.FormID))
+                .ForMember(vm => vm.FormName, map => map.MapFrom(m => m.Form.Name))
                 .ForMember(vm => vm.RoleID, map => map.MapFrom(m => m.RoleID))
                 .ForMember(vm => vm.Action, map => map.MapFrom(m => m.Action))
                 .ForMember(vm => vm.IsPermission, map => map.MapFrom(m => m.IsPermission));
 
+            Mapper.CreateMap<Form, FormViewModel>()
+           .ForMember(vm => vm.FormID, map => map.MapFrom(m => m.FormID))
+           .ForMember(vm => vm.Name, map => map.MapFrom(m => m.Name));
+
+            
+       
         }
     }
 }

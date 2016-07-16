@@ -216,7 +216,7 @@ namespace Institute.WebApi.Controllers
 
                 users = _usersRepository.GetAll()
                     .Where(q => (username != null ? q.Username.Contains(username) : 1 == 1) &&
-                                //(roleid != -1 ? q.UserRoles. : 1 == 1) &&
+                                (roleid != -1 ? q.UserRoles.Any(x => x.RoleId == roleid) : 1 == 1) &&
                                 (email != null ? q.Username.Contains(email) : 1 == 1)
 
                     )
@@ -224,11 +224,10 @@ namespace Institute.WebApi.Controllers
                     .Skip(currentPage * currentPageSize)
                     .Take(currentPageSize)
                     .ToList();
-              //  var temp = users[0].UserRoles.ElementAt(0).RoleId;
 
                 totalusers = _usersRepository.GetAll()
                                   .Where(q => (username != null ? q.Username.Contains(username) : 1 == 1) &&
-                                              //(roleid != -1 ? q.UserRoles.ElementAt(0).RoleId == roleid : 1 == 1) &&
+                                              (roleid != -1 ? q.UserRoles.Any(x => x.RoleId == roleid) : 1 == 1) &&
                                               (email != null ? q.Username.Contains(email) : 1 == 1)
 
                       )

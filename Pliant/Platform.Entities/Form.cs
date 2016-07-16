@@ -12,6 +12,6 @@ namespace Institute.Entities
         public int FormID { get; set; }
         public string Name { get; set; }
         public string Action { get; set; }
-
+        public virtual ICollection<Permission> Permission { get; set; }
     }
 }

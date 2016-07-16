@@ -225,7 +225,7 @@ namespace Institute.WebApi.Controllers
             {
                 Permission permission = new Permission();
                 permission.RoleID = role.ID;
-                permission.FormID = f.FormID;
+                permission.FormID = f.ID;
                 permission.Action = f.Action;
                 permission.IsPermission = 0;
               

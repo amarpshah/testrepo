@@ -11,6 +11,7 @@ namespace Institute.Entities
         public int ID { get; set; }
         public int RoleID { get; set; }
         public int FormID { get; set; }
+        public virtual Form Form { get; set; }
         public string Action { get; set; }
         public int IsPermission { get; set; }
        

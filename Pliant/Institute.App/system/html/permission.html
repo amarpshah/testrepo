@@ -11,15 +11,20 @@
         <div class="row panel panel-default">
             <div class="panel-heading">
                 <div>
-                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
-                        <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Search Role" />
+                       <div class="col-lg-2 col-md-2 col-xs-2 text-center">
+                       <select class="form-control adv-type" ng-model="SearchText.RoleID" ng-options="option.ID as option.Name for option in UserRoles"
+                           ng-click="advancedSearch(0, SearchText);">
+                    <option value="" selected></option>
+                </select>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
-                        <input type="text" ng-model="SearchText.Name" class="form-control adv-question" placeholder="Search Form" />
+                    <div class="col-lg-2 col-md-2 col-xs-2 text-center" ng-hide="true">
+                       <select class="form-control adv-type" ng-model="SearchText.FormID" ng-options="option.FormID as option.Name for option in Forms">
+                    <option value="" selected>Select Form</option>
+                </select>
                     </div>
 
                 </div>
-                <div class="searchBlock active">
+                <div class="searchBlock active" ng-hide="true">
                     <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
                     <a ng-click="search(0, SearchText);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
                 </div>
@@ -68,7 +73,7 @@
                 <a ng-click="savePermission();" style="margin-right: 10px;" class="btn btn-success pull-right"><i class="fa fa-fw fa-plus-circle"></i>Save</a>
             </div>
 
-            <div class="text-center">
+            <div class="text-center" ng-hide="true">
                 <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page, SearchText);"></custom-pager>
             </div>
 

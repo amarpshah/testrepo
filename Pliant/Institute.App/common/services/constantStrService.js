@@ -47,21 +47,21 @@
 
 ///////////////////////////////////////////////////////
         function STANDARD() {
-            return "STD";
+            return "VIEWSTANDARD";
         }
         function ADD_STANDARD() {
-            return "ADDSTD";
+            return "ADD";
         }
         function EDIT_STANDARD() {
-            return "EDITSTD";
+            return "UPDATE";
         }
         function DELETE_STANDARD() {
-            return "DELETESTD";
+            return "DELETE";
         }
 ///////////////////////////////////////////////////////
 
         function SUBJECT() {
-            return "SUBJECT";
+            return "VIEWSUBJECT";
         }
 
         function ADD_SUBJECT() {
@@ -77,12 +77,12 @@
 
 ///////////////////////////////////////////////////////
         function STD_SUB_MAP() {
-            return "STDSUBMAP";
+            return "VIEWSTDSUBMAP";
         }
 
 ///////////////////////////////////////////////////////
         function TOPIC() {
-            return "TOPIC";
+            return "VIEWTOPIC";
         }
         function ADD_TOPIC() {
             return "ADDTOPIC";
@@ -97,7 +97,7 @@
 
 ///////////////////////////////////////////////////////
         function QUESTION() {
-            return "QUESTION";
+            return "VIEWQUESTION";
         }
         function ADD_QUESTION() {
             return "ADDQUESTION";
@@ -112,7 +112,7 @@
 
 ///////////////////////////////////////////////////////
         function TEST() {
-            return "TEST";
+            return "VIEWTEST";
         }
         function ADD_TEST() {
             return "ADDTEST";
@@ -127,7 +127,7 @@
 
 ///////////////////////////////////////////////////////
         function POOL() {
-            return "POOL";
+            return "VIEWPOOL";
         }
         function ADD_POOL() {
             return "ADDPOOL";
@@ -142,7 +142,7 @@
 ///////////////////////////////////////////////////////
 
         function POOL_QUESTION_MAP() {
-            return "POOLQUEMAP";
+            return "VIEWPOOLQUEMAP";
         }
 
         return service;

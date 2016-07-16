@@ -76,7 +76,7 @@
                                                         <a ui-sref="AdminConfig" href="../system/configuration.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div><!-- ./col -->
-                                                <div class="col-lg-3 col-xs-4">
+                                                <div class="col-lg-3 col-xs-4"  ng-if="permissionSTD === 1">
                                                     <!-- small box -->
                                                     <div class="small-box bg-blue" >
                                                         <div class="inner">
@@ -89,7 +89,7 @@
                                                         <a ui-sref="AdminStandard" href="../administration/Administration.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div><!-- ./col -->
-                                                <div class="col-lg-3 col-xs-4">
+                                                <div class="col-lg-3 col-xs-4" ng-if="permissionSUBJECT === 1">
                                                     <!-- small box -->
                                                     <div class="small-box bg-olive">
                                                         <div class="inner">
@@ -102,7 +102,7 @@
                                                         <a ui-sref="AdminSubject" href="../examination/exam.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div><!-- ./col -->
-                                                <div class="col-lg-3 col-xs-4">
+                                                <div class="col-lg-3 col-xs-4" ng-if="permissionSTDSUBMAP === 1">
                                                     <!-- small box -->
                                                     <div class="small-box bg-olive">
                                                         <div class="inner">
@@ -115,7 +115,7 @@
                                                         <a ui-sref="AdminMapping" href="../examination/exam.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div><!-- ./col -->
-                                                <div class="col-lg-3 col-xs-4">
+                                                <div class="col-lg-3 col-xs-4" ng-if="permissionTOPIC === 1">
                                                     <!-- small box -->
                                                     <div class="small-box bg-green">
                                                         <div class="inner">
@@ -128,7 +128,7 @@
                                                         <a ui-sref="AdminTopic" href="../library/Library.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div><!-- ./col -->
-                                                <div class="col-lg-3 col-xs-4">
+                                                <div class="col-lg-3 col-xs-4"  ng-if="permissionQUESTION === 1">
                                                     <!-- small box -->
                                                     <div class="small-box bg-orange">
                                                         <div class="inner">
@@ -141,7 +141,7 @@
                                                         <a ui-sref="AdminQuestion" href="../library/Library.html" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div><!-- ./col -->
-                                                <div class="col-lg-3 col-xs-4">
+                                                <div class="col-lg-3 col-xs-4"  ng-if="permissionTEST === 1">
                                                     <!-- small box -->
                                                     <div class="small-box bg-fuchsia">
                                                         <div class="inner">
@@ -211,7 +211,6 @@
     <script src="../administration/js/standardCtrl.js"></script>
     <script src="../administration/js/subjectCtrl.js"></script>
     <script src="../administration/js/configurationCtrl.js"></script>
-    <script src="../administration/js/editStandardCtrl.js"></script>
     <script src="../administration/js/questionCtrl.js"></script>
     <script src="../administration/js/ssMappingCtrl.js"></script>
     <script src="../administration/js/topicCtrl.js"></script> 
