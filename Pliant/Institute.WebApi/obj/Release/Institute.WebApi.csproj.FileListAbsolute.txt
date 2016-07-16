@@ -1,1 +1,7 @@
 C:\github\testrepo\Pliant\Institute.WebApi\obj\Release\Institute.WebApi.csprojResolveAssemblyReference.cache
+C:\github\testrepo\Pliant\bin\AutoMapper.Net4.dll
+C:\github\testrepo\Pliant\bin\Institute.WebApi.dll.config
+C:\github\testrepo\Pliant\bin\Institute.WebApi.dll
+C:\github\testrepo\Pliant\bin\Institute.WebApi.pdb
+C:\github\testrepo\Pliant\Institute.WebApi\obj\Release\Institute.WebApi.dll
+C:\github\testrepo\Pliant\Institute.WebApi\obj\Release\Institute.WebApi.pdb
