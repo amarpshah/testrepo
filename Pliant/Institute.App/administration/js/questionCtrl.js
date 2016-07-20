@@ -3,9 +3,9 @@
 
     app.controller('questionCtrl', questionCtrl);
 
-    questionCtrl.$inject = ['$scope', '$modal', '$route', '$routeParams', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', '$cookieStore'];
+    questionCtrl.$inject = ['$scope', '$modal', '$route', '$routeParams', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', '$cookieStore', 'permissionService', 'constantStrService'];
 
-    function questionCtrl($scope, $modal, $route, $routeParams, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore) {
+    function questionCtrl($scope, $modal, $route, $routeParams, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore, permissionService, constantStrService) {
 
         $scope.question = {};
         
@@ -47,6 +47,10 @@
         $scope.checkId = userId;
 
         var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDQUESTION = permissionService.get(constantStrService.ADD_QUESTION());
+        $scope.permissionUPDATEQUESTION = permissionService.get(constantStrService.UPDATE_QUESTION());
+        $scope.permissionDELETEQUESTION = permissionService.get(constantStrService.DELETE_QUESTION());
+        $scope.permissionLOCKQUESTION = permissionService.get(constantStrService.LOCK_QUESTION());
 
         $scope.question.questiontype = [
                                           { value: 1, Text: "Descriptive", type: "DES" },

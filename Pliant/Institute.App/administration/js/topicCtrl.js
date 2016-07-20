@@ -3,9 +3,9 @@
 
     app.controller('topicCtrl', topicCtrl);
 
-    topicCtrl.$inject = ['$scope', '$modal', 'apiService', 'webApiLocationService', 'notificationService', 'membershipService', '$cookieStore', 'dataProviderService', '$stateParams'];
+    topicCtrl.$inject = ['$scope', '$modal', 'apiService', 'webApiLocationService', 'notificationService', 'membershipService', '$cookieStore', 'dataProviderService', '$stateParams', 'permissionService', 'constantStrService'];
 
-    function topicCtrl($scope, $modal, apiService, webApiLocationService, notificationService, membershipService, $cookieStore, dataProviderService, $stateParams) {
+    function topicCtrl($scope, $modal, apiService, webApiLocationService, notificationService, membershipService, $cookieStore, dataProviderService, $stateParams, permissionService, constantStrService) {
 
         $scope.pageClass = 'page-test';
         $scope.filterTopic = '';
@@ -54,6 +54,10 @@
         $scope.checkId = userId;
 
         var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDTOPIC = permissionService.get(constantStrService.ADD_TOPIC());
+        $scope.permissionUPDATETOPIC = permissionService.get(constantStrService.UPDATE_TOPIC());
+        $scope.permissionDELETETOPIC = permissionService.get(constantStrService.DELETE_TOPIC());
+        $scope.permissionADDTOQUESTIONTOPIC = permissionService.get(constantStrService.ADD_TO_QUESTION_TOPIC());
 
       
 

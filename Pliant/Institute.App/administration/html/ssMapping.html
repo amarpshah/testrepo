@@ -12,7 +12,7 @@
 </div>
 
 <!--------List Standadrs and Subject Start------------->
-<div class="row">
+<div class="row" ng-if="permissionADDSTDSUBMAP === 1">
     <div class="panel panel-primary">
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left">Add Mapping</h4>
@@ -106,8 +106,8 @@
                  </div> 
                 <span class="questionItemAction">
                     
-                    <a ui-sref="AdminTopicNav({stdid:mapping.StandardID, subid:mapping.SubjectID, mapid: mapping.ID})"  class="btn btn-primary edittestt pull-right" toolTip="Add To Topic"><i class="fa fa-eye"></i></a>
-                     <a ng-click="deleteMapping(mapping.ID)" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
+                    <a ui-sref="AdminTopicNav({stdid:mapping.StandardID, subid:mapping.SubjectID, mapid: mapping.ID})" ng-if="permissionUPDATESTDSUBMAP === 1" class="btn btn-primary edittestt pull-right" toolTip="Add To Topic"><i class="fa fa-eye"></i></a>
+                     <a ng-click="deleteMapping(mapping.ID)" class="btn btn-danger deleteQuestion pull-right" ng-if="permissionDELETESTDSUBMAP === 1" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
                   
                 </span>
             </div>

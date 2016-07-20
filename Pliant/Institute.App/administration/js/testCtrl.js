@@ -3,9 +3,9 @@
 
     app.controller('testCtrl', testCtrl);
 
-    testCtrl.$inject = ['$scope', '$modal', 'apiService', 'webApiLocationService', 'notificationService', 'membershipService', '$cookieStore', 'dataProviderService'];
+    testCtrl.$inject = ['$scope', '$modal', 'apiService', 'webApiLocationService', 'notificationService', 'membershipService', '$cookieStore', 'dataProviderService', 'permissionService', 'constantStrService'];
 
-    function testCtrl($scope, $modal, apiService, webApiLocationService, notificationService, membershipService, $cookieStore, dataProviderService) {
+    function testCtrl($scope, $modal, apiService, webApiLocationService, notificationService, membershipService, $cookieStore, dataProviderService, permissionService, constantStrService) {
 
         $scope.pageClass = 'page-test';
         $scope.filterTests = '';
@@ -38,6 +38,12 @@
         $scope.checkId = userId;
 
         var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDTEST = permissionService.get(constantStrService.ADD_TEST());
+        $scope.permissionUPDATETEST = permissionService.get(constantStrService.UPDATE_TEST());
+        $scope.permissionDELETETEST = permissionService.get(constantStrService.DELETE_TEST());
+        $scope.permissionLOCKTEST = permissionService.get(constantStrService.LOCK_TEST());
+        $scope.permissionPOOLSTEST = permissionService.get(constantStrService.POOLS_TEST());
+        $scope.permissionGENERATEPAPERTEST = permissionService.get(constantStrService.GENERATE_PAPER_TEST());
 
               
 

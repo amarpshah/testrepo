@@ -10,7 +10,7 @@
 
 <!--------ADD TOPIC Start------------->
 
-<div class="row">
+<div class="row" ng-if="permissionADDSUBJECT === 1">
     <div class="panel panel-primary">
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left">Add Subject</h4>
@@ -113,8 +113,8 @@
                 
                 <span class="questionItemAction">
                     
-                    <a ng-click="editSubject(subject)" class="btn btn-primary edittestt pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
-                     <a ng-click="deleteSubject(subject.ID)" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
+                    <a ng-click="editSubject(subject)" ng-if="permissionUPDATESUBJECT === 1" class="btn btn-primary edittestt pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
+                     <a ng-click="deleteSubject(subject.ID)"  ng-if="permissionDELETESUBJECT === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
          
                 </span>
             </div>

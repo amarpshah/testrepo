@@ -3,9 +3,9 @@
 
     app.controller('standardCtrl', standardCtrl);
 
-    standardCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService'];
+    standardCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', 'permissionService', 'constantStrService'];
 
-    function standardCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService) {
+    function standardCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, permissionService, constantStrService) {
 
         $scope.register = register;
         $scope.filterStudents = '';
@@ -26,6 +26,9 @@
 
         membershipService.redirectIfNotLoggedIn();
         var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDSTD = permissionService.get(constantStrService.ADD_STANDARD());
+        $scope.permissionUPDATESTD = permissionService.get(constantStrService.UPDATE_STANDARD());
+        $scope.permissionDELETESTD = permissionService.get(constantStrService.DELETE_STANDARD());
 
         $scope.search();
         function search(page, searchItem) {

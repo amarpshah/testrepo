@@ -3,9 +3,9 @@
 
     app.controller('poolCtrl', poolCtrl);
 
-    poolCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', '$cookieStore'];
+    poolCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', '$cookieStore', 'permissionService', 'constantStrService'];
 
-    function poolCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore) {
+    function poolCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore, permissionService, constantStrService) {
 
         $scope.pageClass = 'page-test';
         //$scope.Register = Register;
@@ -40,6 +40,12 @@
         
 
         var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDPOOL = permissionService.get(constantStrService.ADD_POOL());
+        $scope.permissionUPDATEPOOL = permissionService.get(constantStrService.UPDATE_POOL());
+        $scope.permissionDELETEPOOL = permissionService.get(constantStrService.DELETE_POOL());
+        $scope.permissionLOCKPOOL = permissionService.get(constantStrService.LOCK_POOL());
+        $scope.permissionADDQUESTIONPOOL = permissionService.get(constantStrService.ADD_QUESTION_POOL());
+        $scope.permissionVIEWQUESTIONPOOL = permissionService.get(constantStrService.VIEW_QUESTION_POOL());
 
 
         function loadValues() {

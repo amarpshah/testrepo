@@ -3,9 +3,9 @@
 
     app.controller('ssMappingCtrl', ssMappingCtrl);
 
-    ssMappingCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams'];
+    ssMappingCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', 'permissionService', 'constantStrService'];
     //'$state', '$stateParams', 
-    function ssMappingCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams) {
+    function ssMappingCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams, permissionService, constantStrService) {
 
         $scope.Mappings = [];
         $scope.Standards = [];
@@ -26,6 +26,9 @@
 
         
         membershipService.redirectIfNotLoggedIn();
+        $scope.permissionADDSTDSUBMAP = permissionService.get(constantStrService.ADD_STD_SUB_MAP());
+        $scope.permissionADDTOTOPICSTDSUBMAP = permissionService.get(constantStrService.ADD_TO_TOPIC_STD_SUB_MAP());
+        $scope.permissionDELETESTDSUBMAP = permissionService.get(constantStrService.DELETE_STD_SUB_MAP());
         //////////////////////////////////////////////
 
         function AddMapping() {
@@ -79,7 +82,7 @@
             $scope.Standards = result.data;
             $scope.loadingStandards = false;
 
-            $scope.standardOptions.api.setRowData(result.data);
+            //$scope.standardOptions.api.setRowData(result.data);
         }
 
         function standardLoadFailed(response) {
@@ -97,7 +100,7 @@
             $scope.Subjects = result.data;
             $scope.loadingSubjects = false;
 
-            $scope.subjectOptions.api.setRowData(result.data);
+            //$scope.subjectOptions.api.setRowData(result.data);
         }
 
         function subjectLoadFailed(response) {

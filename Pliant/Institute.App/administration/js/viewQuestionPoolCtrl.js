@@ -3,9 +3,9 @@
 
     app.controller('viewQuestionPoolCtrl', viewQuestionPoolCtrl);
 
-    viewQuestionPoolCtrl.$inject = ['$scope', '$modal', 'apiService','membershipService', 'webApiLocationService', 'notificationService', '$stateParams'];
+    viewQuestionPoolCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', 'permissionService', 'constantStrService'];
 
-    function viewQuestionPoolCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams) {
+    function viewQuestionPoolCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams, permissionService, constantStrService) {
 
         $scope.page = 0;
         $scope.pagesCount = 0;
@@ -14,7 +14,6 @@
         $scope.PoolName = ($stateParams.poolname);
         $scope.TestName = ($stateParams.testname);
         $scope.TestId = parseInt($stateParams.testid);
-        var baseUrl = webApiLocationService.get('webapi');
         $scope.question = {};
         $scope.Questions = [];
         $scope.loadPoolQuestionCnt = loadPoolQuestionCnt;
@@ -29,6 +28,11 @@
         $scope.StandardChange = StandardChange;
         $scope.SubjectChange = SubjectChange;
         $scope.SearchText = {};
+
+        var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDPOOLQUESTIONMAP = permissionService.get(constantStrService.ADD_POOL_QUESTION_MAP());
+        $scope.permissionDELETEPOOLQUESTIONMAP = permissionService.get(constantStrService.DELETE_POOL_QUESTION_MAP());
+
 
         membershipService.redirectIfNotLoggedIn();
         $scope.question.questiontype = [

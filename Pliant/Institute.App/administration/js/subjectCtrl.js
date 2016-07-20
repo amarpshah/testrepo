@@ -3,9 +3,9 @@
 
     app.controller('subjectCtrl', subjectCtrl);
 
-    subjectCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService'];
+    subjectCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', 'permissionService', 'constantStrService'];
 
-    function subjectCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService) {
+    function subjectCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, permissionService, constantStrService) {
 
         $scope.search = search;
         $scope.page = 0;
@@ -27,6 +27,9 @@
         membershipService.redirectIfNotLoggedIn();
 
         var baseUrl = webApiLocationService.get('webapi');
+        $scope.permissionADDSUBJECT = permissionService.get(constantStrService.ADD_SUBJECT());
+        $scope.permissionUPDATESUBJECT = permissionService.get(constantStrService.UPDATE_SUBJECT());
+        $scope.permissionDELETESUBJECT = permissionService.get(constantStrService.DELETE_SUBJECT());
 
         // Show Subject List
         $scope.search();

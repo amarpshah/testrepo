@@ -126,7 +126,7 @@
                 var config = {
                     params: {
                         page: page,
-                        pageSize: 50,
+                        pageSize: 100,
                         roleid: item.RoleID,
                         formid: item.FormID
                     }

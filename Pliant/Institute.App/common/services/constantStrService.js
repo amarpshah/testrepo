@@ -12,37 +12,51 @@
         var service = {
             STANDARD: STANDARD,
             ADD_STANDARD: ADD_STANDARD,
-            EDIT_STANDARD: EDIT_STANDARD,
+            UPDATE_STANDARD: UPDATE_STANDARD,
             DELETE_STANDARD:DELETE_STANDARD, 
 
             SUBJECT: SUBJECT,
             ADD_SUBJECT: ADD_SUBJECT,
-            EDIT_SUBJECT: EDIT_SUBJECT,
+            UPDATE_SUBJECT: UPDATE_SUBJECT,
             DELETE_SUBJECT: DELETE_SUBJECT,
 
             STD_SUB_MAP: STD_SUB_MAP,
+            ADD_STD_SUB_MAP: ADD_STD_SUB_MAP,
+            ADD_TO_TOPIC_STD_SUB_MAP: ADD_TO_TOPIC_STD_SUB_MAP,
+            DELETE_STD_SUB_MAP: DELETE_STD_SUB_MAP,
 
             TOPIC: TOPIC,
             ADD_TOPIC: ADD_TOPIC,
-            EDIT_TOPIC: EDIT_TOPIC,
+            UPDATE_TOPIC: UPDATE_TOPIC,
             DELETE_TOPIC: DELETE_TOPIC,
+            ADD_TO_QUESTION_TOPIC: ADD_TO_QUESTION_TOPIC,
 
             QUESTION: QUESTION,
             ADD_QUESTION: ADD_QUESTION,
-            EDIT_QUESTION: EDIT_QUESTION,
+            UPDATE_QUESTION: UPDATE_QUESTION,
             DELETE_QUESTION: DELETE_QUESTION,
+            LOCK_QUESTION: LOCK_QUESTION,
 
             TEST: TEST,
             ADD_TEST: ADD_TEST,
-            EDIT_TEST: EDIT_TEST,
+            UPDATE_TEST: UPDATE_TEST,
             DELETE_TEST: DELETE_TEST,
+            LOCK_TEST: LOCK_TEST,
+            POOLS_TEST: POOLS_TEST,
+            GENERATE_PAPER_TEST: GENERATE_PAPER_TEST,
+
 
             POOL: POOL,
             ADD_POOL: ADD_POOL,
-            EDIT_POOL: EDIT_POOL,
+            UPDATE_POOL: UPDATE_POOL,
             DELETE_POOL: DELETE_POOL,
+            LOCK_POOL: LOCK_POOL,
+            ADD_QUESTION_POOL: ADD_QUESTION_POOL,
+            VIEW_QUESTION_POOL: VIEW_QUESTION_POOL,
 
-            POOL_QUESTION_MAP: POOL_QUESTION_MAP
+            POOL_QUESTION_MAP: POOL_QUESTION_MAP,
+            ADD_POOL_QUESTION_MAP: ADD_POOL_QUESTION_MAP,
+            DELETE_POOL_QUESTION_MAP: DELETE_POOL_QUESTION_MAP
         };
 
 ///////////////////////////////////////////////////////
@@ -50,13 +64,13 @@
             return "VIEWSTANDARD";
         }
         function ADD_STANDARD() {
-            return "ADD";
+            return "ADDSTANDARD";
         }
-        function EDIT_STANDARD() {
-            return "UPDATE";
+        function UPDATE_STANDARD() {
+            return "UPDATESTANDARD";
         }
         function DELETE_STANDARD() {
-            return "DELETE";
+            return "DELETESTANDARD";
         }
 ///////////////////////////////////////////////////////
 
@@ -67,8 +81,8 @@
         function ADD_SUBJECT() {
             return "ADDSUBJECT";
         }
-        function EDIT_SUBJECT() {
-            return "EDITSUBJECT";
+        function UPDATE_SUBJECT() {
+            return "UPDATESUBJECT";
         }
         function DELETE_SUBJECT() {
             return "DELETESUBJECT";
@@ -79,6 +93,15 @@
         function STD_SUB_MAP() {
             return "VIEWSTDSUBMAP";
         }
+        function ADD_STD_SUB_MAP() {
+            return "ADDSTDSUBMAP";
+        }
+        function ADD_TO_TOPIC_STD_SUB_MAP() {
+            return "ADDTOTOPICTDSUBMAP";
+        }
+        function DELETE_STD_SUB_MAP() {
+            return "DELETESTDSUBMAP";
+        }
 
 ///////////////////////////////////////////////////////
         function TOPIC() {
@@ -87,11 +110,14 @@
         function ADD_TOPIC() {
             return "ADDTOPIC";
         }
-        function EDIT_TOPIC() {
-            return "EDITTOPIC";
+        function UPDATE_TOPIC() {
+            return "UPDATETOPIC";
         }
         function DELETE_TOPIC() {
             return "DELETETOPIC";
+        }
+        function ADD_TO_QUESTION_TOPIC() {
+            return "ADDTOQUESTIONTOPIC";
         }
 
 
@@ -102,11 +128,14 @@
         function ADD_QUESTION() {
             return "ADDQUESTION";
         }
-        function EDIT_QUESTION() {
-            return "EDITQUESTION";
+        function UPDATE_QUESTION() {
+            return "UPDATEQUESTION";
         }
         function DELETE_QUESTION() {
             return "DELETEQUESTION";
+        }
+        function LOCK_QUESTION() {
+            return "LOCKQUESTION";
         }
 
 
@@ -117,11 +146,20 @@
         function ADD_TEST() {
             return "ADDTEST";
         }
-        function EDIT_TEST() {
-            return "EDIT_TEST";
+        function UPDATE_TEST() {
+            return "UPDATETEST";
         }
         function DELETE_TEST() {
-            return "DELETE_TEST";
+            return "DELETETEST";
+        }
+        function LOCK_TEST() {
+            return "LOCKTEST";
+        }
+        function POOLS_TEST() {
+            return "POOLSTEST";
+        }
+        function GENERATE_PAPER_TEST() {
+            return "GENERATEPAPERTEST";
         }
 
 
@@ -132,17 +170,32 @@
         function ADD_POOL() {
             return "ADDPOOL";
         }
-        function EDIT_POOL() {
-            return "EDITPOOL";
+        function UPDATE_POOL() {
+            return "UPDATEPOOL";
         }
         function DELETE_POOL() {
             return "DELETEPOOL";
+        }
+        function LOCK_POOL() {
+            return "LOCKPOOL";
+        }
+        function ADD_QUESTION_POOL() {
+            return "ADDQUESTIONPOOL";
+        }
+        function VIEW_QUESTION_POOL() {
+            return "VIEWQUESTIONPOOL";
         }
 
 ///////////////////////////////////////////////////////
 
         function POOL_QUESTION_MAP() {
-            return "VIEWPOOLQUEMAP";
+            return "VIEWPOOLQUESTIONMAP";
+        }
+        function ADD_POOL_QUESTION_MAP() {
+            return "ADDPOOLQUESTIONMAP";
+        }
+        function DELETE_POOL_QUESTION_MAP() {
+            return "DELETEPOOLQUESTIONMAP";
         }
 
         return service;

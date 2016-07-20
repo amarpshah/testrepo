@@ -8,16 +8,16 @@
         </h2>
        
          <div class="addBlock">
-             <a ui-sref="AdminAddPool({testid:TestId, testname:TestName})" class="btn btn-success pull-left"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
+             <a ui-sref="AdminAddPool({testid:TestId, testname:TestName})" ng-if="permissionADDPOOL === 1" class="btn btn-success pull-left"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
         </div>
          <div class="addBlock">
-            <a data-ng-click="showSelected('lock');" class="btn btn-warning pull-left" style="margin-left:10px"><i class="fa fa-fw fa-lock"></i>Lock</a>
+            <a data-ng-click="showSelected('lock');" ng-if="permissionLOCKPOOL === 1" class="btn btn-warning pull-left" style="margin-left:10px"><i class="fa fa-fw fa-lock"></i>Lock</a>
         </div>
         <div class="addBlock">
-            <a data-ng-click="showSelected('unLock');" class="btn btn-primary pull-left" style="margin-left:10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
+            <a data-ng-click="showSelected('unLock');" ng-if="permissionLOCKPOOL === 1" class="btn btn-primary pull-left" style="margin-left:10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
         </div>
         <div class="addBlock">
-            <a ui-sref="AdminAddTest" class="btn btn-danger pull-left" style="margin-left:10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+            <a ui-sref="AdminAddTest" class="btn btn-danger pull-left" ng-if="permissionDELETEPOOL === 1" style="margin-left:10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
         </div>
        
          
@@ -91,13 +91,13 @@
                              <span class="modifiedByName">{{userName}}</span> <span class="modifiedDate">{{pool.OnCreated| date:"dd-MMM-yyyy 'at' h:mma"}}</span>
                         </span>
                         <span class="questionItemAction">
-                            <a ui-sref="AdminEditPool({poolid:pool.ID, testid:TestId, testname:TestName, islock:pool.IsLock})" class="btn btn-primary edittestt pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
+                            <a ui-sref="AdminEditPool({poolid:pool.ID, testid:TestId, testname:TestName, islock:pool.IsLock})" ng-if="permissionLOCKPOOL === 1" class="btn btn-primary edittestt pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
                            <!-- <a ng-click="poolLock(pool);" class="btn btn-warning lockQuestion pull-right" toolTip="Lock/Unlock"><i ng-class="appliedClass(pool)"></i></a>-->
-                             <a ng-click="poolLock(pool);" ng-if="pool.IsLock"  class="btn btn-warning lockQuestion pull-right"><i ng-show="{{checkId == pool.LockedBy}}" class="fa fa-key"  toolTip="Locked"></i><i ng-show="!{{checkId == pool.LockedBy}}" class="fa fa-lock" toolTip="Locked By :{{pool.UserName}}"></i></a>
-                             <a ng-click="poolLock(pool);" ng-if="!pool.IsLock" class="btn btn-warning lockQuestion pull-right" toolTip="Unlock"><i class="fa fa-unlock"></i></a>
-                            <a ng-click="deletePool(pool.ID);" class="btn btn-danger deleteQuestion pull-right" toolTip="Delete"><i class="fa fa-trash"></i></a>
-                            <a class="btn btn-success pull-right view" ui-sref="AdminAddPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" toolTip="Add Question"><i class="fa fa-fw fa-plus-circle"></i></a>
-                            <a class="btn btn-primary pull-right view" ui-sref="AdminViewPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" toolTip="Show Question"><i class="fa fa-eye"></i></a>
+                             <a ng-click="poolLock(pool);" ng-if="permissionLOCKPOOL === 1" ng-show="pool.IsLock"  class="btn btn-warning lockQuestion pull-right"><i ng-show="{{checkId == pool.LockedBy}}" class="fa fa-key"  toolTip="Locked"></i><i ng-show="!{{checkId == pool.LockedBy}}" class="fa fa-lock" toolTip="Locked By :{{pool.UserName}}"></i></a>
+                             <a ng-click="poolLock(pool);" ng-if="permissionLOCKPOOL === 1" ng-show="!pool.IsLock" class="btn btn-warning lockQuestion pull-right" toolTip="Unlock"><i class="fa fa-unlock"></i></a>
+                            <a ng-click="deletePool(pool.ID);"  ng-if="permissionDELETEPOOL === 1" class="btn btn-danger deleteQuestion pull-right" toolTip="Delete"><i class="fa fa-trash"></i></a>
+                            <a ui-sref="AdminAddPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" ng-if="permissionADDQUESTIONPOOL === 1"  class="btn btn-success pull-right view" toolTip="Add Question"><i class="fa fa-fw fa-plus-circle"></i></a>
+                            <a ui-sref="AdminViewPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" ng-if="permissionVIEWQUESTIONPOOL === 1"   class="btn btn-primary pull-right view" toolTip="Show Question"><i class="fa fa-eye"></i></a>
                         </span>
                     </div>
                 </div>
