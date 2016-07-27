@@ -29,6 +29,8 @@
                             <div class="col-md-3 col-sm-3">
                                 <label class="control-label" for="subject">Subject</label>
                                 <div id="subjectId" ag-grid="subjectOptions" class="ag-fresh" style="height: 100px"></div>
+                                <span style="color:#a94442;font-weight: bold;" ng-if="vMapping" >
+                                  Select Mapping First</span>
                             </div>
                             <div class="col-md-2 col-sm-2">
                                 <div class="row">
@@ -37,7 +39,9 @@
                                 <div class="row">
                                     <button id="btnAdd" type="button" class="btn btn-success" ng-click="AddMapping();">Add</button>
                                 </div>
+                                  
                             </div>
+                          
                         </div>
                     </div>
                 </div>
@@ -106,7 +110,7 @@
                  </div> 
                 <span class="questionItemAction">
                     
-                    <a ui-sref="AdminTopicNav({stdid:mapping.StandardID, subid:mapping.SubjectID, mapid: mapping.ID})" ng-if="permissionUPDATESTDSUBMAP === 1" class="btn btn-primary edittestt pull-right" toolTip="Add To Topic"><i class="fa fa-eye"></i></a>
+                    <a ui-sref="AdminTopicNav({stdid:mapping.StandardID, subid:mapping.SubjectID, mapid: mapping.ID})" ng-if="permissionADDTOTOPICSTDSUBMAP === 1" class="btn btn-primary edittestt pull-right" toolTip="Add To Topic"><i class="fa fa-eye"></i></a>
                      <a ng-click="deleteMapping(mapping.ID)" class="btn btn-danger deleteQuestion pull-right" ng-if="permissionDELETESTDSUBMAP === 1" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
                   
                 </span>

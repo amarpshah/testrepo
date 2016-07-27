@@ -103,7 +103,7 @@ namespace Institute.WebApi.Controllers
                {
                    HttpResponseMessage response = null;
 
-                  
+
                    if (!ModelState.IsValid)
                    {
                        response = request.CreateResponse(HttpStatusCode.BadRequest, new { success = false, userid = -1 });
@@ -183,7 +183,6 @@ namespace Institute.WebApi.Controllers
                     i++;
                 }
 
-             
 
                 PaginationSet<RegistrationViewModel> pagedSet = new PaginationSet<RegistrationViewModel>()
                 {
@@ -194,7 +193,6 @@ namespace Institute.WebApi.Controllers
                 };
 
                 response = request.CreateResponse<PaginationSet<RegistrationViewModel>>(HttpStatusCode.OK, pagedSet);
-
                 return response;
             });
         }
@@ -213,7 +211,6 @@ namespace Institute.WebApi.Controllers
                 HttpResponseMessage response = null;
                 List<User> users = null;
                 int totalusers = new int();
-
                 users = _usersRepository.GetAll()
                     .Where(q => (username != null ? q.Username.Contains(username) : 1 == 1) &&
                                 (roleid != -1 ? q.UserRoles.Any(x => x.RoleId == roleid) : 1 == 1) &&
@@ -224,6 +221,7 @@ namespace Institute.WebApi.Controllers
                     .Skip(currentPage * currentPageSize)
                     .Take(currentPageSize)
                     .ToList();
+
 
                 totalusers = _usersRepository.GetAll()
                                   .Where(q => (username != null ? q.Username.Contains(username) : 1 == 1) &&
@@ -248,7 +246,7 @@ namespace Institute.WebApi.Controllers
                     i++;
                 }
 
-               
+
                 PaginationSet<RegistrationViewModel> pagedSet = new PaginationSet<RegistrationViewModel>()
                 {
                     Page = currentPage,

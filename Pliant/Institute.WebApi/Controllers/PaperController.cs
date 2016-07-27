@@ -29,7 +29,6 @@ namespace Institute.WebApi.Controllers
         private readonly IEntityBaseRepository<TempChoiceAnswer> _tempChoiceQuestionRepository;
         private readonly IEntityBaseRepository<TempDescriptiveAnswer> _tempDescriptiveQuestionRepository;
         private readonly IEntityBaseRepository<TempMatchingAnswer> _tempMatchQuestionRepository;
-
         private readonly IEntityBaseRepository<FinalChoiceAnswer> _finalChoiceQuestionRepository;
         private readonly IEntityBaseRepository<FinalDescriptiveAnswer> _finalDescriptiveQuestionRepository;
         private readonly IEntityBaseRepository<FinalMatchingAnswer> _finalMatchQuestionRepository;
@@ -40,15 +39,12 @@ namespace Institute.WebApi.Controllers
             IEntityBaseRepository<Paper> paperRepository,
             IEntityBaseRepository<TempTestQuestion> tempTestQuestionRepository,
             IEntityBaseRepository<TestQuestion> testQuestionRepository,
-            
             IEntityBaseRepository<TempChoiceAnswer> tempChoiceQuestionRepository,
             IEntityBaseRepository<TempDescriptiveAnswer> tempDescriptiveQuestionRepository,
             IEntityBaseRepository<TempMatchingAnswer> tempMatchQuestionRepository,
-
             IEntityBaseRepository<FinalChoiceAnswer> finalChoiceQuestionRepository,
             IEntityBaseRepository<FinalDescriptiveAnswer> finalDescriptiveQuestionRepository,
             IEntityBaseRepository<FinalMatchingAnswer> finalMatchQuestionRepository,
-
             IEntityBaseRepository<Error> _errorsRepository,
            IUnitOfWork _unitOfWork)
             : base(_errorsRepository, _unitOfWork)
@@ -58,11 +54,9 @@ namespace Institute.WebApi.Controllers
             _paperRepository = paperRepository;
             _tempTestQuestionRepository = tempTestQuestionRepository;
             _testQuestionRepository = testQuestionRepository;
-           
             _tempChoiceQuestionRepository = tempChoiceQuestionRepository;
             _tempDescriptiveQuestionRepository = tempDescriptiveQuestionRepository;
             _tempMatchQuestionRepository = tempMatchQuestionRepository;
-
             _finalChoiceQuestionRepository = finalChoiceQuestionRepository;
             _finalDescriptiveQuestionRepository = finalDescriptiveQuestionRepository;
             _finalMatchQuestionRepository = finalMatchQuestionRepository;
@@ -129,32 +123,23 @@ namespace Institute.WebApi.Controllers
 
         public HttpResponseMessage Generate(HttpRequestMessage request, int paperid, int testid, int totalsets)
         {
-
             HttpResponseMessage response = null;
             List<Pool> pools = new List<Pool>();
             List<Question> questions = new List<Question>();
-
-            List<TempTestQuestion> tempTestQuestionList = new List<TempTestQuestion>();
+           // List<TempTestQuestion> tempTestQuestionList = new List<TempTestQuestion>();
             ICollection<TempTestQuestionViewModel> testQuestionVM = null;
 
             if (testid != null)
             {
-               
-
                 DeleteTempTestQuestion(testid);
-                
-             
-
                 pools = _poolRepository.GetAll()
                                 .Where(q => (q.TestID == testid))
                                 .ToList();
 
                 for (int i = 0; i < totalsets; i++)
                 {
-
                     foreach (var pool in pools)
                     {
-
                         int count = 0;
                         List<Question> randomQuestions = new List<Question>();
                         if (pool.ID != null)
@@ -164,9 +149,7 @@ namespace Institute.WebApi.Controllers
                                 .Select(s => s.Question)
                                 .ToList();
 
-
                             Random r = new Random();
-
                             var results = questions.OrderBy(item => r.Next());
                             foreach (var result in results)
                             {
@@ -190,11 +173,10 @@ namespace Institute.WebApi.Controllers
                                 tempTestQuestion.TestSetNo = i+1;
                                 tempTestQuestion.SequenceNo = count;
 
-                            
+                             
 
-                                if (question.Type == 1)
+                             if (question.Type == 1)
                                 {
-
                                     TempDescriptiveAnswer ans = new TempDescriptiveAnswer();
                                     if (question.Descriptive != null)
                                     {
@@ -214,7 +196,6 @@ namespace Institute.WebApi.Controllers
                                 {
                                     foreach (ChoiceAnswer v in question.Choices)
                                     {
-                                        
                                         TempChoiceAnswer ans = new TempChoiceAnswer();
                                         ans.DisplayType = v.DisplayType;
                                         ans.ChoiceId = v.ChoiceId;
@@ -233,7 +214,6 @@ namespace Institute.WebApi.Controllers
                                     var MatchDisplay = match.OrderBy(item => r.Next()).ToList();
                                     foreach (MatchingAnswer v in question.Matches)
                                     {
-                                       
                                         TempMatchingAnswer ans = new TempMatchingAnswer();
                                         ans.DisplayB = MatchDisplay[index].ChoiceB;
                                         ans.ChoiceA = v.ChoiceA;
@@ -245,10 +225,10 @@ namespace Institute.WebApi.Controllers
                                         index++;
                                     }
 
-                                    foreach (MatchingAnswer m in MatchDisplay)
-                                    { 
+                                    //foreach (MatchingAnswer m in MatchDisplay)
+                                    //{ 
                                     
-                                    }
+                                    //}
                                 }
                                 else if (question.Type == 4 || question.Type == 5)
                                 {
@@ -265,16 +245,10 @@ namespace Institute.WebApi.Controllers
                                         tempTestQuestion.Choices.Add(ans);
                                     }
                                 }
-
-                                
-
                                 _tempTestQuestionRepository.Add(tempTestQuestion);
-                                tempTestQuestionList.Add(tempTestQuestion);
+                               // tempTestQuestionList.Add(tempTestQuestion);
                             }
-
-
                         }
-
                     }
                 }
                 _unitOfWork.Commit();
@@ -293,7 +267,9 @@ namespace Institute.WebApi.Controllers
         }
 
 
-        // function To get Paper
+       
+
+        // function To get Test Paper info
         [AllowAnonymous]
         [HttpGet]
         [Route("filtertests")]

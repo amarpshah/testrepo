@@ -13,6 +13,7 @@
         $scope.find = find;
         $scope.Test = {};
         $scope.newTest = {};
+        $scope.ValidateTest = ValidateTest;
 
         membershipService.redirectIfNotLoggedIn();
         var baseUrl = webApiLocationService.get('webapi');
@@ -101,14 +102,15 @@
         }
 
         function AddTest() {
-            
-            var newTest = {};
-            
-            newTest = $scope.copyData();
+            if ($scope.ValidateTest()) {
+                var newTest = {};
 
-            apiService.post(baseUrl + '/api/tests/add', newTest,
-                    registerQuestionSucceded,
-                    registerQuestionFailed);
+                newTest = $scope.copyData();
+
+                apiService.post(baseUrl + '/api/tests/add', newTest,
+                        registerQuestionSucceded,
+                        registerQuestionFailed);
+            }
             
         }
 
@@ -128,6 +130,41 @@
                 notificationService.displayError(response.data);
             else
                 notificationService.displayError(response.statusText);
+        }
+
+        function ValidateTest()
+        {
+
+            if (angular.isUndefined($scope.newTest.Code)) {
+                $scope.vCode = true;
+            }
+            if (angular.isUndefined($scope.newTest.Text)) {
+                $scope.vText = true;
+            }
+            if (angular.isUndefined($scope.newTest.Description)) {
+                $scope.vDescription = true;
+            }
+            if (angular.isUndefined($scope.newTest.Objective)) {
+                $scope.vObjective = true;
+            }
+            if (isNaN($scope.newTest.Status)) {
+                $scope.vStatus = true;
+            }
+            if (isNaN($scope.newTest.Difficulty)) {
+                $scope.vDifficulty = true;
+            }
+            if (isNaN($scope.newTest.TotalMarks)) {
+                $scope.vTotalMarks = true;
+            }
+            if (isNaN($scope.newTest.PassingMarks)) {
+                $scope.vPassingMarks = true;
+                return false;
+            }
+            else {
+                return true;
+            }
+
+
         }
 
         function UpdateTest() {

@@ -5,10 +5,10 @@
               
             <div class="addBlock" style="position: relative; bottom: 32px;">
                 <button type="button" ui-sref="AdminGeneratePaper({testid:TestID,testname:TestName})" class="btn btn-warning cancel pull-right"><i class="fa fa-fw fa-share"></i>Back</button>
-                <button ng-click="finalize();" ng-if="!IsFinalized" class="btn btn-primary pull-right"></i>Finalize</button>
+                <button ng-click="finalize();" ng-if="IsFinalized === 'false'" class="btn btn-primary pull-right"></i>Finalize</button>
 
             </div>
-              <span class="displayFinalizeText" ng-if="IsFinalized"><i class="fa fa-check-square-o"></i> Finalized</span>
+              <span class="displayFinalizeText" ng-if="IsFinalized === 'true'"><i class="fa fa-check-square-o"></i> Finalized</span>
         </div>
 
 

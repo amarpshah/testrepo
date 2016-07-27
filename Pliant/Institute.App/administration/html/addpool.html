@@ -24,10 +24,13 @@
                                  <div class="form-group col-lg-4 col-md-4">
                                     <label>Test Name: </label>
                                     <input type="text" ng-model="TestName" ng-readonly="true" class="form-control question"></input>
+                                     
                                 </div>
                                 <div class="form-group col-lg-6 col-md-6">
                                     <label>Name: </label>
                                     <input type="text" ng-model="newPool.Name" ng-readonly="{{IsLock}}" class="form-control question" placeholder="Add Pool Name Here..."></input>
+                                     <span style="color:#a94442;font-weight: bold;" ng-if="vName" >
+                                   Name is Required</span>
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Status: </label>
@@ -35,6 +38,8 @@
                                             ng-options="option.value as option.Text for option in Test.status">
                                           <option value="" selected>Select Status</option>
                                     </select>
+                                    <span style="color:#a94442;font-weight: bold;" ng-if="vStatus" >
+                                   Select Status</span>
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Difficulty Level: </label>
@@ -45,6 +50,8 @@
                                             ng-options="option.value as option.Text for option in Test.difficulty">
                                           <option value="" selected>Select Difficulty</option>
                                     </select>
+                                     <span style="color:#a94442;font-weight: bold;" ng-if="vDifficultyLevel" >
+                                   Select Difficulty Level</span>
                                 </div>
                                 <div class="form-group col-lg-2 col-md-2">
                                     <label>Is Mandatory to Pass: </label>
@@ -62,11 +69,15 @@
                                         <label>Passing Marks: </label>
                                         <input type="number" ng-model="newPool.PassingScore" ng-readonly="{{IsLock}}"
                                                class="form-control points"  min="0"  placeholder="Add Passing Marks Here..." />
+                                        <span style="color:#a94442;font-weight: bold;" ng-if="vPassingScore" >
+                                   Passing Marks Required</span>
                                     </div>
                                     <div class="form-group col-lg-4 col-md-4">
                                         <label>Total Marks: </label>
                                         <input type="number" ng-model="newPool.PoolTotalMarks" ng-readonly="{{IsLock}}"
                                                class="form-control points"  min="0"  placeholder="Add Total Marks Here..." />
+                                        <span style="color:#a94442;font-weight: bold;" ng-if="vPoolTotalMarks" >
+                                   Total Marks Required</span>
                                     </div>
                                 </div>
                             </div>

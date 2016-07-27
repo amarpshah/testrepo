@@ -17,7 +17,6 @@
         $scope.search = search;
         $scope.loadStandard = loadStandard;
         $scope.loadSubject = loadSubject;
-        //    $scope.SearchText = {};
         $scope.clearSearch = clearSearch;
         $scope.ShowAdvancedSearch = ShowAdvancedSearch;
         $scope.advancedSearch = advancedSearch;
@@ -34,9 +33,9 @@
         $scope.editTopic = editTopic;
         $scope.updateTopic = updateTopic;
         $scope.Register = Register;
-        
+
         $scope.IsEditMode = false;
-        
+
         $scope.ClearTopic = ClearTopic;
 
         membershipService.redirectIfNotLoggedIn();
@@ -59,7 +58,7 @@
         $scope.permissionDELETETOPIC = permissionService.get(constantStrService.DELETE_TOPIC());
         $scope.permissionADDTOQUESTIONTOPIC = permissionService.get(constantStrService.ADD_TO_QUESTION_TOPIC());
 
-      
+
 
         function search(page, searchItem) {
 
@@ -95,7 +94,7 @@
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingTopic = false;
 
-            
+
             if ($scope.filterTopic && $scope.filterTopic.length) {
                 notificationService.displayInfo(result.data.Items.length + ' topics found');
             }
@@ -106,7 +105,7 @@
             notificationService.displayError(response.data);
         }
 
-        
+
 
         $scope.search();
         $scope.loadStandard();
@@ -145,31 +144,31 @@
         }
 
 
-      
+
         //Delete Topic
         function deleteTopic(topicid) {
-               
-               if (topicid != null) {
-                   var config = {
-                       params: {
-                           id: topicid
-                       }
-                   };
-                   apiService.post(baseUrl + '/api/topic/delete/' + topicid, null,
-               deleteSucceded,
-               deleteFailed);
+
+            if (topicid != null) {
+                var config = {
+                    params: {
+                        id: topicid
+                    }
+                };
+                apiService.post(baseUrl + '/api/topic/delete/' + topicid, null,
+            deleteSucceded,
+            deleteFailed);
 
 
 
             }
-            
+
 
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-            
+
             notificationService.displayInfo('Deleted successfully');
 
         }
@@ -205,13 +204,13 @@
 
         function standardChangeLoadCompleted(result) {
             $scope.Subjects = result.data.Items;
-           
-                     
-           
+
+
+
             if ($scope.Subjects.length == 0) {
                 $scope.newTopic.SubjectId = -1;
             }
-         
+
         }
 
         function standardChangeLoadFailed(response) {
@@ -322,8 +321,7 @@
 
         //***********Edit Topic*Starts*****************************************//
 
-        function editTopic(topic)
-        {
+        function editTopic(topic) {
             $scope.IsEditMode = true;
             $scope.newTopic.ID = topic.ID;
             $scope.newTopic.Code = topic.Code;
@@ -335,13 +333,12 @@
             $scope.newTopic.SubjectId = topic.SubjectId;
         }
         //***********Edit Topic*End*****************************************//
-        
 
-       
+
+
         //Update Topic
-        function updateTopic()
-        {
-        
+        function updateTopic() {
+
             var newTopic = $scope.newTopic;
             apiService.post(baseUrl + '/api/topic/update', newTopic,
                     updateTopicSucceded,
@@ -355,7 +352,7 @@
             $scope.IsEditMode = false;
             $scope.search($scope.page);
             notificationService.displayInfo('Data Updated successfully');
-            
+
         }
 
         function updateTopicFailed(response) {
@@ -369,7 +366,7 @@
 
         //Load Standard Subject Mapping
 
-       
+
 
 
 
@@ -397,7 +394,7 @@
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
-            
+
 
                 if (angular.isUndefined(item.Code)) {
                     item.Code = "";
@@ -420,7 +417,7 @@
                         name: item.Name,
                         subjectid: item.SubjectId,
                         standardid: item.StandardId
-                        
+
                     }
                 };
 
@@ -458,32 +455,25 @@
             search();
         }
 
-        function ClearTopic()
-        {
+        function ClearTopic() {
             $scope.newTopic = {};
         }
-        
+
         //End ------------->
 
         //Validation function
         function Register() {
             if (isNaN($scope.newTopic.StandardId)) {
                 $scope.vStandardId = true;
-
-
             }
             if (isNaN($scope.newTopic.SubjectId)) {
                 $scope.vSubjectId = true;
-
             }
             if (angular.isUndefined($scope.newTopic.Code)) {
                 $scope.vCode = true;
-
             }
-
             if (angular.isUndefined($scope.newTopic.Name)) {
                 $scope.vName = true;
-
             }
             if (angular.isUndefined($scope.newTopic.Objective)) {
                 $scope.vObjective = true;

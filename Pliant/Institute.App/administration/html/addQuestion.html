@@ -24,14 +24,14 @@
                                 <input type="hidden" name="QuestionId" ng-value="newQuestion.QuestionID" />
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Standard: </label>
-                                  
-                                  
                                     <select id="selectStd" ng-model="newQuestion.StandardId" class="form-control selectStd"
                                             ng-options="option.ID as (option.Standard + ':' + option.Division)  for option in question.questionstandard"
                                             ng-change="StandardChange(true)" ng-readonly="{{IsLock}}">
                                         <option value="" selected>Select Standard</option>
                                     </select>
                                     <input type="hidden" name="StandardId" ng-value="newQuestion.StandardId.value" />
+                                     <span style="color:#a94442;font-weight: bold;" ng-if="vStandardId" >
+                                   Select Standard</span>
                                 </div>
                                 <div class="form-group col-lg-8 col-md-8">
                                     <label>Subject: </label>
@@ -42,6 +42,8 @@
                                         <option value="" selected>Select Subject</option>
                                     </select>
                                     <input type="hidden" name="SubjectId" ng-value="newQuestion.SubjectId" />
+                                    <span style="color:#a94442;font-weight: bold;" ng-if="vSubjectId" >
+                                   Select Subject</span>
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4 ui-widget">
                                     <div>
@@ -51,8 +53,8 @@
                                             ng-change="SubjectChange(true);" required ng-readonly="{{IsLock}}">
                                         <option value="" selected>Select Topic</option>
                                     </select>
-                                       <!-- <input class="form-control topic" id="topic" ng-model="newQuestion.TopicId" autocomplete="on" placeholder="Search topic here..." ng-change="TopicChange();" />
-                                        <i class="fa fa-fw fa-search"></i>-->
+                                       <span style="color:#a94442;font-weight: bold;" ng-if="vTopicId" >
+                                   Select Topic</span>
                                     </div>
                                 </div>
                             </div>
@@ -62,37 +64,48 @@
                                 <div class="form-group col-lg-2 col-md-2">
                                     <label>Code: </label>
                                     <input ng-model="newQuestion.Code" type="text" class="form-control code" placeholder="Add code here..." ng-readonly="{{IsLock}}"/>
+                                      <span style="color:#a94442;font-weight: bold;" ng-if="vCode" >
+                                         Code is required</span>
+                                   
                                 </div>
                                 <div class="form-group col-lg-10 col-md-10">
                                     <label>Question: </label>
                                     <textarea ng-model="newQuestion.Question" class="form-control question" placeholder="Add Question here..." oninput="generateFillInTheBlank()" ng-readonly="{{IsLock}}"></textarea>
+                                     <span style="color:#a94442;font-weight: bold;" ng-if="vQuestion" >
+                                         Question text is required</span>
                                 </div>
                                 <div class="form-group col-lg-6 col-md-6">
                                     <label>Objective: </label>
                                     <textarea ng-model="newQuestion.Objective" class="form-control objective" placeholder="Add Objective here..." maxlength="500" ng-readonly="{{IsLock}}"></textarea>
+                                     <span style="color:#a94442;font-weight: bold;" ng-if="vObjective" >
+                                         Objective is required</span>
                                 </div>
                                 <div class="form-group col-lg-6 col-md-6">
                                     <label>Hint: </label>
                                     <textarea ng-model="newQuestion.Hint" class="form-control hint" maxlength="500" placeholder="Add Hint here..." ng-readonly="{{IsLock}}"></textarea>
+                                    <span style="color:#a94442;font-weight: bold;" ng-if="vHint" >
+                                         Hint is required</span>
                                 </div>
                             </div>
-                        </div>
+                       </div>
                         <div class="panel panel-default formSection">
                             <div class="panel-body">
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Question Type: </label>
-
                                     <select id="qqtype" ng-model="newQuestion.QuestionType" class="form-control type"
                                             ng-options="option.value as option.Text for option in question.questiontype" ng-readonly="{{IsLock}}">
                                         <option value="" selected>Select Question Type</option>
                                     </select>
-                                   
+                                     <span style="color:#a94442;font-weight: bold;" ng-if="vQuestionType" >
+                                         Select Question Type</span>
                                 </div>
 
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Points for Question: </label>
                                     <input type="number" ng-model="newQuestion.Points" 
                                            class="form-control points" placeholder="Add points here..." max="50" min="0" ng-readonly="{{IsLock}}"/>
+                                    <span style="color:#a94442;font-weight: bold;" ng-if="vPoints" >
+                                         Points required</span>
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Status: </label>
@@ -100,7 +113,8 @@
                                             ng-options="option.value as option.Text for option in question.questionstatus" ng-readonly="{{IsLock}}">
                                         <option value="" selected>Select Status</option>
                                     </select>
-
+                                    <span style="color:#a94442;font-weight: bold;" ng-if="vStatus" >
+                                         Select Status</span>
                                   
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4">
@@ -114,7 +128,8 @@
                                    <option value="" selected>Select Difficulty Level</option>
                                          </select>
 
-                                  
+                                   <span style="color:#a94442;font-weight: bold;" ng-if="vDifficulty" >
+                                         Select Difficulty Level</span>
                                 </div>
 
                                 <div class="form-group descriptive questionType clear" data-type="0">
@@ -224,7 +239,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+                        
                         <div class="next-step pull-right">
                             <button type="button" ng-click="UpdateQuestion();" ng-if="IsEditMode"  ng-hide="{{IsLock}}" class="btn btn-primary proceedd">
                                 <i class="fa fa-fw fa-edit"></i> <span class="editCurrentQuestion active">Update</span> <span class="save"></span>

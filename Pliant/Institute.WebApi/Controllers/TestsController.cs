@@ -236,12 +236,24 @@ namespace Institute.WebApi.Controllers
                     test.OnLocked = DateTime.Now;
                     test.OnCreated = DateTime.Now;
                     test.OnUpdated = DateTime.Now;
-                    _testRepository.Add(test);
-                    _unitOfWork.Commit();
 
-                    // Update view model
-                    testVM = Mapper.Map<Test, TestViewModel>(test);
-                    response = request.CreateResponse<TestViewModel>(HttpStatusCode.Created, testVM);
+                    var tests = _testRepository.FindBy(c => c.Code.ToLower().Contains(test.Code.ToLower())).ToList();
+
+                    if (tests != null && tests.Count > 0)
+                    {
+
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                          "Duplicate code cannot be inserted");
+                    }
+                    else
+                    {
+                        _testRepository.Add(test);
+                        _unitOfWork.Commit();
+
+                        // Update view model
+                        testVM = Mapper.Map<Test, TestViewModel>(test);
+                        response = request.CreateResponse<TestViewModel>(HttpStatusCode.Created, testVM);
+                    }
                 }
                 return response;
             });

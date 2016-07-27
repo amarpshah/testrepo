@@ -19,19 +19,13 @@ namespace Institute.WebApi.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class MappingController : ApiControllerBase
     {
-//        private readonly IEntityBaseRepository<Subject> _subjectsRepository;
-//        private readonly IEntityBaseRepository<Standard> _standardsRepository;
         private readonly IEntityBaseRepository<StandardSubjectMapping> _mappingsRepository;
 
         public MappingController(
-            //IEntityBaseRepository<Subject> subjectsRepository,
-            // IEntityBaseRepository<Standard> standardsRepository,
-            IEntityBaseRepository<StandardSubjectMapping> mappingsRepository, 
+            IEntityBaseRepository<StandardSubjectMapping> mappingsRepository,
             IEntityBaseRepository<Error> _errorsRepository, IUnitOfWork _unitOfWork)
             : base(_errorsRepository, _unitOfWork)
         {
-            //_subjectsRepository = subjectsRepository;
-            //_standardsRepository = standardsRepository;
             _mappingsRepository = mappingsRepository;
         }
 
@@ -125,7 +119,7 @@ namespace Institute.WebApi.Controllers
 
                 mappings = _mappingsRepository.GetAll()
                     .Where(q => (subjectid != -1 ? q.SubjectId == subjectid : 1 == 1) &&
-                                (standardid != -1 ? q.StandardId == standardid : 1 == 1) 
+                                (standardid != -1 ? q.StandardId == standardid : 1 == 1)
                     )
                     .OrderBy(c => c.ID)
                     .Skip(currentPage * currentPageSize)
@@ -134,13 +128,11 @@ namespace Institute.WebApi.Controllers
 
                 totalmappings = _mappingsRepository.GetAll()
                 .Where(q => (subjectid != -1 ? q.SubjectId == subjectid : 1 == 1) &&
-                                (standardid != -1 ? q.StandardId == standardid : 1 == 1) 
+                                (standardid != -1 ? q.StandardId == standardid : 1 == 1)
                 )
                 .Count();
 
                 IEnumerable<MappingViewModel> ssMappingVM = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(mappings);
-
-
 
                 PaginationSet<MappingViewModel> pagedSet = new PaginationSet<MappingViewModel>()
                 {
@@ -169,8 +161,8 @@ namespace Institute.WebApi.Controllers
                 int totalSubjects = new int();
 
                 mappings = _mappingsRepository.GetAll()
-                    .Where(m => (( stdid == -1 ? true : m.StandardId == stdid ) 
-                        && (subid == -1 ? true: m.SubjectId == subid)))
+                    .Where(m => ((stdid == -1 ? true : m.StandardId == stdid)
+                        && (subid == -1 ? true : m.SubjectId == subid)))
                     .OrderBy(c => c.ID)
                 .ToList();
 
@@ -192,7 +184,7 @@ namespace Institute.WebApi.Controllers
 
         [HttpPost]
         [Route("add")]
-        public HttpResponseMessage Register(HttpRequestMessage request, IEnumerable< MappingViewModel> mappingList)
+        public HttpResponseMessage Register(HttpRequestMessage request, IEnumerable<MappingViewModel> mappingList)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -206,24 +198,26 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-                    List<StandardSubjectMapping> lstMaps = new List<StandardSubjectMapping>();
-                    foreach (MappingViewModel map in mappingList)
+                    if (mappingList.Count() > 0)
                     {
-                        StandardSubjectMapping mapModel = new StandardSubjectMapping();
+                        List<StandardSubjectMapping> lstMaps = new List<StandardSubjectMapping>();
+                        foreach (MappingViewModel map in mappingList)
+                        {
+                            StandardSubjectMapping mapModel = new StandardSubjectMapping();
 
-                        mapModel.StandardId = map.StandardID;
-                        mapModel.SubjectId = map.SubjectID;
-                        mapModel.IsActive = true;
-                        lstMaps.Add(mapModel);
-                        _mappingsRepository.Add(mapModel);
+                            mapModel.StandardId = map.StandardID;
+                            mapModel.SubjectId = map.SubjectID;
+                            mapModel.IsActive = true;
+                            lstMaps.Add(mapModel);
+                            _mappingsRepository.Add(mapModel);
+                        }
+                        _unitOfWork.Commit();
+
+                        // Update view model
+                        mappingList = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(lstMaps);
+                        response = request.CreateResponse<IEnumerable<MappingViewModel>>(HttpStatusCode.Created, mappingList);
                     }
-                    _unitOfWork.Commit();
-
-                    // Update view model
-                    mappingList = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(lstMaps);
-                    response = request.CreateResponse<IEnumerable<MappingViewModel>>(HttpStatusCode.Created, mappingList);
                 }
-
                 return response;
             });
         }
@@ -250,7 +244,7 @@ namespace Institute.WebApi.Controllers
                     _unitOfWork.Commit();
 
                     // Update view model
-                    //standard = Mapper.Map<Subject, SubjectViewModel>(newSubject);
+
                     MappingViewModel subjectsVM = Mapper.Map<StandardSubjectMapping, MappingViewModel>(deleteSub);
                     response = request.CreateResponse<MappingViewModel>(HttpStatusCode.OK, subjectsVM);
                 }

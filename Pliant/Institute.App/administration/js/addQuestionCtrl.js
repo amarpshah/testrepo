@@ -6,80 +6,57 @@
     addQuestionCtrl.$inject = ['$scope', '$modal', '$route', '$routeParams', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams'];
 
     function addQuestionCtrl($scope, $modal, $route, $routeParams, apiService, membershipService, webApiLocationService, notificationService, $stateParams) {
-        $scope.question = {}; 
+        $scope.question = {};
         $scope.pagesCount = 0;
         $scope.loadingQuestion = true;
-        $scope.width = '100%'; // the div gets it's width and height from here
-        $scope.height = '100%';
-
         $scope.Standards = [];
         $scope.Subjects = [];
         $scope.question.questionstandard = [];
-        $scope.question.questionsubject = [];  
-        $scope.Questions = [];  
+        $scope.question.questionsubject = [];
+        $scope.Questions = [];
         $scope.EditedQuestion = {};
         $scope.newQuestion = {};
-
-        membershipService.redirectIfNotLoggedIn();
-        $scope.QuestionId = parseInt($stateParams.questionid);
-        $scope.IsLock = parseInt($stateParams.islock);
         $scope.IsEditMode = false;
-        
-
-        $scope.newQuestion.StandardId = parseInt($stateParams.stdid);
-        $scope.newQuestion.SubjectId = parseInt($stateParams.subid);
-        $scope.newQuestion.TopicId = parseInt($stateParams.topicid);
-        //$scope.newQuestion.QuestionType = parseInt($stateParams.questionType);
-
-
-    
-        $scope.newQuestion.Matches = [];
-        var baseUrl = webApiLocationService.get('webapi');
-
-        //////////////////////////////////////
-       
-      
-
         $scope.ShowAddQuestion = ShowAddQuestion;
         $scope.AddQuestion = AddQuestion;
         $scope.editQuestion = editQuestion;
         $scope.find = find;
         $scope.UpdateQuestion = UpdateQuestion;
-
         $scope.loadSubject = loadSubject;
         $scope.loadStandard = loadStandard;
         $scope.loadTopic = loadTopic;
-
-        
         $scope.StandardChange = StandardChange;
         $scope.SubjectChange = SubjectChange;
         $scope.TopicChange = TopicChange;
-        
-
         $scope.RemoveMatch = RemoveMatch;
         $scope.AddMatch = AddMatch;
-
         $scope.RemoveChoice = RemoveChoice;
         $scope.AddChoice = AddChoice;
         $scope.RadioChange = RadioChange;
-
         $scope.RemoveMChoice = RemoveMChoice;
         $scope.AddMChoice = AddMChoice;
-        
+        $scope.ValidateQuestion = ValidateQuestion;
 
 
+        membershipService.redirectIfNotLoggedIn();
+        $scope.QuestionId = parseInt($stateParams.questionid);
+        $scope.IsLock = parseInt($stateParams.islock);
 
-        function editQuestion()
-        {
+        $scope.newQuestion.StandardId = parseInt($stateParams.stdid);
+        $scope.newQuestion.SubjectId = parseInt($stateParams.subid);
+        $scope.newQuestion.TopicId = parseInt($stateParams.topicid);
 
+        $scope.newQuestion.Matches = [];
+        var baseUrl = webApiLocationService.get('webapi');
+
+
+        function editQuestion() {
             if ($scope.QuestionId != null && !isNaN($scope.QuestionId)) {
                 $scope.IsEditMode = true;
                 $scope.find($scope.QuestionId);
             }
-
-
         }
-        
+
         $scope.editQuestion();
 
         function find(questionid) {
@@ -108,79 +85,69 @@
                 $scope.newQuestion.StandardId = question.StandardID;
                 $scope.newQuestion.SubjectId = question.SubjectID;
                 $scope.newQuestion.MappingID = question.MappingID;
-
                 $scope.newQuestion.TopicId = question.TopicID;
-
                 $scope.newQuestion.Code = question.Code;
                 $scope.newQuestion.Question = question.Text;
                 $scope.newQuestion.Objective = question.Objective;
                 $scope.newQuestion.Hint = question.Hint;
-
                 $scope.newQuestion.QuestionType = question.Type;
                 $scope.newQuestion.Points = question.Points;
                 $scope.newQuestion.Status = question.Status;
                 $scope.newQuestion.Difficulty = question.DifficultyLevel;
 
-                
                 var questiontype = question.sType;
 
-                    $('.questionForm .questionType').removeClass('active');
-                    $('.questionForm .questionType[data-type="' + (question.Type-1) + '"]').addClass('active');
-                   
-                    if (questiontype == "Please select a question type") {
-                        notificationService.displayError("Need to select all the necessary fields.");
-                    }
-                    else if (questiontype == "Descriptive") {
-                        $scope.newQuestion.AnsKeywords = question.Descriptive[0].Keywords;
-                
-                    }
-                    else if (questiontype == "True or False") {
+                $('.questionForm .questionType').removeClass('active');
+                $('.questionForm .questionType[data-type="' + (question.Type - 1) + '"]').addClass('active');
 
-                        $('.displayGroup').addClass('active');
+                if (questiontype == "Please select a question type") {
+                    notificationService.displayError("Need to select all the necessary fields.");
+                }
+                else if (questiontype == "Descriptive") {
+                    $scope.newQuestion.AnsKeywords = question.Descriptive[0].Keywords;
 
-                        $scope.newQuestion.TFAnswer = question.Choices[0].Text;
-                        $scope.newQuestion.QuestionDisplayType = question.Choices[0].DisplayType;
-                       
-                        $('.answerText').val($(this).find('option:selected').text());
+                }
+                else if (questiontype == "True or False") {
+                    $('.displayGroup').addClass('active');
+                    $scope.newQuestion.TFAnswer = question.Choices[0].Text;
+                    $scope.newQuestion.QuestionDisplayType = question.Choices[0].DisplayType;
+                    $('.answerText').val($(this).find('option:selected').text());
+                }
+                else if (questiontype == "Match the following") {
+                    var matches = [];
+                    var i = 0;
 
-                        
+                    $scope.newQuestion.Matches = [];
+
+                    for (i = 0; i < question.Matches.length; i++) {
+                        $scope.newQuestion.Matches.push(
+                               {
+                                   ID: i.toString(),
+                                   ChoiceId: i,
+                                   choiceA: question.Matches[i].ChoiceA,
+                                   choiceB: question.Matches[i].ChoiceB
+                               });
                     }
-                    else if (questiontype == "Match the following") {
-                        var matches = [];
+                }
+                else if (questiontype == "Single choice" || questiontype == "Multiple choice") {
+                    if (questiontype == "Single choice") {
                         var i = 0;
+                        for (i = 0; i < question.Choices.length; i++) {
+                            question.Choices[i].ID = question.Choices[i].ChoiceId;
+                            if (question.Choices[i].IsAnswer == true) {
+                                $scope.newQuestion.cIsAnswer = question.Choices[i].ChoiceId;
 
-                        $scope.newQuestion.Matches = [];
-
-                        for (i = 0; i < question.Matches.length; i++) {
-                            $scope.newQuestion.Matches.push(
-                                   {
-                                       //                               MID: question.MatchPairs[i].ID,
-                                       ID: i.toString(),
-                                       ChoiceId: i,
-                                       choiceA: question.Matches[i].ChoiceA,
-                                       choiceB: question.Matches[i].ChoiceB
-                                   });
-                        }
-                    }
-                    else if (questiontype == "Single choice" || questiontype == "Multiple choice") {
-                        if (questiontype == "Single choice") {
-                            var i = 0;
-                            for (i = 0; i < question.Choices.length; i++) {
-                                question.Choices[i].ID = question.Choices[i].ChoiceId;
-                                if (question.Choices[i].IsAnswer == true) {
-                                    $scope.newQuestion.cIsAnswer = question.Choices[i].ChoiceId;
-                                   
-                                }
                             }
-                            $scope.newQuestion.Choices = question.Choices;
                         }
-                        else {
-                            
-                            $scope.newQuestion.MChoices = question.Choices;
-                            $scope.newQuestion.MChoices.PointsPerChoice = question.Choices[0].PointsPerChoice;
-                        }
+                        $scope.newQuestion.Choices = question.Choices;
                     }
-                   
+                    else {
+
+                        $scope.newQuestion.MChoices = question.Choices;
+                        $scope.newQuestion.MChoices.PointsPerChoice = question.Choices[0].PointsPerChoice;
+                    }
+                }
+
 
             }
         }
@@ -259,7 +226,7 @@
                 $scope.newQuestion.Matches.splice(removingIndex, 1);
             }
         }
-        //////////////////////////////////////
+
 
         $scope.loadvalues = function () {
             $scope.newQuestion.Matches = [];
@@ -270,7 +237,7 @@
 
             $scope.newQuestion.Choices = [{ ID: '1', ChoiceId: 1, IsAnswer: false, Text: '' }, { ID: '2', ChoiceId: 2, IsAnswer: false, Text: '' }];
 
-            $scope.newQuestion.MChoices = [{ ID: '1', ChoiceId: 1, IsAnswer: 0, Text: ''}, { ID: '2', ChoiceId: 2, IsAnswer: 0, Text: ''}];
+            $scope.newQuestion.MChoices = [{ ID: '1', ChoiceId: 1, IsAnswer: 0, Text: '' }, { ID: '2', ChoiceId: 2, IsAnswer: 0, Text: '' }];
 
             $scope.question.questiontype = [
                                             { value: 1, Text: "Descriptive", type: "DES" },
@@ -279,70 +246,49 @@
                                             { value: 4, Text: "Single choice", type: "SCQ" },
                                             { value: 5, Text: "Multiple choice", type: "MCQ" },
                                             { value: 6, Text: "Fill in the blanks", type: "FTB" }
-            ];                    
+            ];
 
-            
-            
-
-            
             $scope.question.questionstatus = [{ value: 1, Text: "Draft" },
                                               { value: 2, Text: "Ready" },
                                               { value: 3, Text: "Locked" }
             ];
-            
 
             $scope.question.questiondifficulty = [
                                                   { value: 1, Text: "Easy" },
                                                   { value: 2, Text: "Medium" },
                                                   { value: 3, Text: "Difficult" }
             ];
-            
-               
 
-
-           
-
-           
             $scope.question.questionDisplayType = [
                                                   { value: 1, Text: "True/False", name: "trueOrFalse", val1: "true", val2: "false" },
                                                   { value: 2, Text: "Yes/No", name: "yesOrNo", val1: "yes", val2: "no" }
             ];
 
-                      
         };
         $scope.ShowAddQuestion();
-
         $scope.loadvalues();
-
-      
         $scope.loadStandard();
         $scope.loadSubject();
         $scope.loadTopic();
-        
-        
+
         StandardChange(false);
         SubjectChange(false);
-        
-
-      
-
-        /////////////////////////////////////////////////////
 
         function loadStandard() {
             apiService.get(baseUrl + '/api/standards/', null,
                 standardLoadCompleted,
                 standardLoadFailed);
-        }  
+        }
 
         function standardLoadCompleted(result) {
             console.log(result.data);
             $scope.question.questionstandard = result.data;
-                       
-        }  
+
+        }
 
         function standardLoadFailed(response) {
             notificationService.displayError(response.data);
-        } 
+        }
 
         function loadSubject() {
             apiService.get(baseUrl + '/api/subjects/', null,
@@ -364,21 +310,18 @@
             apiService.get(baseUrl + '/api/topic/', null,
                 topicLoadCompleted,
                 topicLoadFailed);
-        } 
+        }
 
         function topicLoadCompleted(result) {
             console.log(result.data);
             $scope.question.questiontopic = result.data;
-        } 
+        }
 
         function topicLoadFailed(response) {
             notificationService.displayError(response.data);
-        } 
-        /////////////////////////////////////////
+        }
 
         ///START*************** Event Handlers ****************************
-
-        
 
         function StandardChange(load) {
             if (!isNaN($scope.newQuestion.StandardId)) {
@@ -397,7 +340,7 @@
                 if (load == true)
                     $scope.newQuestion.SubjectId = -1;
 
-                
+
             }
         }
 
@@ -405,7 +348,7 @@
             $scope.question.questionsubject = result.data.Items;
             if ($scope.question.questionsubject.length == 0)
                 $scope.newQuestion.SubjectId = -1;
-        } 
+        }
 
         function standardChangeLoadFailed(response) {
             notificationService.displayError(response.data);
@@ -440,16 +383,16 @@
             var config = {
                 params: {
                     mappingid: $scope.newQuestion.MappingID
-                    
+
                 }
             };
 
             apiService.get(baseUrl + '/api/topic/filtertopics', config,
-    
+
             subjectChangeLoadCompleted,
               subjectChangeLoadFailed);
-    
-            }
+
+        }
 
         function mappingLoadFailed(response) {
             notificationService.displayError(response.data);
@@ -458,8 +401,8 @@
         function subjectChangeLoadCompleted(result) {
             var topic = result.data.Items;
             $scope.question.questiontopic = result.data.Items;
-          
-        }   
+
+        }
 
         function subjectChangeLoadFailed(response) {
             notificationService.displayError(response.data);
@@ -480,17 +423,15 @@
         }
 
         function topicChangeLoadCompleted(result) {
-           
+
         }
 
         function topicChangeLoadFailed(response) {
             notificationService.displayError(response.data);
         }
-        
+
         ///END*************** Event Handlers ****************************
 
-       
-       
         function ShowAddQuestion() {
             var flag = false;
             if ($('.questionControl select').val() == "0") {
@@ -510,7 +451,7 @@
                     $('.questionForm').addClass('active');
                     //$('.questionForm .questionType').removeClass('active');
                     $('.questionForm .questionType[data-type="' + $('.questionControl select').val() + '"]').addClass('active');
-                   // $('.questionForm .type').val($('.questionControl select').val());
+                    // $('.questionForm .type').val($('.questionControl select').val());
                     $('#curtain').removeClass('overlay active');
                 }, 1000);
             };
@@ -534,7 +475,7 @@
             $scope.newQuestion = response.data;
             notificationService.displayInfo('Data updated successfully');
             $scope.loadvalues();
-        
+
         }
 
         function updateQuestionFailed(response) {
@@ -592,7 +533,7 @@
             }
             else if (questiontype == "Match the following") {
                 var matches = [];
-                
+
                 var i = 0;
                 for (i = 0; i < $scope.newQuestion.Matches.length; i++) {
                     var itm = $scope.newQuestion.Matches[i];
@@ -604,10 +545,10 @@
                 }
 
                 newQuestion.Matches = $scope.newQuestion.Matches;
-        
+
             }
             else if (questiontype == "Single choice" || questiontype == "Multiple choice") {
-               
+
 
                 if (questiontype == "Single choice") {
                     var i = 0;
@@ -629,28 +570,30 @@
                     }
                     newQuestion.Choices = $scope.newQuestion.MChoices;
                 }
-              
+
             }
             else if (questiontype == "Fill in the blanks") {
-        
+
             }
             return newQuestion;
         }
 
         /////// add question ///////////////////////////////////////
         function AddQuestion() {
-            var newQuestion = {};
+            if ($scope.ValidateQuestion()) {
+                var newQuestion = {};
 
-            newQuestion = FillUpControlData();
+                newQuestion = FillUpControlData();
 
-            $('.fillInTheBlankSelect').removeClass('active');
-            $('.displayGroup').removeClass('active');
-            $('.difficulty').siblings().removeClass('active');
+                $('.fillInTheBlankSelect').removeClass('active');
+                $('.displayGroup').removeClass('active');
+                $('.difficulty').siblings().removeClass('active');
 
 
-            apiService.post(baseUrl + '/api/question/add', newQuestion,
-                registerQuestionSucceded,
-                registerQuestionFailed);
+                apiService.post(baseUrl + '/api/question/add', newQuestion,
+                    registerQuestionSucceded,
+                    registerQuestionFailed);
+            }
         }
 
         function registerQuestionSucceded(response) {
@@ -668,13 +611,52 @@
             else
                 notificationService.displayError(response.statusText);
         }
-    }
-
-
-   
 
 
 
+        //Validation Question
 
+        function ValidateQuestion() {
+            if (isNaN($scope.newQuestion.StandardId)) {
+                $scope.vStandardId = true;
+            }
+            if (isNaN($scope.newQuestion.SubjectId)) {
+                $scope.vSubjectId = true;
+            }
+            if (isNaN($scope.newQuestion.TopicId)) {
+                $scope.vTopicId = true;
+            }
+            if (angular.isUndefined($scope.newQuestion.Code)) {
+               $scope.vCode = true;
+            }
+            if (angular.isUndefined($scope.newQuestion.Question)) {
+                $scope.vQuestion = true;
+            }
+            if (angular.isUndefined($scope.newQuestion.Objective)) {
+                $scope.vObjective = true;
+            }
+            if (angular.isUndefined($scope.newQuestion.Hint)) {
+               $scope.vHint = true;
+            }
+            if (isNaN($scope.newQuestion.QuestionType)) {
+                $scope.vQuestionType = true;
+            }
+            if (isNaN($scope.newQuestion.Points)) {
+                $scope.vPoints = true;
+            }
+            if (isNaN($scope.newQuestion.Status)) {
+                $scope.vStatus = true;
+            }
+            if (isNaN($scope.newQuestion.Difficulty)) {
+                $scope.vDifficulty = true;
+                return false;
+            }
+           
+           else {
+                return true;
+           }
+
+        }
+  }
 
 })(angular.module('app-administration'));

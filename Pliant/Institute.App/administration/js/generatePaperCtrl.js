@@ -17,6 +17,7 @@
         $scope.setID = -1;
         $scope.IsFinalized = false;
         $scope.ShowPaper = false;
+        $scope.ValidatePaperSets = ValidatePaperSets;
         membershipService.redirectIfNotLoggedIn();
 
         $scope.TestName = ($stateParams.testname)
@@ -28,27 +29,28 @@
         var baseUrl = webApiLocationService.get('webapi');
 
 
-        function addPaper()
-        {
-            var newPaper = {};
-            newPaper.TestID = $scope.TestId
-            newPaper.TestName = $scope.TestName
-            newPaper.NoOfSets = $scope.newPaper.NoOfSets;
-            newPaper.Description = $scope.newPaper.Description;
-            
-            newPaper.CreatedBy = userId;
+        function addPaper() {
+            if ($scope.ValidatePaperSets()) {
+                var newPaper = {};
+                newPaper.TestID = $scope.TestId
+                newPaper.TestName = $scope.TestName
+                newPaper.NoOfSets = $scope.newPaper.NoOfSets;
+                newPaper.Description = $scope.newPaper.Description;
 
-            apiService.post(baseUrl + '/api/papers/add', newPaper,
-                 addPaperSucceded,
-                 addPaperFailed);
+                newPaper.CreatedBy = userId;
+
+                apiService.post(baseUrl + '/api/papers/add', newPaper,
+                     addPaperSucceded,
+                     addPaperFailed);
+            }
 
         }
 
         function addPaperSucceded(response) {
             console.log(response);
-            
+
             notificationService.displayInfo('Question Paper Generated');
-         
+
         }
 
         function addPaperFailed(response) {
@@ -60,69 +62,83 @@
                 notificationService.displayError(response.statusText);
         }
 
+        function ValidatePaperSets() {
+            if (isNaN($scope.newPaper.NoOfSets)) {
+                $scope.vNoOfSets = true;
+            }
+            if (angular.isUndefined($scope.newPaper.Description)) {
+                $scope.vDescription = true;
+
+            }
+            if ($scope.PoolCount < 1) {
+                $scope.vPoolCount = true;
+                return false;
+            }
+            else {
+
+                return true;
+            }
+
+        }
+
         $scope.loadPools();
         $scope.loadPaper();
-      
-        function loadPools()
-        {
+
+        function loadPools() {
             if (isNaN($scope.TestId)) {
                 $scope.TestId = -1;
             }
-                var config = {
-                    params: {
-                        testid: $scope.TestId
-                    }
-                };
+            var config = {
+                params: {
+                    testid: $scope.TestId
+                }
+            };
 
-                apiService.get(baseUrl + '/api/pools/filtertests/', config,
-                    poolsLoadCompleted,
-                    poolsLoadFailed);
+            apiService.get(baseUrl + '/api/pools/filtertests/', config,
+                poolsLoadCompleted,
+                poolsLoadFailed);
+        }
+
+        function poolsLoadCompleted(result) {
+            $scope.Pools = result.data.Items;
+            $scope.PoolCount = result.data.Count;
+
+        }
+
+        function poolsLoadFailed(response) {
+            notificationService.displayError(response.data);
+        }
+
+        function loadPaper() {
+
+            if (isNaN($scope.TestId)) {
+                $scope.TestId = -1;
             }
+            var config = {
+                params: {
+                    testid: $scope.TestId
+                }
+            };
+            apiService.get(baseUrl + '/api/papers/filtertests/', config,
+               paperLoadCompleted,
+               paperLoadFailed);
+        }
 
-          function poolsLoadCompleted(result) {
-              $scope.Pools = result.data.Items;
-              $scope.PoolCount = result.data.Count;
-              
+        function paperLoadCompleted(result) {
+            var data = result.data[0];
+            if (data) {
+                $scope.newPaper.NoOfSets = data.NoOfSets;
+                $scope.newPaper.Description = data.Description;
+                $scope.newPaper.PaperID = data.ID;
+                $scope.IsFinalized = data.IsFinalized;
+                $scope.ShowPaper = true;
+
             }
+        }
 
-          function poolsLoadFailed(response) {
-                notificationService.displayError(response.data);
-            }
-
-          function loadPaper()
-          {
-
-              if (isNaN($scope.TestId)) {
-                  $scope.TestId = -1;
-              }
-              var config = {
-                  params: {
-                      testid: $scope.TestId
-                  }
-              };
-              apiService.get(baseUrl + '/api/papers/filtertests/', config,
-                 paperLoadCompleted,
-                 paperLoadFailed);
-          }
-
-          function paperLoadCompleted(result) {
-              var data = result.data[0];
-              if (data) {
-                  $scope.newPaper.NoOfSets = data.NoOfSets;
-                  $scope.newPaper.Description = data.Description;
-                  $scope.newPaper.PaperID = data.ID;
-                  $scope.IsFinalized = data.IsFinalized;
-                  $scope.ShowPaper = true;
-
-              }
-          }
-
-          function paperLoadFailed(response) {
-              notificationService.displayError(response.data);
-          }
-       
-
-    
+        function paperLoadFailed(response) {
+            notificationService.displayError(response.data);
+        }
 
     }
 

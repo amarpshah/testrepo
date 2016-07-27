@@ -29,27 +29,33 @@
         $scope.permissionADDSTDSUBMAP = permissionService.get(constantStrService.ADD_STD_SUB_MAP());
         $scope.permissionADDTOTOPICSTDSUBMAP = permissionService.get(constantStrService.ADD_TO_TOPIC_STD_SUB_MAP());
         $scope.permissionDELETESTDSUBMAP = permissionService.get(constantStrService.DELETE_STD_SUB_MAP());
+
         //////////////////////////////////////////////
 
         function AddMapping() {
 
             var stds = $scope.standardOptions.api.getSelectedRows();
             var subj = $scope.subjectOptions.api.getSelectedRows();
+            if (stds.length > 0 && subj.length > 0) {
+                var allobj = [];
+                for (var i = 0; i < subj.length; i++) {
+                    var obj = {};
+                    obj.StandardID = stds[0].ID;
+                    obj.SubjectID = subj[i].ID;
+                    obj.Standard = stds[0].Standard;
+                    obj.Subject = subj[i].Subject;
+                    obj.IsActive = true;
+                    allobj.push(obj);
+                }
 
-            var allobj = [];
-            for (var i = 0; i < subj.length; i++) {
-                var obj = {};
-                obj.StandardID = stds[0].ID;
-                obj.SubjectID = subj[i].ID;
-                obj.Standard = stds[0].Standard;
-                obj.Subject = subj[i].Subject;
-                obj.IsActive = true;
-                allobj.push(obj);
+                apiService.post(baseUrl + '/api/mapping/add', allobj,
+                addSubjectSucceded,
+                addSubjectFailed);
             }
+            else {
+                $scope.vMapping = true
 
-            apiService.post(baseUrl + '/api/mapping/add', allobj,
-            addSubjectSucceded,
-            addSubjectFailed);
+            }
         }
 
         function addSubjectSucceded(response) {
@@ -82,7 +88,7 @@
             $scope.Standards = result.data;
             $scope.loadingStandards = false;
 
-            //$scope.standardOptions.api.setRowData(result.data);
+            $scope.standardOptions.api.setRowData(result.data);
         }
 
         function standardLoadFailed(response) {
@@ -100,7 +106,7 @@
             $scope.Subjects = result.data;
             $scope.loadingSubjects = false;
 
-            //$scope.subjectOptions.api.setRowData(result.data);
+            $scope.subjectOptions.api.setRowData(result.data);
         }
 
         function subjectLoadFailed(response) {

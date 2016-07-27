@@ -14,19 +14,16 @@
         $scope.page = 0;
         $scope.pagesCount = 0;
         $scope.search = search;
-    //    $scope.SearchText = {};
         $scope.clearSearch = clearSearch;
         $scope.deleteTest = deleteTest;
         $scope.testLock = testLock;
         $scope.lock = lock;
         $scope.unLock = unLock;
-       // $scope.flag = 1;
         $scope.disableLock = false;
         $scope.disableDelete = false;
         $scope.checkBoxId = {};
         $scope.showSelected = showSelected;
         $scope.ShowAdvancedSearch = ShowAdvancedSearch;
-        
         $scope.advancedSearch = advancedSearch;
         $scope.loadvalues = loadvalues;
         $scope.test = {};

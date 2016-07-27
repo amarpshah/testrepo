@@ -324,7 +324,6 @@ namespace Institute.WebApi.Controllers
                 var userRole = _userRoleRepository.GetAll().Where(x => x.UserId == userid).ToList();
                 var roleid = userRole[0].RoleId;
                 List<UserFormActionPermissionViewModels> UFVMList = new List<UserFormActionPermissionViewModels>();
-                //var permissions = _permissionRepository.GetAll().ToList();
                 var permissions = _permissionRepository.GetAll().Where(x => x.RoleID == roleid).ToList();
 
 
@@ -337,11 +336,7 @@ namespace Institute.WebApi.Controllers
                     UFVMList.Add(UFVM);
 
                 }
-
-
-
-                // IEnumerable<PermissionViewModel> PermissionVM = Mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionViewModel>>(permissions);
-
+                
                 response = request.CreateResponse<IEnumerable<UserFormActionPermissionViewModels>>(HttpStatusCode.OK, UFVMList);
 
                 return response;

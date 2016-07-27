@@ -57,11 +57,11 @@ namespace Institute.WebApi.Controllers
             {
                 HttpResponseMessage response = null;
                 var question = _questionRepository.GetSingle(id);
-                            
+
                 List<Question> questions = new List<Question>();
                 questions.Add(question);
                 IEnumerable<QuestionViewModel> questionVM = Mapper.Map<IEnumerable<Question>, IEnumerable<QuestionViewModel>>(questions);
-               
+
                 foreach (QuestionViewModel qvm in questionVM)
                 {
                     qvm.sDifficultyLevel = CommonMethods.getDifficultyLevel(qvm.DifficultyLevel);
@@ -192,7 +192,6 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-
                     ListNames.Add("");
                 }
 
@@ -200,7 +199,7 @@ namespace Institute.WebApi.Controllers
             return ListNames;
         }
 
-      
+
 
 
         private void copyMatchingPair(Question q, QuestionViewModel qvm)
@@ -272,14 +271,14 @@ namespace Institute.WebApi.Controllers
             });
         }
 
-      
-        
+
+
         //Search Question New
         [AllowAnonymous]
         [HttpGet]
         [Route("searchquestions/{stdid:int=-1}/{subid:int=-1}/{topicid:int=-1}/{qtype:int=-1}/{qstatus:int=-1}/{qdifficulty:int=-1}")] //{qcode}/{question}/
         public HttpResponseMessage SearchQuestion(HttpRequestMessage request, int? page, int? pageSize, string code, string text, int? type, int? status, int? difficultyLevel, int? topicid, int? subjectid, int? standardid, int? qPoolId)
-          {
+        {
             return CreateHttpResponse(request, () =>
             {
                 int currentPage = page.Value;
@@ -366,8 +365,8 @@ namespace Institute.WebApi.Controllers
             });
         }
 
-        
-        
+
+
         [HttpPost]
         [Route("add")]
         public HttpResponseMessage Register(HttpRequestMessage request, QuestionViewModel questionVM)
@@ -400,79 +399,95 @@ namespace Institute.WebApi.Controllers
                     question.OnCreated = DateTime.Now;
                     question.OnLocked = DateTime.Now;
                     question.OnUpdated = DateTime.Now;
-      
-                    if (question.Type == 1)
-                    {
-                        AnswerDescriptiveViewModel desc = new AnswerDescriptiveViewModel();
-                        DescriptiveAnswer ans = new DescriptiveAnswer();
-                        if (questionVM.Descriptive != null)
-                        {
-                            if (questionVM.Descriptive.Count() > 0)
-                            {
-                                ans.Keywords = questionVM.Descriptive[0].Keywords;
-                                ans.NegativePoints = questionVM.Descriptive[0].NegativePoints;
-                                ans.PositivePoints = questionVM.Descriptive[0].PositivePoints;
-                                ans.IsAnswer = questionVM.Descriptive[0].IsAnswer;
-                                question.Descriptive.Add(ans);
-                            }
-                        }
-                    }
-                    else if (question.Type == 2)
-                    {
-                        foreach (AnswerChoiceViewModel v in questionVM.Choices)
-                        {
-                            ChoiceAnswer ans = new ChoiceAnswer();
-                            ans.DisplayType = v.DisplayType;
-                            ans.ChoiceId = v.ChoiceId;
-                            ans.Text = v.Text;
-                            ans.PointsPerChoice = v.PointsPerChoice;
-                            ans.IsAnswer = v.IsAnswer;
-                             question.Choices.Add(ans);
-                        }
-                    }
-                    else if (question.Type == 3)
-                    {
-                        foreach (AnswerMatchPairViewModel v in questionVM.Matches)
-                        {
-                            MatchingAnswer ans = new MatchingAnswer();
-                            ans.ChoiceA = v.ChoiceA;
-                            ans.ChoiceB = v.ChoiceB;
-                            ans.ChoiceId = v.ChoiceId;
-                            question.Matches.Add(ans);
-                        }
-                    }
-                    else if (question.Type == 4 || question.Type == 5)
-                    {
-                        foreach (AnswerChoiceViewModel v in questionVM.Choices)
-                        {
-                            ChoiceAnswer ans = new ChoiceAnswer();
-                            ans.DisplayType = v.DisplayType;
-                            ans.ChoiceId = v.ChoiceId;
-                            ans.Text = v.Text;
-                            ans.PointsPerChoice = v.PointsPerChoice;
-                            ans.IsAnswer = v.IsAnswer;
 
-                            question.Choices.Add(ans);
-                        }
-                    }
-                    else if (question.Type == 6)
+                    var questions = _questionRepository.FindBy(c => c.Code.ToLower().Contains(question.Code.ToLower())).ToList();
+
+                    if (questions != null && questions.Count > 0)
                     {
-                        AnswerChoiceViewModel choice = new AnswerChoiceViewModel();
-
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Duplicate code cannot be inserted");
                     }
+                    else
+                    {
+                        //Add Question type
+                        AddQuestionType(question, questionVM);
 
-                    _questionRepository.Add(question);
-                    _unitOfWork.Commit();
+                        _questionRepository.Add(question);
+                        _unitOfWork.Commit();
 
-                    // Update view model
-                    questionVM = Mapper.Map<Question, QuestionViewModel>(question);
-                    response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.Created, questionVM);
+                        // Update view model
+                        questionVM = Mapper.Map<Question, QuestionViewModel>(question);
+                        response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.Created, questionVM);
+                    }
                 }
-
                 return response;
             });
         }
 
+        private void AddQuestionType(Question question, QuestionViewModel questionVM)
+        {
+            if (question.Type == 1)
+            {
+                AnswerDescriptiveViewModel desc = new AnswerDescriptiveViewModel();
+                DescriptiveAnswer ans = new DescriptiveAnswer();
+                if (questionVM.Descriptive != null)
+                {
+                    if (questionVM.Descriptive.Count() > 0)
+                    {
+                        ans.Keywords = questionVM.Descriptive[0].Keywords;
+                        ans.NegativePoints = questionVM.Descriptive[0].NegativePoints;
+                        ans.PositivePoints = questionVM.Descriptive[0].PositivePoints;
+                        ans.IsAnswer = questionVM.Descriptive[0].IsAnswer;
+                        question.Descriptive.Add(ans);
+                    }
+                }
+            }
+            else if (question.Type == 2)
+            {
+                foreach (AnswerChoiceViewModel v in questionVM.Choices)
+                {
+                    ChoiceAnswer ans = new ChoiceAnswer();
+                    ans.DisplayType = v.DisplayType;
+                    ans.ChoiceId = v.ChoiceId;
+                    ans.Text = v.Text;
+                    ans.PointsPerChoice = v.PointsPerChoice;
+                    ans.IsAnswer = v.IsAnswer;
+                    question.Choices.Add(ans);
+                }
+            }
+            else if (question.Type == 3)
+            {
+                foreach (AnswerMatchPairViewModel v in questionVM.Matches)
+                {
+                    MatchingAnswer ans = new MatchingAnswer();
+                    ans.ChoiceA = v.ChoiceA;
+                    ans.ChoiceB = v.ChoiceB;
+                    ans.ChoiceId = v.ChoiceId;
+                    question.Matches.Add(ans);
+                }
+            }
+            else if (question.Type == 4 || question.Type == 5)
+            {
+                foreach (AnswerChoiceViewModel v in questionVM.Choices)
+                {
+                    ChoiceAnswer ans = new ChoiceAnswer();
+                    ans.DisplayType = v.DisplayType;
+                    ans.ChoiceId = v.ChoiceId;
+                    ans.Text = v.Text;
+                    ans.PointsPerChoice = v.PointsPerChoice;
+                    ans.IsAnswer = v.IsAnswer;
+
+                    question.Choices.Add(ans);
+                }
+            }
+            else if (question.Type == 6)
+            {
+                AnswerChoiceViewModel choice = new AnswerChoiceViewModel();
+
+            }
+
+
+        }
 
         [HttpPost]
         [Route("update")]
@@ -509,136 +524,10 @@ namespace Institute.WebApi.Controllers
                         question.IsActive = true;
                         question.IsLock = questionVM.IsLock;
                         question.LockedBy = questionVM.LockedBy;
-                     
                         question.OnUpdated = DateTime.Now;
 
-                        if (question.Type == 1)
-                        {
-                            
-                            DescriptiveAnswer ans = new DescriptiveAnswer();
-                            if (questionVM.Descriptive != null)
-                            {
-                                if (questionVM.Descriptive.Count() > 0)
-                                {
-                                    if (question.Descriptive.Count() > 0)
-                                    {
-                                        
-                                        {
-                                            var item = question.Descriptive.Last();
-                                            question.Descriptive.Remove(item);
-                                            _descriptiveQuestionRepository.Delete(item);
-                                        }
-                                      
-                                        {
-
-                                            ans.Keywords = questionVM.Descriptive[0].Keywords;
-                                            ans.NegativePoints = questionVM.Descriptive[0].NegativePoints;
-                                            ans.PositivePoints = questionVM.Descriptive[0].PositivePoints;
-                                            ans.IsAnswer = questionVM.Descriptive[0].IsAnswer;
-                                            question.Descriptive.Add(ans);
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (question.Type == 2)
-                        {
-                            if (question.Choices.Count() > questionVM.Choices.Count())
-                            {
-                                while (question.Choices.Count() != questionVM.Choices.Count())
-                                {
-                                    var item = question.Choices.Last();
-                                    question.Choices.Remove(item);
-                                    _choiceQuestionRepository.Delete(item);
-                                }
-                            }
-                            if (question.Choices.Count() < questionVM.Choices.Count())
-                            {
-                                while (question.Choices.Count() != questionVM.Choices.Count())
-                                {
-                                    ChoiceAnswer ans = new ChoiceAnswer();
-                                    question.Choices.Add(ans);
-                                }
-                            }
-                            int j = 0;
-                            foreach (ChoiceAnswer ans in question.Choices)
-                            {
-                                AnswerChoiceViewModel v = questionVM.Choices[j];
-                                ans.DisplayType = v.DisplayType;
-                                ans.ChoiceId = j; // v.ChoiceId;
-                                ans.Text = v.Text;
-                                ans.PointsPerChoice = v.PointsPerChoice;
-                                ans.IsAnswer = v.IsAnswer;
-                    
-                                j++;
-                            }
-                        }
-                        else if (question.Type == 3)
-                        {
-                            if (question.Matches.Count() > questionVM.Matches.Count())
-                            {
-                                while (question.Matches.Count() != questionVM.Matches.Count())
-                                {
-                                    var item = question.Matches.Last();
-                                    question.Matches.Remove(item);
-                                    _matchQuestionRepository.Delete(item);
-                                }
-                            }
-                            if (question.Matches.Count() < questionVM.Matches.Count())
-                            {
-                                while (question.Matches.Count() != questionVM.Matches.Count())
-                                {
-                                    MatchingAnswer ans = new MatchingAnswer();
-                                    question.Matches.Add(ans);
-                                }
-                            }
-                            int j = 0;
-                            foreach (MatchingAnswer ans in question.Matches)
-                            {
-                                AnswerMatchPairViewModel v = questionVM.Matches[j];
-                                ans.ChoiceA = v.ChoiceA;
-                                ans.ChoiceB = v.ChoiceB;
-                                ans.ChoiceId = j;
-                                j++;
-                            }
-                        }
-                        else if (question.Type == 4 || question.Type == 5)
-                        {
-                            if (question.Choices.Count() > questionVM.Choices.Count())
-                            {
-                                while (question.Choices.Count() != questionVM.Choices.Count())
-                                {
-                                    var item = question.Choices.Last();
-                                    question.Choices.Remove(item);
-                                    _choiceQuestionRepository.Delete(item);
-                                }
-                            }
-                            if (question.Choices.Count() < questionVM.Choices.Count())
-                            {
-                                while (question.Choices.Count() != questionVM.Choices.Count())
-                                {
-                                    ChoiceAnswer ans = new ChoiceAnswer();
-                                    question.Choices.Add(ans);
-                                }
-                            }
-                            int j = 0;
-                            foreach (ChoiceAnswer ans in question.Choices)
-                            {
-                                AnswerChoiceViewModel v = questionVM.Choices[j];
-                                ans.DisplayType = v.DisplayType;
-                                ans.ChoiceId = j; // v.ChoiceId;
-                                ans.Text = v.Text;
-                                ans.PointsPerChoice = v.PointsPerChoice;
-                                ans.IsAnswer = v.IsAnswer;
-                                j++;
-                            }
-                        }
-                        else if (question.Type == 6)
-                        {
-                            AnswerChoiceViewModel choice = new AnswerChoiceViewModel();
-
-                        }
+                        //Update Question Type
+                        UpdateQuestionType(question, questionVM);
 
                         _questionRepository.Edit(question);
                         _unitOfWork.Commit();
@@ -651,6 +540,135 @@ namespace Institute.WebApi.Controllers
 
                 return response;
             });
+        }
+
+        private void UpdateQuestionType(Question question, QuestionViewModel questionVM)
+        {
+            if (question.Type == 1)
+            {
+                DescriptiveAnswer ans = new DescriptiveAnswer();
+                if (questionVM.Descriptive != null)
+                {
+                    if (questionVM.Descriptive.Count() > 0)
+                    {
+                        if (question.Descriptive.Count() > 0)
+                        {
+                            {
+                                var item = question.Descriptive.Last();
+                                question.Descriptive.Remove(item);
+                                _descriptiveQuestionRepository.Delete(item);
+                            }
+
+                            {
+
+                                ans.Keywords = questionVM.Descriptive[0].Keywords;
+                                ans.NegativePoints = questionVM.Descriptive[0].NegativePoints;
+                                ans.PositivePoints = questionVM.Descriptive[0].PositivePoints;
+                                ans.IsAnswer = questionVM.Descriptive[0].IsAnswer;
+                                question.Descriptive.Add(ans);
+
+                            }
+                        }
+                    }
+                }
+            }
+            else if (question.Type == 2)
+            {
+                if (question.Choices.Count() > questionVM.Choices.Count())
+                {
+                    while (question.Choices.Count() != questionVM.Choices.Count())
+                    {
+                        var item = question.Choices.Last();
+                        question.Choices.Remove(item);
+                        _choiceQuestionRepository.Delete(item);
+                    }
+                }
+                if (question.Choices.Count() < questionVM.Choices.Count())
+                {
+                    while (question.Choices.Count() != questionVM.Choices.Count())
+                    {
+                        ChoiceAnswer ans = new ChoiceAnswer();
+                        question.Choices.Add(ans);
+                    }
+                }
+                int j = 0;
+                foreach (ChoiceAnswer ans in question.Choices)
+                {
+                    AnswerChoiceViewModel v = questionVM.Choices[j];
+                    ans.DisplayType = v.DisplayType;
+                    ans.ChoiceId = j; // v.ChoiceId;
+                    ans.Text = v.Text;
+                    ans.PointsPerChoice = v.PointsPerChoice;
+                    ans.IsAnswer = v.IsAnswer;
+                    j++;
+                }
+            }
+            else if (question.Type == 3)
+            {
+                if (question.Matches.Count() > questionVM.Matches.Count())
+                {
+                    while (question.Matches.Count() != questionVM.Matches.Count())
+                    {
+                        var item = question.Matches.Last();
+                        question.Matches.Remove(item);
+                        _matchQuestionRepository.Delete(item);
+                    }
+                }
+                if (question.Matches.Count() < questionVM.Matches.Count())
+                {
+                    while (question.Matches.Count() != questionVM.Matches.Count())
+                    {
+                        MatchingAnswer ans = new MatchingAnswer();
+                        question.Matches.Add(ans);
+                    }
+                }
+                int j = 0;
+                foreach (MatchingAnswer ans in question.Matches)
+                {
+                    AnswerMatchPairViewModel v = questionVM.Matches[j];
+                    ans.ChoiceA = v.ChoiceA;
+                    ans.ChoiceB = v.ChoiceB;
+                    ans.ChoiceId = j;
+                    j++;
+                }
+            }
+            else if (question.Type == 4 || question.Type == 5)
+            {
+                if (question.Choices.Count() > questionVM.Choices.Count())
+                {
+                    while (question.Choices.Count() != questionVM.Choices.Count())
+                    {
+                        var item = question.Choices.Last();
+                        question.Choices.Remove(item);
+                        _choiceQuestionRepository.Delete(item);
+                    }
+                }
+                if (question.Choices.Count() < questionVM.Choices.Count())
+                {
+                    while (question.Choices.Count() != questionVM.Choices.Count())
+                    {
+                        ChoiceAnswer ans = new ChoiceAnswer();
+                        question.Choices.Add(ans);
+                    }
+                }
+                int j = 0;
+                foreach (ChoiceAnswer ans in question.Choices)
+                {
+                    AnswerChoiceViewModel v = questionVM.Choices[j];
+                    ans.DisplayType = v.DisplayType;
+                    ans.ChoiceId = j; // v.ChoiceId;
+                    ans.Text = v.Text;
+                    ans.PointsPerChoice = v.PointsPerChoice;
+                    ans.IsAnswer = v.IsAnswer;
+                    j++;
+                }
+            }
+            else if (question.Type == 6)
+            {
+                AnswerChoiceViewModel choice = new AnswerChoiceViewModel();
+
+            }
+
         }
 
 
@@ -750,7 +768,6 @@ namespace Institute.WebApi.Controllers
 
         private HttpResponseMessage CommonLockUnLockQuestion(HttpRequestMessage request, QuestionViewModel questionVM, bool isLock)
         {
-
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
@@ -763,7 +780,6 @@ namespace Institute.WebApi.Controllers
                 else
                 {
                     Question question = new Question();
-
                     question = _questionRepository.GetSingle(questionVM.ID);
 
                     if (isLock)
@@ -775,8 +791,6 @@ namespace Institute.WebApi.Controllers
                             question.OnLocked = DateTime.Now;
                             _questionRepository.Edit(question);
                             _unitOfWork.Commit();
-
-
                             // Update view model
                             questionVM = Mapper.Map<Question, QuestionViewModel>(question);
                             response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.Created, questionVM);
@@ -787,7 +801,6 @@ namespace Institute.WebApi.Controllers
                             // Update view model
                             questionVM = Mapper.Map<Question, QuestionViewModel>(question);
                             response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.NotAcceptable, questionVM);
-
                         }
                     }
                     else
@@ -799,7 +812,6 @@ namespace Institute.WebApi.Controllers
                             question.OnLocked = DateTime.Now;
                             _questionRepository.Edit(question);
                             _unitOfWork.Commit();
-
 
                             // Update view model
                             questionVM = Mapper.Map<Question, QuestionViewModel>(question);
@@ -844,7 +856,7 @@ namespace Institute.WebApi.Controllers
                     _unitOfWork.Commit();
 
                     // Update view model
-                    
+
                     QuestionViewModel questionVM = Mapper.Map<Question, QuestionViewModel>(deleteQuestion);
                     response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.OK, questionVM);
                 }

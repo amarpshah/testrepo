@@ -17,6 +17,7 @@
         $scope.updatePool = updatePool
         $scope.copyData = copyData;
         $scope.find = find;
+        $scope.ValidatePool = ValidatePool;
         
         membershipService.redirectIfNotLoggedIn();
         $scope.PoolId = parseInt($stateParams.poolid);
@@ -38,27 +39,30 @@
         $scope.loadvalues();
          
         function AddPool() {
-            var newPool = {};
+            if ($scope.ValidatePool()) {
 
-            if (isNaN($scope.TestId)) {
-                notificationService.displayError("Need to map it to valid Test object.");
-            }
-            else {
-                newPool.Name = $scope.newPool.Name;
-                newPool.TestID = $scope.TestId;
-                newPool.Status = $scope.newPool.Status;
-                newPool.DifficultyLevel = $scope.newPool.DifficultyLevel;
-                newPool.NoOfQuestionsOutOf = $scope.newPool.NoOfQuestionsOutOf;
-                newPool.PoolTotalMarks = $scope.newPool.PoolTotalMarks;
-                newPool.PassingScore = $scope.newPool.PassingScore;
-                if ($scope.newPool.IsMandatoryToPass == true)
-                    newPool.IsMandatoryToPass = 1;
-                else
-                    newPool.IsMandatoryToPass = 0;
+                var newPool = {};
 
-                apiService.post(baseUrl + '/api/pools/add', newPool,
-                    registerQuestionSucceded,
-                    registerQuestionFailed);
+                if (isNaN($scope.TestId)) {
+                    notificationService.displayError("Need to map it to valid Test object.");
+                }
+                else {
+                    newPool.Name = $scope.newPool.Name;
+                    newPool.TestID = $scope.TestId;
+                    newPool.Status = $scope.newPool.Status;
+                    newPool.DifficultyLevel = $scope.newPool.DifficultyLevel;
+                    newPool.NoOfQuestionsOutOf = $scope.newPool.NoOfQuestionsOutOf;
+                    newPool.PoolTotalMarks = $scope.newPool.PoolTotalMarks;
+                    newPool.PassingScore = $scope.newPool.PassingScore;
+                    if ($scope.newPool.IsMandatoryToPass == true)
+                        newPool.IsMandatoryToPass = 1;
+                    else
+                        newPool.IsMandatoryToPass = 0;
+
+                    apiService.post(baseUrl + '/api/pools/add', newPool,
+                        registerQuestionSucceded,
+                        registerQuestionFailed);
+                }
             }
         }
 
@@ -80,6 +84,28 @@
                 notificationService.displayError(response.statusText);
         }
 
+        function ValidatePool()
+        {
+            if (angular.isUndefined($scope.newPool.Name)) {
+                $scope.vName = true;
+            }
+            if (isNaN($scope.newPool.Status)) {
+                $scope.vStatus = true;
+            }
+            if (isNaN($scope.newPool.DifficultyLevel)) {
+                $scope.vDifficultyLevel = true;
+            }
+            if (isNaN($scope.newPool.PassingScore)) {
+                $scope.vPassingScore = true;
+            }
+            if (isNaN($scope.newPool.PoolTotalMarks)) {
+                $scope.vPoolTotalMarks = true;
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
         $scope.editPool();
         function editPool(){
             if ($scope.PoolId != null && !isNaN($scope.PoolId)) {
