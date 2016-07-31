@@ -168,28 +168,22 @@ namespace Institute.WebApi.Controllers
 
                     totalUsers = _usersRepository.GetAll().Count();
                 }
-                List<int> roleList = new List<int>();
-                foreach (var u in user)
-                {
-                    roleList.Add(u.UserRoles.ElementAt(0).RoleId);
 
-                }
-                IEnumerable<RegistrationViewModel> studentsVM = Mapper.Map<IEnumerable<User>, IEnumerable<RegistrationViewModel>>(user);
+                IEnumerable<RegistrationViewModel> userVM = Mapper.Map<IEnumerable<User>, IEnumerable<RegistrationViewModel>>(user);
                 int i = 0;
-                foreach (var u in studentsVM)
+                foreach (var u in userVM)
                 {
                     u.sRole = user.ElementAt(i).UserRoles.ElementAt(0).Role.Name.ToString();
-                    u.RoleID = roleList[i];
+                    u.RoleID = user.ElementAt(i).UserRoles.ElementAt(0).Role.ID;
                     i++;
                 }
-
 
                 PaginationSet<RegistrationViewModel> pagedSet = new PaginationSet<RegistrationViewModel>()
                 {
                     Page = currentPage,
                     TotalCount = totalUsers,
                     TotalPages = (int)Math.Ceiling((decimal)totalUsers / currentPageSize),
-                    Items = studentsVM
+                    Items = userVM
                 };
 
                 response = request.CreateResponse<PaginationSet<RegistrationViewModel>>(HttpStatusCode.OK, pagedSet);
@@ -222,7 +216,6 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-
                 totalusers = _usersRepository.GetAll()
                                   .Where(q => (username != null ? q.Username.Contains(username) : 1 == 1) &&
                                               (roleid != -1 ? q.UserRoles.Any(x => x.RoleId == roleid) : 1 == 1) &&
@@ -231,21 +224,14 @@ namespace Institute.WebApi.Controllers
                       )
                       .Count();
 
-                List<int> roleList = new List<int>();
-                foreach (var u in users)
-                {
-                    roleList.Add(u.UserRoles.ElementAt(0).RoleId);
-
-                }
                 IEnumerable<RegistrationViewModel> usersVM = Mapper.Map<IEnumerable<User>, IEnumerable<RegistrationViewModel>>(users);
                 int i = 0;
                 foreach (var u in usersVM)
                 {
                     u.sRole = users.ElementAt(i).UserRoles.ElementAt(0).Role.Name.ToString();
-                    u.RoleID = roleList[i];
+                    u.RoleID = users.ElementAt(i).UserRoles.ElementAt(0).Role.ID;
                     i++;
                 }
-
 
                 PaginationSet<RegistrationViewModel> pagedSet = new PaginationSet<RegistrationViewModel>()
                 {

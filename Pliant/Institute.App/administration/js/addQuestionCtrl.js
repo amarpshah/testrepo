@@ -136,19 +136,15 @@
                             question.Choices[i].ID = question.Choices[i].ChoiceId;
                             if (question.Choices[i].IsAnswer == true) {
                                 $scope.newQuestion.cIsAnswer = question.Choices[i].ChoiceId;
-
                             }
                         }
                         $scope.newQuestion.Choices = question.Choices;
                     }
                     else {
-
                         $scope.newQuestion.MChoices = question.Choices;
                         $scope.newQuestion.MChoices.PointsPerChoice = question.Choices[0].PointsPerChoice;
                     }
                 }
-
-
             }
         }
 
@@ -492,19 +488,15 @@
 
             $scope.IsNewQuestion = true;
             newQuestion.TopicId = $scope.newQuestion.TopicId;
-
             newQuestion.Code = $scope.newQuestion.Code;
             newQuestion.Text = $scope.newQuestion.Question;
             newQuestion.Objective = $scope.newQuestion.Objective;
             newQuestion.Hint = $scope.newQuestion.Hint;
-
             newQuestion.Type = $scope.newQuestion.QuestionType;
             newQuestion.Points = $scope.newQuestion.Points;
             newQuestion.Status = $scope.newQuestion.Status;
             newQuestion.DifficultyLevel = $scope.newQuestion.Difficulty;
-
             newQuestion.Descriptive = [];
-
             newQuestion.MatchPairs = [];
             newQuestion.Choices = [];
 
@@ -627,7 +619,7 @@
                 $scope.vTopicId = true;
             }
             if (angular.isUndefined($scope.newQuestion.Code)) {
-               $scope.vCode = true;
+                $scope.vCode = true;
             }
             if (angular.isUndefined($scope.newQuestion.Question)) {
                 $scope.vQuestion = true;
@@ -636,7 +628,7 @@
                 $scope.vObjective = true;
             }
             if (angular.isUndefined($scope.newQuestion.Hint)) {
-               $scope.vHint = true;
+                $scope.vHint = true;
             }
             if (isNaN($scope.newQuestion.QuestionType)) {
                 $scope.vQuestionType = true;
@@ -651,12 +643,12 @@
                 $scope.vDifficulty = true;
                 return false;
             }
-           
-           else {
+
+            else {
                 return true;
-           }
+            }
 
         }
-  }
+    }
 
 })(angular.module('app-administration'));

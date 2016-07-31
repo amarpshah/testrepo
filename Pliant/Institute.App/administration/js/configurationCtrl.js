@@ -15,7 +15,6 @@
         var baseUrl = webApiLocationService.get('webapi');
 
         function openStandardDialog() {
-            //alert('Open Standard');
             $modal.open({
                 templateUrl: 'scripts/spas/administration/html/standard.html',
                 controller: 'standardCtrl'
@@ -25,7 +24,6 @@
         }
 
         function openSubjectDialog() {
-            //alert('Open Subject');
             $modal.open({
                 templateUrl: 'scripts/spas/administration/html/subject.html',
                 controller: 'subjectCtrl',

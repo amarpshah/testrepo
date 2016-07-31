@@ -1,117 +1,102 @@
 ﻿<div class="row" style="margin-bottom: 15px;">
     <div class="col-lg-12">
-        <h2 class="page-header">
-            Tests 
+        <h2 class="page-header">Tests 
         </h2>
-       
-       
-         <div class="addBlock">
-            <a ui-sref="AdminAddTest" ng-if="permissionADDTEST === 1" class="btn btn-success pull-left" ><i class="fa fa-fw fa-plus-circle"></i>Add</a>
-        </div>
-         <div class="addBlock">
-            <a data-ng-click="showSelected('lock');" ng-if="permissionLOCKTEST === 1" class="btn btn-warning pull-left" style="margin-left:10px"><i class="fa fa-fw fa-lock"></i>Lock</a>
+        <div class="addBlock">
+            <a ui-sref="AdminAddTest" ng-if="permissionADDTEST === 1" class="btn btn-success pull-left"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
         </div>
         <div class="addBlock">
-            <a data-ng-click="showSelected('unLock');" ng-if="permissionLOCKTEST === 1" class="btn btn-primary pull-left" style="margin-left:10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
+            <a data-ng-click="showSelected('lock');" ng-if="permissionLOCKTEST === 1" class="btn btn-warning pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-lock"></i>Lock</a>
         </div>
         <div class="addBlock">
-            <a ui-sref="AdminAddTest" ng-if="permissionDELETETEST === 1" class="btn btn-danger pull-left" style="margin-left:10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+            <a data-ng-click="showSelected('unLock');" ng-if="permissionLOCKTEST === 1" class="btn btn-primary pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
         </div>
-       
+        <div class="addBlock">
+            <a ui-sref="AdminAddTest" ng-if="permissionDELETETEST === 1" class="btn btn-danger pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+        </div>
     </div>
 </div>
 
-        <div class="row questionControl active">
+<div class="row questionControl active">
     <div class="col-lg-12">
         <div class="row panel panel-default">
             <div class="panel-heading">
-            <div >
+                <div>
                     <div class="col-lg-2 col-md-2 col-xs-2 text-center">
-                     <!--<label>Code: </label>-->
-                    <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Search Code here..." />
+                        <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Search Code here..." />
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-4 text-center">
-                         <!--<label>Text: </label>-->
-                <input type="text" ng-model="SearchText.Text" class="form-control adv-question" placeholder="Search Test string here..." />
+                        <input type="text" ng-model="SearchText.Text" class="form-control adv-question" placeholder="Search Test string here..." />
                     </div>
-                   
                 </div>
-                 <div class="searchBlock active">
-                     <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
-                    <a href="" ng-click="ShowAdvancedSearch()" class="btn btn-primary toggleAdvancedSearch pull-right" toolTip="Advace Search"><i class="fa fa-fw fa-search-plus"></i></a>
+                <div class="searchBlock active">
+                    <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
+                    <a href="" ng-click="ShowAdvancedSearch()" class="btn btn-primary toggleAdvancedSearch pull-right" tooltip="Advace Search"><i class="fa fa-fw fa-search-plus"></i></a>
                     <a ng-click="search(0, SearchText);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
-                    
-                  
                 </div>
-                      <div class="advanceBlock">
-           
-           
-            <div class="btn-group col-lg-2 col-md-2 col-sm-2">
-                <label ng-hide="true">Status: </label>
-                <select class="form-control adv-status" ng-model="SearchText.Status" ng-options="option.value as option.Text for option in test.status">
-                    <option value="" selected>Select Status</option>
-                </select>
-            </div>
-            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
-                <label ng-hide="true">Difficulty: </label>
-                <select class="form-control adv-difficulty" ng-model="SearchText.DifficultyLevel" ng-options="option.value as option.Text for option in test.difficulty">
-                    <option value="" selected>Select Difficulty Level</option>
-                </select>
-            </div>
-        </div>
-    </div>
-<!--questionList-->
-<div class="panel-body questionList">
-    
-    <div ng-repeat="test in Tests" >
-        <div class="list-group">
-            <div class="questionItem">
-                <span class="questionCheck">
-                    <input type="checkbox"  ng-model="test.selected"  ng-value="{{test.ID}}" ng-disabled="{{test.LockedBy != checkId && test.Lock != 0}}"></input>
-                    <!--id="checkbox1"-->
-                </span>
-                <span class="questionDetail">
-                    <label for="checkbox1" href="" class="list-group-item question">
-                        <h5>
-                            <span class="questionCode">{{test.Code}}</span>:
-                            <span class="questionText">{{test.Text}}</span>
-                        </h5>
-                        <p class="topicText">{{test.Description}}</p>
-                        <p class="questionState">
-                            <span class="statusText">{{test.sStatus}}</span> - <span class="difficultyText">{{test.sDifficultyLevel}}</span>
-                        </p>
-                    </label>
-                </span>
-                 <div class="totalCount">
-                     <span class="countText">Pools Added:</span> <span  class="countValue">{{test.PoolCount}}</span>
+                <div class="advanceBlock">
 
-                 </div>  
-                <span class="modifiedBy text-right">
-                   
-                  <span class="modifiedByName">{{userName}}</span> <span class="modifiedDate">{{test.OnCreated| date:"dd-MMM-yyyy 'at' h:mma"}}</span>
-                </span>
-                <span class="questionItemAction">
-                    <a ui-sref="AdminEditTest({testId:test.ID, lockId:test.Lock})" ng-if="permissionUPDATETEST === 1" class="btn btn-primary edittestt pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
-       
-                    <a  ng-click="testLock(test);" ng-if="permissionLOCKTEST === 1" ng-show="test.Lock" class="btn btn-warning lockQuestion pull-right" ><i ng-show="{{checkId == test.LockedBy}}" class="fa fa-key"  toolTip="Locked"></i><i ng-show="!{{checkId == test.LockedBy}}" class="fa fa-lock" toolTip="Locked By :{{test.UserName}}"></i></a>
-                    <a  ng-click="testLock(test);" ng-if="permissionLOCKTEST === 1" ng-show="!test.Lock" class="btn btn-warning lockQuestion pull-right"  toolTip="Unlock"><i  class="fa fa-unlock"></i></a>
-                    <a ng-click="deleteTest(test.ID)" ng-if="permissionDELETETEST === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" toolTip="Delete"><i class="fa fa-trash"></i></a>
-       
-                    <a ui-sref="AdminPool({testid:test.ID,testname:test.Text})" ng-if="permissionPOOLSTEST === 1" class="btn btn-primary pull-right view" toolTip="Pools"><i class="fa fa-eye"></i></a>
-                    <a ui-sref="AdminGeneratePaper({testid:test.ID, testname:test.Text})" ng-if="permissionGENERATEPAPERTEST === 1" class="btn btn-success pull-right view" toolTip="Generate Paper"><i class="fa fa-book"></i></a>
-                </span>
+
+                    <div class="btn-group col-lg-2 col-md-2 col-sm-2">
+                        <label ng-hide="true">Status: </label>
+                        <select class="form-control adv-status" ng-model="SearchText.Status" ng-options="option.value as option.Text for option in test.status">
+                            <option value="" selected>Select Status</option>
+                        </select>
+                    </div>
+                    <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                        <label ng-hide="true">Difficulty: </label>
+                        <select class="form-control adv-difficulty" ng-model="SearchText.DifficultyLevel" ng-options="option.value as option.Text for option in test.difficulty">
+                            <option value="" selected>Select Difficulty Level</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            
+            <!--questionList-->
+            <div class="panel-body questionList">
+                <div ng-repeat="test in Tests">
+                    <div class="list-group">
+                        <div class="questionItem">
+                            <span class="questionCheck">
+                                <input type="checkbox" ng-model="test.selected" ng-value="{{test.ID}}" ng-disabled="{{test.LockedBy != checkId && test.Lock != 0}}"></input>
+                                <!--id="checkbox1"-->
+                            </span>
+                            <span class="questionDetail">
+                                <label for="checkbox1" href="" class="list-group-item question">
+                                    <h5>
+                                        <span class="questionCode">{{test.Code}}</span>:
+                            <span class="questionText">{{test.Text}}</span>
+                                    </h5>
+                                    <p class="topicText">{{test.Description}}</p>
+                                    <p class="questionState">
+                                        <span class="statusText">{{test.sStatus}}</span> - <span class="difficultyText">{{test.sDifficultyLevel}}</span>
+                                    </p>
+                                </label>
+                            </span>
+                            <div class="totalCount">
+                                <span class="countText">Pools Added:</span> <span class="countValue">{{test.PoolCount}}</span>
+
+                            </div>
+                            <span class="modifiedBy text-right">
+
+                                <span class="modifiedByName">{{userName}}</span> <span class="modifiedDate">{{test.OnCreated| date:"dd-MMM-yyyy 'at' h:mma"}}</span>
+                            </span>
+                            <span class="questionItemAction">
+                                <a ui-sref="AdminEditTest({testId:test.ID, lockId:test.Lock})" ng-if="permissionUPDATETEST === 1" class="btn btn-primary edittestt pull-right" tooltip="Edit"><i class="fa fa-edit"></i></a>
+                                <a ng-click="testLock(test);" ng-if="permissionLOCKTEST === 1" ng-show="test.Lock" class="btn btn-warning lockQuestion pull-right"><i ng-show="{{checkId == test.LockedBy}}" class="fa fa-key" tooltip="Locked"></i><i ng-show="!{{checkId == test.LockedBy}}" class="fa fa-lock" tooltip="Locked By :{{test.UserName}}"></i></a>
+                                <a ng-click="testLock(test);" ng-if="permissionLOCKTEST === 1" ng-show="!test.Lock" class="btn btn-warning lockQuestion pull-right" tooltip="Unlock"><i class="fa fa-unlock"></i></a>
+                                <a ng-click="deleteTest(test.ID)" ng-if="permissionDELETETEST === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
+                                <a ui-sref="AdminPool({testid:test.ID,testname:test.Text})" ng-if="permissionPOOLSTEST === 1" class="btn btn-primary pull-right view" tooltip="Pools"><i class="fa fa-eye"></i></a>
+                                <a ui-sref="AdminGeneratePaper({testid:test.ID, testname:test.Text})" ng-if="permissionGENERATEPAPERTEST === 1" class="btn btn-success pull-right view" tooltip="Generate Paper"><i class="fa fa-book"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-            </div>
-        
-        
-            <div class="panel-footer">
+        <div class="panel-footer">
             <div class="text-center">
                 <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page, SearchText);"></custom-pager>
             </div>
         </div>
-        </div>
-            </div>
+    </div>
+</div>

@@ -126,7 +126,6 @@ namespace Institute.WebApi.Controllers
             HttpResponseMessage response = null;
             List<Pool> pools = new List<Pool>();
             List<Question> questions = new List<Question>();
-           // List<TempTestQuestion> tempTestQuestionList = new List<TempTestQuestion>();
             ICollection<TempTestQuestionViewModel> testQuestionVM = null;
 
             if (testid != null)
@@ -224,11 +223,6 @@ namespace Institute.WebApi.Controllers
                                         tempTestQuestion.Matches.Add(ans);
                                         index++;
                                     }
-
-                                    //foreach (MatchingAnswer m in MatchDisplay)
-                                    //{ 
-                                    
-                                    //}
                                 }
                                 else if (question.Type == 4 || question.Type == 5)
                                 {
@@ -246,14 +240,11 @@ namespace Institute.WebApi.Controllers
                                     }
                                 }
                                 _tempTestQuestionRepository.Add(tempTestQuestion);
-                               // tempTestQuestionList.Add(tempTestQuestion);
                             }
                         }
                     }
                 }
                 _unitOfWork.Commit();
-
-                //testQuestionVM = Mapper.Map<ICollection<TempTestQuestion>, ICollection<TempTestQuestionViewModel>>(tempTestQuestionList);
                 response = request.CreateResponse<ICollection<TempTestQuestionViewModel>>(HttpStatusCode.Created, null);
 
             }
@@ -263,7 +254,6 @@ namespace Institute.WebApi.Controllers
             }
 
             return response;
-
         }
 
 
@@ -291,6 +281,246 @@ namespace Institute.WebApi.Controllers
             });
         }
 
+       
+        //// function To get TestPaper
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[Route("filterpaper")]
+        //public HttpResponseMessage FilteredPaper(HttpRequestMessage request, int? paperid)
+        //{
+        //    return CreateHttpResponse(request, () =>
+        //    {
+        //        HttpResponseMessage response = null;
+        //        List<TempTestQuestion> tempTestQuestions = null;
+        //        List<TestQuestion> testQuestions = null;  //TODO: Check ISFinalized
+        //        List<TestSetsViewModel> testSets = new List<TestSetsViewModel>();
+        //        bool IsFinalised  = false;
+               
+        //        var finalPaper = _paperRepository.GetAll()
+        //                      .Where(q => (q.ID == paperid))
+        //                      .ToList();
+
+        //        if (finalPaper != null && finalPaper.Count > 0)
+        //        {
+        //            Paper paper = new Paper();
+        //            paper = finalPaper[0];
+        //            IsFinalised = paper.IsFinalized;
+        //        }
+
+        //        if (IsFinalised)
+        //        {
+        //            testQuestions = _testQuestionRepository.GetAll()
+        //                .Where(c => ((c.PaperID == paperid)))    //removed paperid == -1 ? true :
+        //                .OrderBy(c => c.ID)
+        //                .ToList();
+
+        //            Dictionary<int, string> temp = new Dictionary<int, string>();
+        //            Dictionary<int, string> tempPools = new Dictionary<int, string>();
+        //            foreach (var t in testQuestions)
+        //            {
+        //                if (!temp.ContainsKey(t.TestSetNo))
+        //                {
+        //                    temp.Add(t.TestSetNo, "");
+        //                    testSets.Add(new TestSetsViewModel { TestSetNo = t.TestSetNo, TestSetPools = new List<TestSetPoolViewModel>() });
+
+        //                }
+        //                if (!tempPools.ContainsKey(t.PoolID))
+        //                {
+        //                    tempPools.Add(t.PoolID, t.PoolName);
+
+        //                }
+        //            }
+
+
+        //            // Populate Pools inside testSets  
+        //            foreach (var ts in testSets)
+        //            {
+        //                // Populating Questions inside Pools
+        //                foreach (var t in tempPools)
+        //                {
+        //                    TestSetPoolViewModel poolObj = new TestSetPoolViewModel { PoolID = t.Key, PoolName = t.Value, TestSetQuestions = new List<TestSetPoolQuestionViewModel>() };
+                            
+        //                    foreach (var q in testQuestions)
+        //                    {
+        //                        var data = CopyTestSetQuestion(q);
+        //                        if (q.TestSetNo == ts.TestSetNo && q.PoolID == t.Key)
+        //                        {
+
+        //                            poolObj.TestSetQuestions.Add(data);
+        //                        }
+        //                    }
+        //                    ts.TestSetPools.Add(poolObj);
+        //                }
+        //            }
+
+
+        //            response = request.CreateResponse<IEnumerable<TestSetsViewModel>>(HttpStatusCode.OK, testSets);
+
+        //        }
+        //        else
+        //        {
+        //            tempTestQuestions = _tempTestQuestionRepository.GetAll()
+        //           .Where(c => ((c.PaperID == paperid)))    //removed paperid == -1 ? true :
+        //           .OrderBy(c => c.ID)
+        //           .ToList();
+        //            Dictionary<int, string> temp = new Dictionary<int, string>();
+        //            Dictionary<int, string> tempPools = new Dictionary<int, string>();
+        //            foreach (var t in tempTestQuestions)
+        //            {
+        //                if (!temp.ContainsKey(t.TestSetNo))
+        //                {
+        //                    temp.Add(t.TestSetNo, "");
+        //                    testSets.Add(new TestSetsViewModel { TestSetNo = t.TestSetNo, TestSetPools = new List<TestSetPoolViewModel>() });
+
+        //                }
+        //                if (!tempPools.ContainsKey(t.PoolID))
+        //                {
+        //                    tempPools.Add(t.PoolID, t.PoolName);
+
+        //                }
+        //            }
+
+        //            foreach (var ts in testSets)
+        //            {
+
+        //                foreach (var t in tempPools)
+        //                {
+        //                    TestSetPoolViewModel poolObj = new TestSetPoolViewModel { PoolID = t.Key, PoolName = t.Value, TestSetQuestions = new List<TestSetPoolQuestionViewModel>() };
+
+        //                    foreach (var q in tempTestQuestions)
+        //                    {
+        //                        var data = CopyTestSetQuestion(q);
+        //                        if (q.TestSetNo == ts.TestSetNo && q.PoolID == t.Key)
+        //                        {
+
+        //                            poolObj.TestSetQuestions.Add(data);
+        //                        }
+        //                    }
+        //                    ts.TestSetPools.Add(poolObj);
+        //                }
+        //            }
+
+        //            //IEnumerable<TempTestQuestionViewModel> tempTestQuestionVM = Mapper.Map<IEnumerable<TempTestQuestion>, IEnumerable<TempTestQuestionViewModel>>(tempTestQuestions);
+        //            //response = request.CreateResponse<IEnumerable<TempTestQuestionViewModel>>(HttpStatusCode.OK, tempTestQuestionVM);
+        //            response = request.CreateResponse<IEnumerable<TestSetsViewModel>>(HttpStatusCode.OK, testSets);
+        //        }
+        //        return response;
+        //    });
+        //}
+
+
+
+        private HttpResponseMessage FinalPaper(HttpRequestMessage request, int? paperid)
+        {
+           
+            HttpResponseMessage response = null;
+            
+            List<TestQuestion> testQuestions = null; 
+            List<TestSetsViewModel> testSets = new List<TestSetsViewModel>();
+
+            testQuestions = _testQuestionRepository.GetAll()
+                       .Where(c => ((c.PaperID == paperid)))  
+                       .OrderBy(c => c.ID)
+                       .ToList();
+
+            Dictionary<int, string> temp = new Dictionary<int, string>();
+            Dictionary<int, string> tempPools = new Dictionary<int, string>();
+            foreach (var t in testQuestions)
+            {
+                if (!temp.ContainsKey(t.TestSetNo))
+                {
+                    temp.Add(t.TestSetNo, "");
+                    testSets.Add(new TestSetsViewModel { TestSetNo = t.TestSetNo, TestSetPools = new List<TestSetPoolViewModel>() });
+
+                }
+                if (!tempPools.ContainsKey(t.PoolID))
+                {
+                    tempPools.Add(t.PoolID, t.PoolName);
+
+                }
+            }
+
+
+            // Populate Pools inside testSets  
+            foreach (var ts in testSets)
+            {
+                // Populating Questions inside Pools
+                foreach (var t in tempPools)
+                {
+                    TestSetPoolViewModel poolObj = new TestSetPoolViewModel { PoolID = t.Key, PoolName = t.Value, TestSetQuestions = new List<TestSetPoolQuestionViewModel>() };
+
+                    foreach (var q in testQuestions)
+                    {
+                        var data = CopyTestSetQuestion(q);
+                        if (q.TestSetNo == ts.TestSetNo && q.PoolID == t.Key)
+                        {
+
+                            poolObj.TestSetQuestions.Add(data);
+                        }
+                    }
+                    ts.TestSetPools.Add(poolObj);
+                }
+            }
+
+
+            response = request.CreateResponse<IEnumerable<TestSetsViewModel>>(HttpStatusCode.OK, testSets);
+           
+            return response;
+          
+        }
+
+        private HttpResponseMessage TempPaper(HttpRequestMessage request, int? paperid)
+        {
+            HttpResponseMessage response = null;
+            List<TempTestQuestion> tempTestQuestions = null;
+            List<TestSetsViewModel> testSets = new List<TestSetsViewModel>();
+
+            tempTestQuestions = _tempTestQuestionRepository.GetAll()
+           .Where(c => ((c.PaperID == paperid)))    
+           .OrderBy(c => c.ID)
+           .ToList();
+            Dictionary<int, string> temp = new Dictionary<int, string>();
+            Dictionary<int, string> tempPools = new Dictionary<int, string>();
+            foreach (var t in tempTestQuestions)
+            {
+                if (!temp.ContainsKey(t.TestSetNo))
+                {
+                    temp.Add(t.TestSetNo, "");
+                    testSets.Add(new TestSetsViewModel { TestSetNo = t.TestSetNo, TestSetPools = new List<TestSetPoolViewModel>() });
+
+                }
+                if (!tempPools.ContainsKey(t.PoolID))
+                {
+                    tempPools.Add(t.PoolID, t.PoolName);
+
+                }
+            }
+
+            foreach (var ts in testSets)
+            {
+
+                foreach (var t in tempPools)
+                {
+                    TestSetPoolViewModel poolObj = new TestSetPoolViewModel { PoolID = t.Key, PoolName = t.Value, TestSetQuestions = new List<TestSetPoolQuestionViewModel>() };
+
+                    foreach (var q in tempTestQuestions)
+                    {
+                        var data = CopyTestSetQuestion(q);
+                        if (q.TestSetNo == ts.TestSetNo && q.PoolID == t.Key)
+                        {
+
+                            poolObj.TestSetQuestions.Add(data);
+                        }
+                    }
+                    ts.TestSetPools.Add(poolObj);
+                }
+            }
+
+            response = request.CreateResponse<IEnumerable<TestSetsViewModel>>(HttpStatusCode.OK, testSets);
+            return response;
+        }
+        
+        
         // function To get TestPaper
         [AllowAnonymous]
         [HttpGet]
@@ -300,11 +530,9 @@ namespace Institute.WebApi.Controllers
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
-                List<TempTestQuestion> tempTestQuestions = null;
-                List<TestQuestion> testQuestions = null;  //TODO: Check ISFinalized
-                List<TestSetsViewModel> testSets = new List<TestSetsViewModel>();
-                bool IsFinalised  = false;
-               
+              
+                bool IsFinalised = false;
+
                 var finalPaper = _paperRepository.GetAll()
                               .Where(q => (q.ID == paperid))
                               .ToList();
@@ -318,104 +546,16 @@ namespace Institute.WebApi.Controllers
 
                 if (IsFinalised)
                 {
-                    testQuestions = _testQuestionRepository.GetAll()
-                        .Where(c => ((c.PaperID == paperid)))    //removed paperid == -1 ? true :
-                        .OrderBy(c => c.ID)
-                        .ToList();
-
-                    Dictionary<int, string> temp = new Dictionary<int, string>();
-                    Dictionary<int, string> tempPools = new Dictionary<int, string>();
-                    foreach (var t in testQuestions)
-                    {
-                        if (!temp.ContainsKey(t.TestSetNo))
-                        {
-                            temp.Add(t.TestSetNo, "");
-                            testSets.Add(new TestSetsViewModel { TestSetNo = t.TestSetNo, TestSetPools = new List<TestSetPoolViewModel>() });
-
-                        }
-                        if (!tempPools.ContainsKey(t.PoolID))
-                        {
-                            tempPools.Add(t.PoolID, t.PoolName);
-
-                        }
-                    }
-
-
-                    // Populate Pools inside testSets  
-                    foreach (var ts in testSets)
-                    {
-                        // Populating Questions inside Pools
-                        foreach (var t in tempPools)
-                        {
-                            TestSetPoolViewModel poolObj = new TestSetPoolViewModel { PoolID = t.Key, PoolName = t.Value, TestSetQuestions = new List<TestSetPoolQuestionViewModel>() };
-                            
-                            foreach (var q in testQuestions)
-                            {
-                                var data = CopyTestSetQuestion(q);
-                                if (q.TestSetNo == ts.TestSetNo && q.PoolID == t.Key)
-                                {
-
-                                    poolObj.TestSetQuestions.Add(data);
-                                }
-                            }
-                            ts.TestSetPools.Add(poolObj);
-                        }
-                    }
-
-
-                    response = request.CreateResponse<IEnumerable<TestSetsViewModel>>(HttpStatusCode.OK, testSets);
-
+                    response = FinalPaper(request, paperid);
                 }
                 else
                 {
-                    tempTestQuestions = _tempTestQuestionRepository.GetAll()
-                   .Where(c => ((c.PaperID == paperid)))    //removed paperid == -1 ? true :
-                   .OrderBy(c => c.ID)
-                   .ToList();
-                    Dictionary<int, string> temp = new Dictionary<int, string>();
-                    Dictionary<int, string> tempPools = new Dictionary<int, string>();
-                    foreach (var t in tempTestQuestions)
-                    {
-                        if (!temp.ContainsKey(t.TestSetNo))
-                        {
-                            temp.Add(t.TestSetNo, "");
-                            testSets.Add(new TestSetsViewModel { TestSetNo = t.TestSetNo, TestSetPools = new List<TestSetPoolViewModel>() });
-
-                        }
-                        if (!tempPools.ContainsKey(t.PoolID))
-                        {
-                            tempPools.Add(t.PoolID, t.PoolName);
-
-                        }
-                    }
-
-                    foreach (var ts in testSets)
-                    {
-
-                        foreach (var t in tempPools)
-                        {
-                            TestSetPoolViewModel poolObj = new TestSetPoolViewModel { PoolID = t.Key, PoolName = t.Value, TestSetQuestions = new List<TestSetPoolQuestionViewModel>() };
-
-                            foreach (var q in tempTestQuestions)
-                            {
-                                var data = CopyTestSetQuestion(q);
-                                if (q.TestSetNo == ts.TestSetNo && q.PoolID == t.Key)
-                                {
-
-                                    poolObj.TestSetQuestions.Add(data);
-                                }
-                            }
-                            ts.TestSetPools.Add(poolObj);
-                        }
-                    }
-
-                    //IEnumerable<TempTestQuestionViewModel> tempTestQuestionVM = Mapper.Map<IEnumerable<TempTestQuestion>, IEnumerable<TempTestQuestionViewModel>>(tempTestQuestions);
-                    //response = request.CreateResponse<IEnumerable<TempTestQuestionViewModel>>(HttpStatusCode.OK, tempTestQuestionVM);
-                    response = request.CreateResponse<IEnumerable<TestSetsViewModel>>(HttpStatusCode.OK, testSets);
+                    response = TempPaper(request, paperid);
                 }
                 return response;
             });
         }
+
 
         private TestSetPoolQuestionViewModel CopyTestSetQuestion(TempTestQuestion tempTestQuestion)
         {

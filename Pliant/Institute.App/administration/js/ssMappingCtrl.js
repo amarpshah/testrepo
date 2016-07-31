@@ -4,7 +4,7 @@
     app.controller('ssMappingCtrl', ssMappingCtrl);
 
     ssMappingCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams', 'permissionService', 'constantStrService'];
-    //'$state', '$stateParams', 
+
     function ssMappingCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams, permissionService, constantStrService) {
 
         $scope.Mappings = [];
@@ -14,8 +14,6 @@
         $scope.height = '100%';
         $scope.filterMapping = '';
         $scope.loadingMappings = true;
-        var baseUrl = webApiLocationService.get('webapi');
-
         $scope.loadSubject = loadSubject;
         $scope.loadStandard = loadStandard;
         $scope.search = search;
@@ -24,7 +22,7 @@
         $scope.advancedSearch = advancedSearch;
         $scope.clearSearch = clearSearch;
 
-        
+        var baseUrl = webApiLocationService.get('webapi');
         membershipService.redirectIfNotLoggedIn();
         $scope.permissionADDSTDSUBMAP = permissionService.get(constantStrService.ADD_STD_SUB_MAP());
         $scope.permissionADDTOTOPICSTDSUBMAP = permissionService.get(constantStrService.ADD_TO_TOPIC_STD_SUB_MAP());
@@ -54,7 +52,6 @@
             }
             else {
                 $scope.vMapping = true
-
             }
         }
 
@@ -87,7 +84,6 @@
         function standardLoadCompleted(result) {
             $scope.Standards = result.data;
             $scope.loadingStandards = false;
-
             $scope.standardOptions.api.setRowData(result.data);
         }
 
@@ -105,7 +101,6 @@
         function subjectLoadCompleted(result) {
             $scope.Subjects = result.data;
             $scope.loadingSubjects = false;
-
             $scope.subjectOptions.api.setRowData(result.data);
         }
 
@@ -117,7 +112,6 @@
 
             if (!searchItem) {
                 page = page || 0;
-
                 $scope.loadingMappings = true;
 
                 var config = {
@@ -133,21 +127,16 @@
                     mappingLoadFailed);
             }
             else {
-
                 $scope.advancedSearch(page, searchItem);
             }
         }
 
         function mappingLoadCompleted(result) {
             $scope.Mappings = result.data.Items;
-            //alert($scope.Subjects.length);
-
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingMappings = false;
-
-        
 
             if ($scope.filterMapping && $scope.filterMapping.length) {
                 notificationService.displayInfo(result.data.Items.length + ' mappings found');
@@ -159,10 +148,6 @@
             notificationService.displayError(response.data);
         }
 
-        //function clearSearch() {
-        //    $scope.filterMapping = '';
-        //    search();
-        //}
 
         $scope.standardOptions = {
             columnDefs: [
@@ -173,7 +158,6 @@
             ],
             rowData: null,
             enableSorting: true,
-            //showToolPanel: true,
             angularCompileRows: true,            rowSelection: 'single'
         };
 
@@ -185,11 +169,10 @@
             ],
             rowData: null,
             enableSorting: true,
-            //showToolPanel: true,
             angularCompileRows: true,            rowSelection: 'multiple'
         };
 
-        
+
         $scope.search();
         $scope.loadStandard();
         $scope.loadSubject();
@@ -206,38 +189,28 @@
                 apiService.post(baseUrl + '/api/mapping/delete/' + mappingid, null,
             deleteSucceded,
             deleteFailed);
-
-
-
             }
-
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
                 notificationService.displayError(response.statusText);
         }
 
-
         //Advance Search
 
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
-
                 if (angular.isUndefined(item.StandardId)) {
                     item.StandardId = -1;
                 }
@@ -251,18 +224,14 @@
                         pageSize: 10,
                         standardid: item.StandardId,
                         subjectid: item.SubjectId,
-
-
                     }
                 };
-
 
                 apiService.get(baseUrl + '/api/mapping/advancedsearch/', config,
                    advancedSearchCompleted,
                    advancedSearchFailed);
             }
             else {
-
                 notificationService.displayError("Please select Search item");
             }
         }
@@ -274,11 +243,6 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingMappings = false;
-
-            //if ($scope.filterTopic && $scope.filterTopic.length) {
-            //    notificationService.displayInfo(result.data.Items.length + ' topics(s) found');
-            //}
-
         }
 
         function advancedSearchFailed(response) {

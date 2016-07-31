@@ -60,13 +60,13 @@
                         newPool.IsMandatoryToPass = 0;
 
                     apiService.post(baseUrl + '/api/pools/add', newPool,
-                        registerQuestionSucceded,
-                        registerQuestionFailed);
+                        addPoolSucceded,
+                        addPoolFailed);
                 }
             }
         }
 
-        function registerQuestionSucceded(response) {
+        function addPoolSucceded(response) {
             console.log(response);
             $scope.newPool = {};
             notificationService.displayInfo('Data uploaded successfully');
@@ -75,7 +75,7 @@
 
         }
 
-        function registerQuestionFailed(response) {
+        function addPoolFailed(response) {
             console.log(response);
 
             if (response.status == '400')
@@ -128,7 +128,6 @@
             $scope.Pools = result.data[0];
 
             if ($scope.Pools != null) {
-               
                 $scope.newPool.Name = $scope.Pools.Name;
                 $scope.newPool.Status = $scope.Pools.Status;
                 $scope.newPool.DifficultyLevel = $scope.Pools.DifficultyLevel;

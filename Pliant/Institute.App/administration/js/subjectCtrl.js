@@ -31,13 +31,13 @@
         $scope.permissionUPDATESUBJECT = permissionService.get(constantStrService.UPDATE_SUBJECT());
         $scope.permissionDELETESUBJECT = permissionService.get(constantStrService.DELETE_SUBJECT());
 
+
         // Show Subject List
         $scope.search();
         function search(page, searchItem) {
 
             if (!searchItem) {
                 page = page || 0;
-
                 $scope.loadingSubjects = true;
 
                 var config = {
@@ -53,21 +53,16 @@
                     standardLoadFailed);
             }
             else {
-
                 $scope.advancedSearch(page, searchItem);
             }
         }
 
         function standardLoadCompleted(result) {
             $scope.Subjects = result.data.Items;
-            //alert($scope.Subjects.length);
-
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingSubjects = false;
-
-
             if ($scope.filterSubjects && $scope.filterSubjects.length) {
                 notificationService.displayInfo(result.data.Items.length + ' subjects found');
             }
@@ -76,7 +71,6 @@
         function standardLoadFailed(response) {
             notificationService.displayError(response.data);
         }
-
 
         //Add Subjects
 
@@ -98,7 +92,6 @@
 
         function addSubjectFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -107,7 +100,6 @@
 
         //Delete Subject
         function deleteSubject(subjectid) {
-
             if (subjectid != null) {
                 var config = {
                     params: {
@@ -117,20 +109,13 @@
                 apiService.post(baseUrl + '/api/subjects/delete/' + subjectid, null,
             deleteSucceded,
             deleteFailed);
-
-
-
             }
-
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
@@ -157,7 +142,6 @@
 
         //Update Subject
         function updateSubject() {
-
             var newSubject = $scope.newSubject;
             apiService.post(baseUrl + '/api/subjects/update', newSubject,
                     updateSubjectSucceded,
@@ -176,7 +160,6 @@
 
         function updateSubjecFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -188,18 +171,13 @@
 
         //Validation function
         function register() {
-
-
             if (angular.isUndefined($scope.newSubject.Code)) {
                 $scope.vCode = true;
-
             }
-
             if (angular.isUndefined($scope.newSubject.Subject)) {
                 $scope.vName = true;
                 return false;
             }
-
             else {
                 return true;
             }
@@ -211,24 +189,18 @@
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
-
-
                 if (angular.isUndefined(item.Code)) {
                     item.Code = "";
                 }
                 if (angular.isUndefined(item.Subject)) {
                     item.Subject = "";
                 }
-
-               
                 var config = {
                     params: {
                         page: page,
                         pageSize: 5,
                         code: item.Code,
                         subject: item.Subject,
-                       
-
                     }
                 };
 
@@ -250,11 +222,6 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingSubjects = false;
-
-            //if ($scope.filterTopic && $scope.filterTopic.length) {
-            //    notificationService.displayInfo(result.data.Items.length + ' topics(s) found');
-            //}
-
         }
 
         function advancedSearchFailed(response) {

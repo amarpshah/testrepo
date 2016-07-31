@@ -34,7 +34,6 @@
         function search(page, searchItem) {
             if (!searchItem) {
                 page = page || 0;
-
                 $scope.loadingStandard = true;
 
                 var config = {
@@ -60,18 +59,14 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingStandard = false;
-
-
             if ($scope.filterStudents && $scope.filterStudents.length) {
                 notificationService.displayInfo(result.data.Items.length + ' Standards found');
             }
-
         }
 
         function standardLoadFailed(response) {
             notificationService.displayError(response.data);
         }
-
 
         //Add Standard
 
@@ -93,7 +88,6 @@
 
         function addStandardFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -102,18 +96,13 @@
 
         //Validation function
         function register() {
-
-
             if (angular.isUndefined($scope.newStandard.Code)) {
                 $scope.vCode = true;
-
             }
-
             if (angular.isUndefined($scope.newStandard.Standard)) {
                 $scope.vName = true;
                 return false;
             }
-
             else {
                 return true;
             }
@@ -121,7 +110,6 @@
 
         //Delete Standard
         function deleteStandard(standardid) {
-
             if (standardid != null) {
                 var config = {
                     params: {
@@ -131,25 +119,17 @@
                 apiService.post(baseUrl + '/api/standards/delete/' + standardid, null,
             deleteSucceded,
             deleteFailed);
-
-
-
             }
-
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -163,12 +143,10 @@
             $scope.newStandard.Code = standard.Code;
             $scope.newStandard.Standard = standard.Standard;
             $scope.newStandard.Division = standard.Division;
-
         }
 
         //Update Standard
         function updateStandard() {
-
             var newStandard = $scope.newStandard;
             apiService.post(baseUrl + '/api/standards/update', newStandard,
                     updateSucceded,
@@ -182,12 +160,10 @@
             $scope.IsEditMode = false;
             $scope.search();
             notificationService.displayInfo('Data Updated successfully');
-
         }
 
         function updateFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -204,8 +180,6 @@
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
-
-
                 if (angular.isUndefined(item.Code)) {
                     item.Code = "";
                 }
@@ -216,7 +190,6 @@
                     item.Division = "";
                 }
 
-
                 var config = {
                     params: {
                         page: page,
@@ -224,18 +197,14 @@
                         code: item.Code,
                         standard: item.Standard,
                         division: item.Division,
-
-
                     }
                 };
-
 
                 apiService.get(baseUrl + '/api/standards/advancedsearch/', config,
                    advancedSearchCompleted,
                    advancedSearchFailed);
             }
             else {
-
                 notificationService.displayError("Please select Search item");
             }
         }
@@ -247,11 +216,6 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingStandards = false;
-
-            //if ($scope.filterTopic && $scope.filterTopic.length) {
-            //    notificationService.displayInfo(result.data.Items.length + ' topics(s) found');
-            //}
-
         }
 
         function advancedSearchFailed(response) {

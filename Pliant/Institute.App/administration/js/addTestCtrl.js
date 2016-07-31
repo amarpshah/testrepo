@@ -5,7 +5,7 @@
 
     addTestCtrl.$inject = ['$scope', '$modal', 'apiService', 'membershipService', 'webApiLocationService', 'notificationService', '$stateParams'];
 
-    function addTestCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService,  $stateParams) {
+    function addTestCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams) {
         $scope.pageClass = 'page-test';
         $scope.AddTest = AddTest;
         $scope.UpdateTest = UpdateTest;
@@ -14,19 +14,15 @@
         $scope.Test = {};
         $scope.newTest = {};
         $scope.ValidateTest = ValidateTest;
+        $scope.IsEditMode = false;
 
         membershipService.redirectIfNotLoggedIn();
         var baseUrl = webApiLocationService.get('webapi');
         $scope.TestId = parseInt($stateParams.testId);
         $scope.IsLock = parseInt($stateParams.lockId);
 
-        $scope.IsEditMode = false;
-
-        
-      
 
         $scope.loadvalues = function () {
-            
 
             $scope.Test.status = [{ value: 1, Text: "Draft" },
                                   { value: 2, Text: "Ready" },
@@ -37,17 +33,14 @@
                                                   { value: 3, Text: "Difficult" }
             ];
 
-           
         }
 
 
-        $scope.editTest = function ()
-        {
+        $scope.editTest = function () {
             if ($scope.TestId != null && !isNaN($scope.TestId)) {
                 $scope.IsEditMode = true;
                 $scope.find($scope.TestId);
             }
-
         }
 
         $scope.loadvalues();
@@ -92,12 +85,10 @@
             newTest.Text = $scope.newTest.Text;
             newTest.Description = $scope.newTest.Description;
             newTest.Objective = $scope.newTest.Objective;
-
             newTest.Status = $scope.newTest.Status;
             newTest.DifficultyLevel = $scope.newTest.Difficulty;
             newTest.TotalMarks = $scope.newTest.TotalMarks;
             newTest.PassingMarks = $scope.newTest.PassingMarks;
-
             return newTest;
         }
 
@@ -108,13 +99,13 @@
                 newTest = $scope.copyData();
 
                 apiService.post(baseUrl + '/api/tests/add', newTest,
-                        registerQuestionSucceded,
-                        registerQuestionFailed);
+                        addTestSucceded,
+                        addTestFailed);
             }
-            
+
         }
 
-        function registerQuestionSucceded(response) {
+        function addTestSucceded(response) {
             console.log(response);
             $scope.newTest = {};
             notificationService.displayInfo('Data uploaded successfully');
@@ -123,7 +114,7 @@
 
         }
 
-        function registerQuestionFailed(response) {
+        function addTestFailed(response) {
             console.log(response);
 
             if (response.status == '400')
@@ -132,8 +123,7 @@
                 notificationService.displayError(response.statusText);
         }
 
-        function ValidateTest()
-        {
+        function ValidateTest() {
 
             if (angular.isUndefined($scope.newTest.Code)) {
                 $scope.vCode = true;

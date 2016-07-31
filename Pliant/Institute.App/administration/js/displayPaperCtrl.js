@@ -20,10 +20,7 @@
         var baseUrl = webApiLocationService.get('webapi');
 
         $scope.loadPaper();
-        function loadPaper()
-        {
-
-
+        function loadPaper() {
             if (isNaN($scope.PaperID)) {
                 $scope.PaperID = -1;
             }
@@ -43,15 +40,14 @@
                 $scope.TestID = $scope.Questions[0].TestSetPools[0].TestSetQuestions[0].TestID;
                 $scope.TestName = $scope.Questions[0].TestSetPools[0].TestSetQuestions[0].TestName;
             }
-            
+
         }
 
         function paperLoadFailed(response) {
             notificationService.displayError(response.data);
         }
 
-        function finalize()
-        {
+        function finalize() {
 
             if (isNaN($scope.PaperID)) {
                 $scope.PaperID = -1;
@@ -71,13 +67,13 @@
             notificationService.displayInfo('Question Paper Finalized');
 
         }
-    
 
-    function finalizeFailed(response) {
-        notificationService.displayError(response.data);
+
+        function finalizeFailed(response) {
+            notificationService.displayError(response.data);
+        }
+
+
     }
-
-
-  }
 
 })(angular.module('app-administration'));

@@ -32,9 +32,8 @@
         var baseUrl = webApiLocationService.get('webapi');
         $scope.permissionADDPOOLQUESTIONMAP = permissionService.get(constantStrService.ADD_POOL_QUESTION_MAP());
         $scope.permissionDELETEPOOLQUESTIONMAP = permissionService.get(constantStrService.DELETE_POOL_QUESTION_MAP());
-
-
         membershipService.redirectIfNotLoggedIn();
+
         $scope.question.questiontype = [
                                                   { value: 1, Text: "Descriptive", type: "DES" },
                                                   { value: 2, Text: "True or False", type: "TOF" },
@@ -56,17 +55,13 @@
         ];
 
 
-
-
-        function RemoveQuestionsFromPool(questionid)
-        {
+        function RemoveQuestionsFromPool(questionid) {
             var question2Pool = [];
             if (questionid) {
                 var entry = {};
                 entry.QuestionId = questionid;
                 entry.PoolId = $scope.PoolId;
                 question2Pool.push(entry);
-
             }
             else {
                 for (var i = 0; i < $scope.Questions.length; i++) {
@@ -74,7 +69,6 @@
                         var entry = {}
                         entry.QuestionId = $scope.Questions[i].ID;
                         entry.PoolId = $scope.PoolId;
-                        //entry.IsMandatory = false;
                         question2Pool.push(entry);
                     }
                 }
@@ -86,12 +80,10 @@
             }
         }
         function removePoolQuestionCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             notificationService.displaySuccess('Records removed successfully');
             $scope.search();
             $scope.loadPoolQuestionCnt();
-            //StandardChange(false);
         }
 
         function removePoolQuestionFailed(response) {
@@ -99,7 +91,6 @@
         }
 
         function loadPoolQuestionCnt() {
-
             var config = {
                 params: {
                     poolid: $scope.PoolId
@@ -110,10 +101,8 @@
                poolQuestionCntFailed);
         }
         function poolQuestionCntCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             $scope.PoolQuestionCnt = result.data;
-            //StandardChange(false);
         }
 
         function poolQuestionCntFailed(response) {
@@ -136,18 +125,15 @@
 
             }
             else {
-
                 $scope.advancedSearch(page, searchItem);
             }
         }
         function poolQuestionCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             $scope.Questions = result.data.Items;
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
-            //StandardChange(false);
         }
 
         function poolQuestionFailed(response) {
@@ -156,18 +142,11 @@
 
         $scope.loadPoolQuestionCnt();
         $scope.search();
-
-
         $scope.loadStandard();
         $scope.loadSubject();
         $scope.loadTopic();
-
-
         StandardChange(false);
         SubjectChange(false);
-
-
-
 
         /////////////////////////////////////////////////////
 
@@ -178,11 +157,8 @@
         }
 
         function standardLoadCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             $scope.question.questionstandard = result.data;
-
-            //StandardChange(false);
         }
 
         function standardLoadFailed(response) {
@@ -212,7 +188,6 @@
         }
 
         function topicLoadCompleted(result) {
-            //$scope.Topics = result.data;
             console.log(result.data);
             $scope.question.questiontopic = result.data;
         }
@@ -220,12 +195,11 @@
         function topicLoadFailed(response) {
             notificationService.displayError(response.data);
         }
+
         /////////////////////////////////////////
 
         function StandardChange(load) {
             if (!isNaN($scope.SearchText.StandardId)) {
-              //  $scope.newQuestion.StandardName = $("#selectStd option:selected").text();
-
                 var config = {
                     params: {
                         stdid: $scope.SearchText.StandardId
@@ -238,8 +212,6 @@
                 //Once Standard is changed we need to reset the subject
                 if (load == true)
                     $scope.SearchText.SubjectId = -1;
-
-
             }
         }
 
@@ -254,9 +226,6 @@
         }
 
         function SubjectChange(load) {
-
-            //$scope.newQuestion.SubjectName = $("#selectSubject option:selected").text();
-
             var config = {
                 params: {
                     stdid: $scope.SearchText.StandardId,
@@ -265,16 +234,13 @@
             };
 
             if (load == true)
-
                 apiService.get(baseUrl + '/api/mapping/filtermappings/', config,
                     mappingLoadCompleted,
                     mappingLoadFailed);
-
         }
 
         function mappingLoadCompleted(result) {
             var Mappings = result.data.Items;
-
             if (Mappings.length > 0)
                 $scope.SearchText.MappingID = Mappings[0]['ID'];
             else
@@ -283,15 +249,12 @@
             var config = {
                 params: {
                     mappingid: $scope.SearchText.MappingID
-
                 }
             };
 
             apiService.get(baseUrl + '/api/topic/filtertopics', config,
-
             subjectChangeLoadCompleted,
               subjectChangeLoadFailed);
-
         }
 
         function mappingLoadFailed(response) {
@@ -301,7 +264,6 @@
         function subjectChangeLoadCompleted(result) {
             var topic = result.data.Items;
             $scope.question.questiontopic = result.data.Items;
-
         }
 
         function subjectChangeLoadFailed(response) {
@@ -369,14 +331,11 @@
                         poolid: $scope.PoolId
                     }
                 };
-
-
                 apiService.get(baseUrl + '/api/pools/questionadvancedsearch/', config,
                    advancedSearchCompleted,
                    advancedSearchFailed);
             }
             else {
-
                 notificationService.displayError("Please select Search item");
             }
         }
@@ -404,7 +363,6 @@
             search();
         }
         //End ------------->
-
 
     }
 })(angular.module('app-administration'));

@@ -3,8 +3,7 @@
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">
-                    Pool
+                <h1 class="page-header">Pool
                     <small>Add or Edit Pool</small>
                 </h1>
             </div>
@@ -13,33 +12,31 @@
     <section class="questionForm active">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" ng-if="!IsEditMode"><i class="fa fa-question-circle fa-fw"></i> Add Pool</h3>
-                 <h3 class="panel-title" ng-if="IsEditMode"><i class="fa fa-question-circle fa-fw"></i> Edit Pool</h3>
+                <h3 class="panel-title" ng-if="!IsEditMode"><i class="fa fa-question-circle fa-fw"></i>Add Pool</h3>
+                <h3 class="panel-title" ng-if="IsEditMode"><i class="fa fa-question-circle fa-fw"></i>Edit Pool</h3>
             </div>
             <div class="panel-body translucent">
                 <form role="form" id="questionForm">
                     <div class="panel panel-default formSection">
                         <div class="panel-body">
                             <div class="col-lg-12 col-md-12">
-                                 <div class="form-group col-lg-4 col-md-4">
+                                <div class="form-group col-lg-4 col-md-4">
                                     <label>Test Name: </label>
                                     <input type="text" ng-model="TestName" ng-readonly="true" class="form-control question"></input>
-                                     
+
                                 </div>
                                 <div class="form-group col-lg-6 col-md-6">
                                     <label>Name: </label>
                                     <input type="text" ng-model="newPool.Name" ng-readonly="{{IsLock}}" class="form-control question" placeholder="Add Pool Name Here..."></input>
-                                     <span style="color:#a94442;font-weight: bold;" ng-if="vName" >
-                                   Name is Required</span>
+                                    <span style="color: #a94442; font-weight: bold;" ng-if="vName">Name is Required</span>
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Status: </label>
                                     <select ng-model="newPool.Status" ng-readonly="{{IsLock}}" class="form-control status"
-                                            ng-options="option.value as option.Text for option in Test.status">
-                                          <option value="" selected>Select Status</option>
+                                        ng-options="option.value as option.Text for option in Test.status">
+                                        <option value="" selected>Select Status</option>
                                     </select>
-                                    <span style="color:#a94442;font-weight: bold;" ng-if="vStatus" >
-                                   Select Status</span>
+                                    <span style="color: #a94442; font-weight: bold;" ng-if="vStatus">Select Status</span>
                                 </div>
                                 <div class="form-group col-lg-4 col-md-4">
                                     <label>Difficulty Level: </label>
@@ -47,45 +44,41 @@
                                     <span class="medium btn-warning">Medium</span>
                                     <span class="difficult btn-danger">Difficult</span>
                                     <select ng-model="newPool.DifficultyLevel" ng-readonly="{{IsLock}}" class="form-control difficulty"
-                                            ng-options="option.value as option.Text for option in Test.difficulty">
-                                          <option value="" selected>Select Difficulty</option>
+                                        ng-options="option.value as option.Text for option in Test.difficulty">
+                                        <option value="" selected>Select Difficulty</option>
                                     </select>
-                                     <span style="color:#a94442;font-weight: bold;" ng-if="vDifficultyLevel" >
-                                   Select Difficulty Level</span>
+                                    <span style="color: #a94442; font-weight: bold;" ng-if="vDifficultyLevel">Select Difficulty Level</span>
                                 </div>
                                 <div class="form-group col-lg-2 col-md-2">
                                     <label>Is Mandatory to Pass: </label>
-                                    <input  type="checkbox" ng-model="newPool.IsMandatoryToPass" ng-readonly="{{IsLock}}"/>
-                                    <!--<input type="checkbox" ng-model="newPool.IsMandatoryToPass" class="form-control"></input>-->
+                                    <input type="checkbox" ng-model="newPool.IsMandatoryToPass" ng-readonly="{{IsLock}}" />
                                 </div>
                             </div>
-                                <div class="col-lg-12 col-md-12">
-                                    <!--<div class="form-group col-lg-4 col-md-4" >
+                            <div class="col-lg-12 col-md-12">
+                                <!--<div class="form-group col-lg-4 col-md-4" >
                                         <label>Out of Marks: </label>
                                         <input type="number" ng-model="newPool.NoOfQuestionsOutOf"
                                                class="form-control points"  min="0"  placeholder="Add total marks here..." />
                                     </div>-->
-                                    <div class="form-group col-lg-4 col-md-4">
-                                        <label>Passing Marks: </label>
-                                        <input type="number" ng-model="newPool.PassingScore" ng-readonly="{{IsLock}}"
-                                               class="form-control points"  min="0"  placeholder="Add Passing Marks Here..." />
-                                        <span style="color:#a94442;font-weight: bold;" ng-if="vPassingScore" >
-                                   Passing Marks Required</span>
-                                    </div>
-                                    <div class="form-group col-lg-4 col-md-4">
-                                        <label>Total Marks: </label>
-                                        <input type="number" ng-model="newPool.PoolTotalMarks" ng-readonly="{{IsLock}}"
-                                               class="form-control points"  min="0"  placeholder="Add Total Marks Here..." />
-                                        <span style="color:#a94442;font-weight: bold;" ng-if="vPoolTotalMarks" >
-                                   Total Marks Required</span>
-                                    </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Passing Marks: </label>
+                                    <input type="number" ng-model="newPool.PassingScore" ng-readonly="{{IsLock}}"
+                                        class="form-control points" min="0" placeholder="Add Passing Marks Here..." />
+                                    <span style="color: #a94442; font-weight: bold;" ng-if="vPassingScore">Passing Marks Required</span>
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label>Total Marks: </label>
+                                    <input type="number" ng-model="newPool.PoolTotalMarks" ng-readonly="{{IsLock}}"
+                                        class="form-control points" min="0" placeholder="Add Total Marks Here..." />
+                                    <span style="color: #a94442; font-weight: bold;" ng-if="vPoolTotalMarks">Total Marks Required</span>
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <div class="next-step pull-right">
-                        <button type="button" ng-click="AddPool();" ng-if="!IsEditMode"  class="btn btn-primary proceedd"> <i class="fa fa-fw fa-plus"></i> <span class="addCurrentQuestion active"></span> <span class="save">Save</span> </button>
-                        <button type="button" ng-if="IsEditMode" ng-hide="{{IsLock}}"  ng-click=" updatePool();" class="btn btn-primary proceedd" > <i class="fa fa-fw fa-edit"></i> <span class="addCurrentQuestion active"></span> <span class="save">Update</span> </button>
-                        <button type="button"  ui-sref="AdminPool({testid:TestId, testname:TestName})" class="btn btn-danger cancel">Cancel</button>
+                        <button type="button" ng-click="AddPool();" ng-if="!IsEditMode" class="btn btn-primary proceedd"><i class="fa fa-fw fa-plus"></i><span class="addCurrentQuestion active"></span><span class="save">Save</span> </button>
+                        <button type="button" ng-if="IsEditMode" ng-hide="{{IsLock}}" ng-click=" updatePool();" class="btn btn-primary proceedd"><i class="fa fa-fw fa-edit"></i><span class="addCurrentQuestion active"></span><span class="save">Update</span> </button>
+                        <button type="button" ui-sref="AdminPool({testid:TestId, testname:TestName})" class="btn btn-danger cancel">Cancel</button>
                     </div>
                 </form>
             </div>

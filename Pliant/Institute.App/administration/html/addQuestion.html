@@ -1,257 +1,241 @@
-﻿
-        <div class="row">
-            <div class="col-lg-12">
-        <h2 class="page-header">
-                    Question<small> Add or Edit Question</small>
+﻿<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Question<small> Add or Edit Question</small>
         </h2>
-            </div>
+    </div>
+</div>
+
+<!-- /.row -->
+<section class="questionForm">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" ng-if="!IsEditMode"><i class="fa fa-question-circle fa-fw"></i>Add Question</h3>
+            <h3 class="panel-title" ng-if="IsEditMode"><i class="fa fa-question-circle fa-fw"></i>Edit Question</h3>
+        </div>
+        <div class="panel-body translucent">
+            <form role="form" id="questionForm">
+                <div class="panel panel-default formSection">
+                    <div class="panel-body">
+                        <input type="hidden" name="QuestionId" ng-value="newQuestion.QuestionID" />
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Standard: </label>
+                            <select id="selectStd" ng-model="newQuestion.StandardId" class="form-control selectStd"
+                                ng-options="option.ID as (option.Standard + ':' + option.Division)  for option in question.questionstandard"
+                                ng-change="StandardChange(true)" ng-readonly="{{IsLock}}">
+                                <option value="" selected>Select Standard</option>
+                            </select>
+                            <input type="hidden" name="StandardId" ng-value="newQuestion.StandardId.value" />
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vStandardId">Select Standard</span>
+                        </div>
+                        <div class="form-group col-lg-8 col-md-8">
+                            <label>Subject: </label>
+
+                            <select id="selectSubject" ng-model="newQuestion.SubjectId" class="form-control selectSubject"
+                                ng-options="option.ID as option.Subject for option in question.questionsubject"
+                                ng-change="SubjectChange(true);" required ng-readonly="{{IsLock}}">
+                                <option value="" selected>Select Subject</option>
+                            </select>
+                            <input type="hidden" name="SubjectId" ng-value="newQuestion.SubjectId" />
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vSubjectId">Select Subject</span>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4 ui-widget">
+                            <div>
+                                <label>Topic: </label>
+                                <select ng-model="newQuestion.TopicId" class="form-control selectSubject"
+                                    ng-options="option.ID as option.Name for option in question.questiontopic"
+                                    ng-change="SubjectChange(true);" required ng-readonly="{{IsLock}}">
+                                    <option value="" selected>Select Topic</option>
+                                </select>
+                                <span style="color: #a94442; font-weight: bold;" ng-if="vTopicId">Select Topic</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default formSection">
+                    <div class="panel-body">
+                        <div class="form-group col-lg-2 col-md-2">
+                            <label>Code: </label>
+                            <input ng-model="newQuestion.Code" type="text" class="form-control code" placeholder="Add code here..." ng-readonly="{{IsLock}}" />
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vCode">Code is required</span>
+
+                        </div>
+                        <div class="form-group col-lg-10 col-md-10">
+                            <label>Question: </label>
+                            <textarea ng-model="newQuestion.Question" class="form-control question" placeholder="Add Question here..." oninput="generateFillInTheBlank()" ng-readonly="{{IsLock}}"></textarea>
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vQuestion">Question text is required</span>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6">
+                            <label>Objective: </label>
+                            <textarea ng-model="newQuestion.Objective" class="form-control objective" placeholder="Add Objective here..." maxlength="500" ng-readonly="{{IsLock}}"></textarea>
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vObjective">Objective is required</span>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6">
+                            <label>Hint: </label>
+                            <textarea ng-model="newQuestion.Hint" class="form-control hint" maxlength="500" placeholder="Add Hint here..." ng-readonly="{{IsLock}}"></textarea>
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vHint">Hint is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default formSection">
+                    <div class="panel-body">
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Question Type: </label>
+                            <select id="qqtype" ng-model="newQuestion.QuestionType" class="form-control type"
+                                ng-options="option.value as option.Text for option in question.questiontype" ng-readonly="{{IsLock}}">
+                                <option value="" selected>Select Question Type</option>
+                            </select>
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vQuestionType">Select Question Type</span>
+                        </div>
+
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Points for Question: </label>
+                            <input type="number" ng-model="newQuestion.Points"
+                                class="form-control points" placeholder="Add points here..." max="50" min="0" ng-readonly="{{IsLock}}" />
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vPoints">Points required</span>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Status: </label>
+                            <select ng-model="newQuestion.Status" class="form-control status"
+                                ng-options="option.value as option.Text for option in question.questionstatus" ng-readonly="{{IsLock}}">
+                                <option value="" selected>Select Status</option>
+                            </select>
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vStatus">Select Status</span>
+
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4">
+                            <label>Difficulty Level: </label>
+                            <span class="easy btn-success">Easy</span>
+                            <span class="medium btn-warning">Medium</span>
+                            <span class="difficult btn-danger">Difficult</span>
+
+                            <select ng-model="newQuestion.Difficulty" class="form-control difficulty"
+                                ng-options="option.value as option.Text for option in question.questiondifficulty" ng-readonly="{{IsLock}}">
+                                <option value="" selected>Select Difficulty Level</option>
+                            </select>
+
+                            <span style="color: #a94442; font-weight: bold;" ng-if="vDifficulty">Select Difficulty Level</span>
+                        </div>
+
+                        <div class="form-group descriptive questionType clear" data-type="0">
+                            <div class="form-group col-lg-12">
+                                <label>Answer Keywords: </label>
+                                <textarea ng-model="newQuestion.AnsKeywords" class="form-control keywords"
+                                    placeholder="Add Keywords Here..." ng-readonly="{{IsLock}}"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group trueOrFalse questionType clear" data-type="1">
+                            <div class="form-group col-lg-4 col-md-4">
+                                <label>Display Type: </label>
+
+                                <select ng-model="newQuestion.QuestionDisplayType.value" class="form-control displayType"
+                                    ng-options="option.value as option.Text for option in question.questionDisplayType" ng-readonly="{{IsLock}}">
+                                    <option value="" selected>Select Display Type</option>
+                                </select>
+
+
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 displayGroup">
+                                <label>Display: </label>
+                                <div class="radioGroup text-center btn-group show" role="group">
+                                    <input ng-model="newQuestion.TFAnswer" type="radio" name="trueOrFalse" value="true" id="true" class="correct" ng-readonly="{{IsLock}}"></input>
+                                    <label class="btn btn-default" for="true">Yes</label>
+                                    <input ng-model="newQuestion.TFAnswer" type="radio" name="trueOrFalse" value="false" id="false" class="wrong" ng-readonly="{{IsLock}}"></input>
+                                    <label class="btn btn-default" for="false">No</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group matchTheFollowing questionType clear" data-type="2">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group-inner">
+                                    <div class="col-lg-6 col-md-6">
+                                        <label>Choice A: </label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <label>Choice B: </label>
+                                    </div>
+
+                                    <div class="matchWrap" ng-repeat="match in newQuestion.Matches">
+                                        <div class="col-lg-6 col-md-6">
+                                            <input id="{{match.ID}}" ng-model="match.choiceA" type="text" class="form-control choiceA optionMatch optionMatch1" ng-readonly="{{IsLock}}" />
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <input ng-model="match.choiceB" type="text" class="form-control choiceB optionAns optionAns1" ng-readonly="{{IsLock}}" />
+                                            <a ng-click="RemoveMatch(match.ID)" class="removeMatchh"><i class="fa fa-fw fa-times-circle"></i></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <button ng-click="AddMatch();" class="btn btn-primary pull-right addMoreMatcher1"><i class="fa fa-fw fa-plus-circle"></i>Add More Option</button>
+                            </div>
+                        </div>
+                        <div class="form-group singleChoice questionType clear" data-type="3">
+                            <div class="">
+                                <div class="col-lg-12 col-md-12 singleChoiceOptions">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.Choices">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <input id="{{choice.ID}}" ng-model="newQuestion.cIsAnswer" ng-value="{{choice.ID}}" type="radio" class="optionChoiceAns optionChoiceAns1" ng-readonly="{{IsLock}}">
+                                                <!--name="singleChoice"-->
+                                            </span>
+                                            <input type="text" ng-model="choice.Text" class="form-control optionChoice optionChoice1" ng-readonly="{{IsLock}}" />
+                                            <a ng-click="RemoveChoice(choice, choice.ID)" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group clear">
+                                    <button ng-click="AddChoice();" class="btn btn-primary addMoreOptionn pull-right"><i class="fa fa-fw fa-plus-circle"></i>Add More Option</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group multiChoice questionType clear" data-type="4">
+                            <div class="form-group col-lg-4 col-md-6">
+                                <label>Points per Choice: </label>
+                                <input type="number" ng-model="newQuestion.MChoices.PointsPerChoice" class="form-control pointsPerChoice" ng-readonly="{{IsLock}}"></input>
+                            </div>
+                            <div class="">
+                                <div class="col-lg-12 col-md-12 multiChoiceOptions">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.MChoices">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <input id="Checkbox1" ng-model="choice.IsAnswer" type="checkbox" class=" optionChoiceAns optionChoiceAns1" name="multiChoice" ng-readonly="{{IsLock}}">
+                                            </span>
+                                            <input type="text" ng-model="choice.Text" class="form-control optionChoice optionChoice1" ng-readonly="{{IsLock}}" />
+                                            <a ng-click="RemoveMChoice(choice, choice.ID)" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group clear">
+                                    <button ng-click="AddMChoice();" class="btn btn-primary addMoreOptionn pull-right">Add more option</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group fillInTheBlank questionType clear" data-type="5">
+                            <div class="clear">
+                                <div class="fillInTheBlankSelect">
+                                    <label class="info">Please click on the word to empty/ make it blank</label>
+                                    <div class="generatedQuestion"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-step pull-right">
+                    <button type="button" ng-click="UpdateQuestion();" ng-if="IsEditMode" ng-hide="{{IsLock}}" class="btn btn-primary proceedd">
+                        <i class="fa fa-fw fa-edit"></i><span class="editCurrentQuestion active">Update</span> <span class="save"></span>
+                    </button>
+                    <button type="button" ng-click="AddQuestion();" ng-if="!IsEditMode" class="btn btn-primary proceedd"><i class="fa fa-fw fa-plus"></i><span class="addCurrentQuestion active"></span><span class="save">Save</span> </button>
+                    <button type="button" ui-sref="AdminQuestion" class="btn btn-danger cancel">Cancel</button>
+                </div>
+            </form>
+
         </div>
 
-        
-        <!-- /.row -->
+    </div>
 
-
-        <section class="questionForm">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title" ng-if="!IsEditMode"><i class="fa fa-question-circle fa-fw"></i> Add Question</h3>
-                    <h3 class="panel-title" ng-if="IsEditMode"><i class="fa fa-question-circle fa-fw"></i> Edit Question</h3>
-                </div>
-                <div class="panel-body translucent">
-                    <form role="form" id="questionForm">
-                        <div class="panel panel-default formSection">
-                            <div class="panel-body">
-                                <input type="hidden" name="QuestionId" ng-value="newQuestion.QuestionID" />
-                                <div class="form-group col-lg-4 col-md-4">
-                                    <label>Standard: </label>
-                                    <select id="selectStd" ng-model="newQuestion.StandardId" class="form-control selectStd"
-                                            ng-options="option.ID as (option.Standard + ':' + option.Division)  for option in question.questionstandard"
-                                            ng-change="StandardChange(true)" ng-readonly="{{IsLock}}">
-                                        <option value="" selected>Select Standard</option>
-                                    </select>
-                                    <input type="hidden" name="StandardId" ng-value="newQuestion.StandardId.value" />
-                                     <span style="color:#a94442;font-weight: bold;" ng-if="vStandardId" >
-                                   Select Standard</span>
-                                </div>
-                                <div class="form-group col-lg-8 col-md-8">
-                                    <label>Subject: </label>
-                                    
-                                    <select id="selectSubject" ng-model="newQuestion.SubjectId" class="form-control selectSubject"
-                                            ng-options="option.ID as option.Subject for option in question.questionsubject"
-                                            ng-change="SubjectChange(true);" required ng-readonly="{{IsLock}}">
-                                        <option value="" selected>Select Subject</option>
-                                    </select>
-                                    <input type="hidden" name="SubjectId" ng-value="newQuestion.SubjectId" />
-                                    <span style="color:#a94442;font-weight: bold;" ng-if="vSubjectId" >
-                                   Select Subject</span>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 ui-widget">
-                                    <div>
-                                        <label>Topic: </label>
-                                         <select  ng-model="newQuestion.TopicId" class="form-control selectSubject"
-                                            ng-options="option.ID as option.Name for option in question.questiontopic"
-                                            ng-change="SubjectChange(true);" required ng-readonly="{{IsLock}}">
-                                        <option value="" selected>Select Topic</option>
-                                    </select>
-                                       <span style="color:#a94442;font-weight: bold;" ng-if="vTopicId" >
-                                   Select Topic</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default formSection">
-                            <div class="panel-body">
-                                <div class="form-group col-lg-2 col-md-2">
-                                    <label>Code: </label>
-                                    <input ng-model="newQuestion.Code" type="text" class="form-control code" placeholder="Add code here..." ng-readonly="{{IsLock}}"/>
-                                      <span style="color:#a94442;font-weight: bold;" ng-if="vCode" >
-                                         Code is required</span>
-                                   
-                                </div>
-                                <div class="form-group col-lg-10 col-md-10">
-                                    <label>Question: </label>
-                                    <textarea ng-model="newQuestion.Question" class="form-control question" placeholder="Add Question here..." oninput="generateFillInTheBlank()" ng-readonly="{{IsLock}}"></textarea>
-                                     <span style="color:#a94442;font-weight: bold;" ng-if="vQuestion" >
-                                         Question text is required</span>
-                                </div>
-                                <div class="form-group col-lg-6 col-md-6">
-                                    <label>Objective: </label>
-                                    <textarea ng-model="newQuestion.Objective" class="form-control objective" placeholder="Add Objective here..." maxlength="500" ng-readonly="{{IsLock}}"></textarea>
-                                     <span style="color:#a94442;font-weight: bold;" ng-if="vObjective" >
-                                         Objective is required</span>
-                                </div>
-                                <div class="form-group col-lg-6 col-md-6">
-                                    <label>Hint: </label>
-                                    <textarea ng-model="newQuestion.Hint" class="form-control hint" maxlength="500" placeholder="Add Hint here..." ng-readonly="{{IsLock}}"></textarea>
-                                    <span style="color:#a94442;font-weight: bold;" ng-if="vHint" >
-                                         Hint is required</span>
-                                </div>
-                            </div>
-                       </div>
-                        <div class="panel panel-default formSection">
-                            <div class="panel-body">
-                                <div class="form-group col-lg-4 col-md-4">
-                                    <label>Question Type: </label>
-                                    <select id="qqtype" ng-model="newQuestion.QuestionType" class="form-control type"
-                                            ng-options="option.value as option.Text for option in question.questiontype" ng-readonly="{{IsLock}}">
-                                        <option value="" selected>Select Question Type</option>
-                                    </select>
-                                     <span style="color:#a94442;font-weight: bold;" ng-if="vQuestionType" >
-                                         Select Question Type</span>
-                                </div>
-
-                                <div class="form-group col-lg-4 col-md-4">
-                                    <label>Points for Question: </label>
-                                    <input type="number" ng-model="newQuestion.Points" 
-                                           class="form-control points" placeholder="Add points here..." max="50" min="0" ng-readonly="{{IsLock}}"/>
-                                    <span style="color:#a94442;font-weight: bold;" ng-if="vPoints" >
-                                         Points required</span>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4">
-                                    <label>Status: </label>
-                                    <select ng-model="newQuestion.Status" class="form-control status"
-                                            ng-options="option.value as option.Text for option in question.questionstatus" ng-readonly="{{IsLock}}">
-                                        <option value="" selected>Select Status</option>
-                                    </select>
-                                    <span style="color:#a94442;font-weight: bold;" ng-if="vStatus" >
-                                         Select Status</span>
-                                  
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4">
-                                    <label>Difficulty Level: </label>
-                                    <span class="easy btn-success">Easy</span>
-                                    <span class="medium btn-warning">Medium</span>
-                                    <span class="difficult btn-danger">Difficult</span>
-
-                                    <select ng-model="newQuestion.Difficulty" class="form-control difficulty"
-                                            ng-options="option.value as option.Text for option in question.questiondifficulty" ng-readonly="{{IsLock}}">
-                                   <option value="" selected>Select Difficulty Level</option>
-                                         </select>
-
-                                   <span style="color:#a94442;font-weight: bold;" ng-if="vDifficulty" >
-                                         Select Difficulty Level</span>
-                                </div>
-
-                                <div class="form-group descriptive questionType clear" data-type="0">
-                                    <div class="form-group col-lg-12">
-                                        <label>Answer Keywords: </label>
-                                        <textarea ng-model="newQuestion.AnsKeywords" class="form-control keywords" 
-                                                  placeholder="Add Keywords Here..." ng-readonly="{{IsLock}}"></textarea>
-                                </div>
-                                </div>
-                                <div class="form-group trueOrFalse questionType clear" data-type="1">
-                                    <div class="form-group col-lg-4 col-md-4">
-                                        <label>Display Type: </label>
-
-                                        <select ng-model="newQuestion.QuestionDisplayType.value" class="form-control displayType"
-                                                ng-options="option.value as option.Text for option in question.questionDisplayType" ng-readonly="{{IsLock}}">
-                                        <option value="" selected>Select Display Type</option>
-                                        </select>
-
-                                       
-                                    </div>
-                                    <div class="form-group col-lg-4 col-md-4 displayGroup">
-                                        <label>Display: </label>
-                                        <div class="radioGroup text-center btn-group show" role="group">
-                                            <input ng-model="newQuestion.TFAnswer" type="radio" name="trueOrFalse" value="true" id="true" class="correct" ng-readonly="{{IsLock}}"></input>
-                                            <label class="btn btn-default" for="true">Yes</label>
-                                            <input ng-model="newQuestion.TFAnswer" type="radio" name="trueOrFalse" value="false" id="false" class="wrong" ng-readonly="{{IsLock}}"></input>
-                                            <label class="btn btn-default" for="false">No</label>
-                                        </div>
-                                                                            
-                                    </div>
-                                  
-                                </div>
-                                <div class="form-group matchTheFollowing questionType clear" data-type="2">
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="form-group-inner">
-                                            <div class="col-lg-6 col-md-6">
-                                                <label>Choice A: </label>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6">
-                                                <label>Choice B: </label>
-                                            </div>
-
-                                            <div class="matchWrap" ng-repeat="match in newQuestion.Matches">
-                                                <div class="col-lg-6 col-md-6">
-                                                    <input id="{{match.ID}}" ng-model="match.choiceA" type="text" class="form-control choiceA optionMatch optionMatch1" ng-readonly="{{IsLock}}"/>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <input ng-model="match.choiceB" type="text" class="form-control choiceB optionAns optionAns1"  ng-readonly="{{IsLock}}"/>
-                                                    <a ng-click="RemoveMatch(match.ID)" class="removeMatchh"><i class="fa fa-fw fa-times-circle"></i></a>
-                                                </div>
-                                            </div>
-                                         
-                                        </div>
-                                        <button ng-click="AddMatch();" class="btn btn-primary pull-right addMoreMatcher1"><i class="fa fa-fw fa-plus-circle"></i> Add More Option</button>
-                                    </div>
-                                </div>
-                                <div class="form-group singleChoice questionType clear" data-type="3">
-                                    <div class="">
-                                        <div class="col-lg-12 col-md-12 singleChoiceOptions">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.Choices">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <input id="{{choice.ID}}" ng-model="newQuestion.cIsAnswer" ng-value="{{choice.ID}}" type="radio" class="optionChoiceAns optionChoiceAns1" ng-readonly="{{IsLock}}"> 
-                                                        <!--name="singleChoice"-->
-                                                    </span>
-                                                    <input type="text" ng-model="choice.Text" class="form-control optionChoice optionChoice1"  ng-readonly="{{IsLock}}"/>
-                                                    <a ng-click="RemoveChoice(choice, choice.ID)" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
-                                                </div>
-                                            </div>
-                                           
-                                        </div>
-                                        <div class="form-group clear">
-                                            <button ng-click="AddChoice();" class="btn btn-primary addMoreOptionn pull-right"><i class="fa fa-fw fa-plus-circle"></i> Add More Option</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group multiChoice questionType clear" data-type="4">
-                                    <div class="form-group col-lg-4 col-md-6">
-                                        <label>Points per Choice: </label>
-                                        <input type="number" ng-model="newQuestion.MChoices.PointsPerChoice" class="form-control pointsPerChoice" ng-readonly="{{IsLock}}"></input>
-                                    </div>
-                                    <div class="">
-                                        <div class="col-lg-12 col-md-12 multiChoiceOptions">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 choiceWrapper" ng-repeat="choice in newQuestion.MChoices">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <input id="Checkbox1" ng-model="choice.IsAnswer" type="checkbox" class=" optionChoiceAns optionChoiceAns1" name="multiChoice" ng-readonly="{{IsLock}}">
-                                                    </span>
-                                                    <input type="text" ng-model="choice.Text"  class="form-control optionChoice optionChoice1"  ng-readonly="{{IsLock}}"/>
-                                                    <a ng-click="RemoveMChoice(choice, choice.ID)" class="removeOption"><i class="fa fa-fw fa-times-circle"></i></a>
-                                                </div>
-                                            </div>
-                                        
-                                        </div>
-                                        <div class="form-group clear">
-                                            <button ng-click="AddMChoice();" class="btn btn-primary addMoreOptionn pull-right">Add more option</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group fillInTheBlank questionType clear" data-type="5">
-                                    <div class="clear">
-                                        <div class="fillInTheBlankSelect">
-                                            <label class="info">Please click on the word to empty/ make it blank</label>
-                                            <div class="generatedQuestion"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="next-step pull-right">
-                            <button type="button" ng-click="UpdateQuestion();" ng-if="IsEditMode"  ng-hide="{{IsLock}}" class="btn btn-primary proceedd">
-                                <i class="fa fa-fw fa-edit"></i> <span class="editCurrentQuestion active">Update</span> <span class="save"></span>
-                            </button>
-                            <button type="button" ng-click="AddQuestion();" ng-if="!IsEditMode" class="btn btn-primary proceedd"><i class="fa fa-fw fa-plus"></i> <span class="addCurrentQuestion active"></span> <span class="save">Save</span> </button>
-                            <button type="button" ui-sref="AdminQuestion" class="btn btn-danger cancel">Cancel</button>
-                        </div>
-                    </form>
-
-                </div>
-
-            </div>
-            
-        </section>
+</section>
 

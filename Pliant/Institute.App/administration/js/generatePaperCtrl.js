@@ -36,7 +36,6 @@
                 newPaper.TestName = $scope.TestName
                 newPaper.NoOfSets = $scope.newPaper.NoOfSets;
                 newPaper.Description = $scope.newPaper.Description;
-
                 newPaper.CreatedBy = userId;
 
                 apiService.post(baseUrl + '/api/papers/add', newPaper,
@@ -48,14 +47,11 @@
 
         function addPaperSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Question Paper Generated');
-
         }
 
         function addPaperFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else

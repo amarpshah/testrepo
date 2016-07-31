@@ -8,11 +8,9 @@
     function addQuestionPoolCtrl($scope, $modal, $route, $routeParams, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore) {
 
         $scope.question = {};
-
         $scope.filterQuestion = '';
         $scope.page = 0;
         $scope.pagesCount = 0;
-
         $scope.newQuestion = {};
         $scope.Questions = [];
         $scope.QuestionsData = [];
@@ -20,18 +18,14 @@
         $scope.question.questionstandard = [];
         $scope.question.questionsubject = [];
         $scope.ShowList = false;
-
         $scope.SearchQuestions = SearchQuestions;
         $scope.clearSearch = clearSearch;
-
         $scope.ShowAdvancedSearch = ShowAdvancedSearch;
         $scope.loadPoolQuestionCnt = loadPoolQuestionCnt;
         $scope.AddQuestionsToPool = AddQuestionsToPool;
-        
         $scope.loadSubject = loadSubject;
         $scope.loadStandard = loadStandard;
         $scope.loadTopic = loadTopic;
-
         $scope.StandardChange = StandardChange;
         $scope.SubjectChange = SubjectChange;
         $scope.PoolQuestionCnt = 0;
@@ -74,34 +68,21 @@
                poolQuestionCntFailed);
         }
         function poolQuestionCntCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             $scope.PoolQuestionCnt = result.data;
-            
-            //StandardChange(false);
         }
 
         function poolQuestionCntFailed(response) {
             notificationService.displayError(response.data);
         }
 
-
         $scope.loadPoolQuestionCnt();
-
-
-
-
-
         $scope.loadStandard();
         $scope.loadSubject();
         $scope.loadTopic();
 
-
         StandardChange(false);
         SubjectChange(false);
-
-
-
 
         /////////////////////////////////////////////////////
 
@@ -112,11 +93,8 @@
         }
 
         function standardLoadCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             $scope.question.questionstandard = result.data;
-
-            //StandardChange(false);
         }
 
         function standardLoadFailed(response) {
@@ -146,7 +124,6 @@
         }
 
         function topicLoadCompleted(result) {
-            //$scope.Topics = result.data;
             console.log(result.data);
             $scope.question.questiontopic = result.data;
         }
@@ -172,8 +149,6 @@
                 //Once Standard is changed we need to reset the subject
                 if (load == true)
                     $scope.newQuestion.SubjectId = -1;
-
-
             }
         }
 
@@ -248,7 +223,6 @@
         //Functions to show Advance search
         function ShowAdvancedSearch() {
             $('.questionControl .panel-heading').toggleClass('showAdvanceAddPoolQuestion');
-            //$scope.search();
         }
 
         function ToggleAddSearch() {
@@ -298,7 +272,6 @@
         }
 
         function addquestionCompleted() {
-            //console.log(result.data.Items);
             notificationService.displaySuccess('Question Added Successfully');
             $scope.loadPoolQuestionCnt();
             $scope.SearchQuestions($scope.page);
@@ -308,16 +281,12 @@
             notificationService.displayError(response.data);
         }
 
-    
-
 
         //Search Questions
         function SearchQuestions(page, searchItem) {
             var item = {};
             if (searchItem) {
-
                 item = searchItem;
-            }
 
                 if (angular.isUndefined(item.Code)) {
                     item.Code = "";
@@ -364,8 +333,8 @@
                 apiService.get(baseUrl + '/api/question/searchquestions', config,
                     searchCompleted,
                     searchFailed);
-           
-           
+
+            }
         }
 
         function searchCompleted(result) {
@@ -380,8 +349,6 @@
         function searchFailed(response) {
             notificationService.displayError(response.data);
         }
-
-
 
     }
 })(angular.module('app-administration'));

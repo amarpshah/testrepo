@@ -8,37 +8,28 @@
     function questionCtrl($scope, $modal, $route, $routeParams, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore, permissionService, constantStrService) {
 
         $scope.question = {};
-        
         $scope.filterQuestion = '';
         $scope.page = 0;
-
         $scope.newQuestion = {};
         $scope.Questions = [];
         $scope.question.questionstandard = [];
         $scope.question.questionsubject = [];
-
         $scope.search = search;
         $scope.clearSearch = clearSearch;
         $scope.deleteQuestion = deleteQuestion;
         $scope.ShowAdvancedSearch = ShowAdvancedSearch;
         $scope.advancedSearch = advancedSearch;
-       
-      //  $scope.loadQuestion = loadQuestion;
-      $scope.SearchText = {};
-               
+        $scope.SearchText = {};
         $scope.questionLock = questionLock;
         $scope.lock = lock;
         $scope.unLock = unLock;
         $scope.showSelected = showSelected;
-        
         $scope.loadSubject = loadSubject;
         $scope.loadStandard = loadStandard;
         $scope.loadTopic = loadTopic;
-                
         $scope.StandardChange = StandardChange;
         $scope.SubjectChange = SubjectChange;
-        
-        
+
         membershipService.redirectIfNotLoggedIn();
 
         var userInfo = $cookieStore.get('repository');
@@ -51,6 +42,7 @@
         $scope.permissionUPDATEQUESTION = permissionService.get(constantStrService.UPDATE_QUESTION());
         $scope.permissionDELETEQUESTION = permissionService.get(constantStrService.DELETE_QUESTION());
         $scope.permissionLOCKQUESTION = permissionService.get(constantStrService.LOCK_QUESTION());
+
 
         $scope.question.questiontype = [
                                           { value: 1, Text: "Descriptive", type: "DES" },
@@ -71,20 +63,15 @@
                                                 { value: 2, Text: "Medium" },
                                                 { value: 3, Text: "Difficult" }
         ];
-        
+
 
 
         $scope.search();
-        
+
 
         function search(page, searchItem) {
-            
-
-            
             if (!searchItem) {
-
                 page = page || 0;
-
                 $scope.loadingQuestion = true;
 
                 var config = {
@@ -100,24 +87,16 @@
                     questionLoadFailed);
             }
             else {
-
-         
                 $scope.advancedSearch(page, searchItem);
-         
             }
         }
 
         function questionLoadCompleted(result) {
             $scope.Questions = result.data.Items;
-           
-
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingQuestion = false;
-
-           
-
             if ($scope.filterQuestion && $scope.filterQuestion.length) {
                 notificationService.displayInfo(result.data.Items.length + ' questions found');
             }
@@ -126,8 +105,6 @@
         function questionLoadFailed(response) {
             notificationService.displayError(response.data);
         }
-
-       
 
         //Delete Question
         function deleteQuestion(questionid) {
@@ -141,25 +118,17 @@
                 apiService.post(baseUrl + '/api/question/delete/' + questionid, null,
             deleteSucceded,
             deleteFailed);
-
-
-
             }
-
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -169,14 +138,8 @@
         $scope.loadStandard();
         $scope.loadSubject();
         $scope.loadTopic();
-
-
         StandardChange(false);
         SubjectChange(false);
-
-
-
-
         /////////////////////////////////////////////////////
 
         function loadStandard() {
@@ -186,11 +149,8 @@
         }
 
         function standardLoadCompleted(result) {
-            /*$scope.Standards = result.data;*/
             console.log(result.data);
             $scope.question.questionstandard = result.data;
-
-            //StandardChange(false);
         }
 
         function standardLoadFailed(response) {
@@ -220,7 +180,6 @@
         }
 
         function topicLoadCompleted(result) {
-            //$scope.Topics = result.data;
             console.log(result.data);
             $scope.question.questiontopic = result.data;
         }
@@ -246,8 +205,6 @@
                 //Once Standard is changed we need to reset the subject
                 if (load == true)
                     $scope.SearchText.SubjectId = -1;
-
-              
             }
         }
 
@@ -273,7 +230,7 @@
             };
 
             if (load == true)
-          
+
                 apiService.get(baseUrl + '/api/mapping/filtermappings/', config,
                     mappingLoadCompleted,
                     mappingLoadFailed);
@@ -296,10 +253,8 @@
             };
 
             apiService.get(baseUrl + '/api/topic/filtertopics', config,
-
             subjectChangeLoadCompleted,
               subjectChangeLoadFailed);
-
         }
 
         function mappingLoadFailed(response) {
@@ -309,55 +264,39 @@
         function subjectChangeLoadCompleted(result) {
             var topic = result.data.Items;
             $scope.question.questiontopic = result.data.Items;
-          
         }
 
         function subjectChangeLoadFailed(response) {
             notificationService.displayError(response.data);
         }
 
-        
-
-
         //*****************Lock/Unlock*********************
 
         function questionLock(value) {
 
-            if (value.IsLock == 1 && value.LockedBy == userId) {
-                                                             //Unlock Test if valid user
-                 value.LockedBy = 0;
-                 unLock(value);
-
+            if (value.IsLock == 1 && value.LockedBy == userId) {   //Unlock Test if valid user
+                value.LockedBy = 0;
+                unLock(value);
             }
-            else if (value.IsLock == 0) {
-                                                             //Lock Test if unlock
-               
+            else if (value.IsLock == 0) {                           //Lock Test if unlock
                 value.LockedBy = userId;
                 lock(value);
-
             }
-          
         }
         function lock(value) {
-
             apiService.post(baseUrl + '/api/question/lockQuestion/', value,
               lockSucceded,
               lockFailed);
-
-
         }
 
         function lockSucceded(response) {
             console.log(response);
             $scope.search($scope.page);
-        //    $scope.appliedClass(response.data);
             notificationService.displayInfo('Locked successfully');
-      
         }
 
         function lockFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -367,28 +306,19 @@
 
 
         function unLock(value) {
-
             apiService.post(baseUrl + '/api/question/unLockQuestion/', value,
               unLockSucceded,
               unLockFailed);
-
         }
 
         function unLockSucceded(response) {
             console.log(response);
             $scope.search($scope.page);
-       //     $scope.appliedClass(response.data);
             notificationService.displayInfo('Unlocked successfully');
-
-
-
-
-
         }
 
         function unLockFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -396,7 +326,7 @@
         }
 
 
-       
+
 
         //*******************Multi Lock / Unlock**************
 
@@ -409,7 +339,7 @@
             })
 
             angular.forEach($scope.newArray, function (questionId) {  //Find object of each QuestionID
-                                                                        //and Call web api 
+                //and Call web api 
                 var config = {
                     params: {
                         id: questionId
@@ -421,8 +351,6 @@
                   questionCheckFailed);
 
             })
-
-
         }
 
         function questionCheckCompleted(result) {
@@ -432,14 +360,11 @@
 
                 $scope.questionLock(data[0]);
                 $scope.search();
-
-              //  $scope.appliedClass(data[0]);
             }
             if ($scope.button == 'unLock' && data[0].IsLock == 1) //if Multi Unlock button clicked
             {                                                     //then check if locked               
                 $scope.questionLock(data[0]);
                 $scope.search();
-                //$scope.appliedClass(data[0]);
             }
             $scope.search();
         }
@@ -459,14 +384,13 @@
         function ToggleAddSearch() {
             $('.searchBlock').toggleClass('active');
             $('.addBlock').toggleClass('active');
-                      
+
         }
 
 
         //Advance Search start ------------->
-       
-        function advancedSearch(page, searchItem)
-        {
+
+        function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
 
@@ -520,18 +444,18 @@
                 notificationService.displayError("Please select Search item");
             }
         }
-         
-        function advancedSearchCompleted(result) {
-             console.log(result.data);
-             $scope.Questions = result.data.Items;
-             $scope.page = result.data.Page;
-             $scope.pagesCount = result.data.TotalPages;
-             $scope.totalCount = result.data.TotalCount;
-             $scope.loadingQuestion = false;
 
-             if ($scope.filterQuestion && $scope.filterQuestion.length) {
-                 notificationService.displayInfo(result.data.Items.length + ' questions found');
-             }
+        function advancedSearchCompleted(result) {
+            console.log(result.data);
+            $scope.Questions = result.data.Items;
+            $scope.page = result.data.Page;
+            $scope.pagesCount = result.data.TotalPages;
+            $scope.totalCount = result.data.TotalCount;
+            $scope.loadingQuestion = false;
+
+            if ($scope.filterQuestion && $scope.filterQuestion.length) {
+                notificationService.displayInfo(result.data.Items.length + ' questions found');
+            }
 
         }
 
@@ -545,6 +469,5 @@
         }
         //End ------------->
 
-
     }
-})(angular.module('app-administration'));1
+})(angular.module('app-administration')); 1

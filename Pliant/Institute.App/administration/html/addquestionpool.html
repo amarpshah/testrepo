@@ -3,30 +3,23 @@
     <div class="col-lg-12">
         <h2 class="page-header">Questions
             <small>Test: <span class="countValue">{{TestName}}</span>
-                Pool: <span class="countValue">{{PoolName}}</span> 
-                            </small>
+                Pool: <span class="countValue">{{PoolName}}</span>
+            </small>
         </h2>
     </div>
 </div>
 <!-- /.row -->
-<div class="row" style="margin-bottom: 10px; margin-top:10px;">
+<div class="row" style="margin-bottom: 10px; margin-top: 10px;">
     <div class="col-lg-12">
-        
+
         <div class="addBlock">
             <span class="countLable" ng-hide="true">
-               <label>Total Question added in Pool :<span class="countText"> {{PoolName}} </span>are : <span class="countValue">{{PoolQuestionCnt}}</span></label> 
+                <label>Total Question added in Pool :<span class="countText"> {{PoolName}} </span>are : <span class="countValue">{{PoolQuestionCnt}}</span></label>
             </span>
             <button ng-click="AddQuestionsToPool();" type="button" class="btn btn-success proceed right-side"><i class="fa fa-fw fa-plus-circle"></i>Add to Pool</button>
         </div>
-       
-            
-
     </div>
 </div>
-
-
-
-
 
 <div class="row questionControl active">
     <div class="col-lg-12">
@@ -34,64 +27,56 @@
             <div class="panel-heading">
                 <div class="standardSubjectBanner" data-target="selectStdForm">
                     <div class="col-lg-4 col-md-4 col-xs-4 text-center ">
-                       <select class="form-control adv-type searchField" ng-model="newQuestion.StandardId" ng-options="option.ID as (option.Standard + ':' + option.Division)  for option in question.questionstandard"
-                            ng-change="StandardChange(true);" >
-                    <option value="" selected>Select Standard</option>
-                </select>
+                        <select class="form-control adv-type searchField" ng-model="newQuestion.StandardId" ng-options="option.ID as (option.Standard + ':' + option.Division)  for option in question.questionstandard"
+                            ng-change="StandardChange(true);">
+                            <option value="" selected>Select Standard</option>
+                        </select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-4 text-center">
-                         <select class="form-control adv-type" ng-model="newQuestion.SubjectId" ng-options="option.ID as option.Subject for option in question.questionsubject"
-                             ng-change="SubjectChange(true);"   >
-                    <option value="" selected>Select Subject</option>
-                </select>
+                        <select class="form-control adv-type" ng-model="newQuestion.SubjectId" ng-options="option.ID as option.Subject for option in question.questionsubject"
+                            ng-change="SubjectChange(true);">
+                            <option value="" selected>Select Subject</option>
+                        </select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-xs-4 text-center">
-                        <select class="form-control adv-type" ng-model="newQuestion.TopicId" ng-options="option.ID as option.Name for option in question.questiontopic"
-                             >
-                    <option value="" selected>Select Topic</option>
-                </select>
+                        <select class="form-control adv-type" ng-model="newQuestion.TopicId" ng-options="option.ID as option.Name for option in question.questiontopic">
+                            <option value="" selected>Select Topic</option>
+                        </select>
                     </div>
-              
-             
-      <!--<div class="advanceBlock">-->
-            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
-                <label ng-hide="true">Code: </label>
-                <input type="text" ng-model="newQuestion.Code" class="form-control adv-code" placeholder="Add Code here..." />
-            </div>
-            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
-                <label  ng-hide="true">Text: </label>
-                <input type="text" ng-model="newQuestion.Text" class="form-control adv-question" placeholder="Add Question String here..." />
-            </div>
-          
-            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
-                <label  ng-hide="true">Type: </label>
-                <select class="form-control adv-type" ng-model="newQuestion.Type" ng-options="option.value as option.Text for option in question.questiontype">
-                    <option value="" selected>Select Question Type</option>
-                </select>
-            </div>
-            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
-                <label  ng-hide="true">Status: </label>
-                <select class="form-control adv-status" ng-model="newQuestion.Status" ng-options="option.value as option.Text for option in question.questionstatus">
-                    <option value="" selected>Select Status</option>
-                </select>
-            </div>
-            <div class="btn-group col-lg-4 col-md-4 col-sm-4">
-                <label  ng-hide="true">Difficulty: </label>
-                <select class="form-control adv-difficulty" ng-model="newQuestion.DifficultyLevel" ng-options="option.value as option.Text for option in question.questiondifficulty">
-                    <option value="" selected>Select Difficulty Level</option>
-                </select>
-            </div>
-        <!--</div>-->
-              </div>
-                 
+
+                    <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                        <label ng-hide="true">Code: </label>
+                        <input type="text" ng-model="newQuestion.Code" class="form-control adv-code" placeholder="Add Code here..." />
+                    </div>
+                    <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                        <label ng-hide="true">Text: </label>
+                        <input type="text" ng-model="newQuestion.Text" class="form-control adv-question" placeholder="Add Question String here..." />
+                    </div>
+
+                    <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                        <label ng-hide="true">Type: </label>
+                        <select class="form-control adv-type" ng-model="newQuestion.Type" ng-options="option.value as option.Text for option in question.questiontype">
+                            <option value="" selected>Select Question Type</option>
+                        </select>
+                    </div>
+                    <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                        <label ng-hide="true">Status: </label>
+                        <select class="form-control adv-status" ng-model="newQuestion.Status" ng-options="option.value as option.Text for option in question.questionstatus">
+                            <option value="" selected>Select Status</option>
+                        </select>
+                    </div>
+                    <div class="btn-group col-lg-4 col-md-4 col-sm-4">
+                        <label ng-hide="true">Difficulty: </label>
+                        <select class="form-control adv-difficulty" ng-model="newQuestion.DifficultyLevel" ng-options="option.value as option.Text for option in question.questiondifficulty">
+                            <option value="" selected>Select Difficulty Level</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="searchBlock active">
-                     <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right" toolTip="Clear Search">Clear</a>
-                  <!--  <a href="" ng-click="ShowAdvancedSearch()" class="btn btn-primary toggleAdvancedSearch pull-right" toolTip="Advance Search"><i class="fa fa-fw fa-search-plus"></i></a>-->
+                    <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right" tooltip="Clear Search">Clear</a>
                     <a ng-click="SearchQuestions(0, newQuestion);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
-                    
-                  
                 </div>
-                </div>
+            </div>
 
             <div>{{question.selected}}</div>
             <div class="bulkAction btn-group" ng-class="{'active': question.selected}">
@@ -107,11 +92,11 @@
                                 <input type="checkbox" ng-model="question.IsChecked" ng-disabled="{{question.IsMappedToPool}}" /></input>
                                 <!--id="checkbox1"-->
                             </span>
-                            <span class="questionTypeIcon" toolTip="{{question.sType}}">{{question.sTypeShort}}</span>
+                            <span class="questionTypeIcon" tooltip="{{question.sType}}">{{question.sTypeShort}}</span>
                             <span class="questionDetail">
                                 <label for="checkbox1" class="list-group-item question">
                                     <h5>
-                                     <span class="questionCode">{{question.Code}}</span>:
+                                        <span class="questionCode">{{question.Code}}</span>:
                                 <span class="questionText">{{question.Text}}</span>
                                     </h5>
                                     <p class="topicText">{{question.TopicName}}</p>
@@ -124,11 +109,11 @@
                                     </p>
                                 </label>
                             </span>
-                             <span ng-show="{{question.IsMappedToPool}}" class="addedLabel">
-                                <label >Is already added</label>
+                            <span ng-show="{{question.IsMappedToPool}}" class="addedLabel">
+                                <label>Is already added</label>
                             </span>
-                              <span class="questionItemAction">
-                                 <a ng-click="AddQuestionsToPool(question);" ng-disabled="{{question.IsMappedToPool}}" class="btn btn-success  pull-right" toolTip="Add to Pool"><i class="fa fa-fw fa-plus-circle"></i></a>
+                            <span class="questionItemAction">
+                                <a ng-click="AddQuestionsToPool(question);" ng-disabled="{{question.IsMappedToPool}}" class="btn btn-success  pull-right" tooltip="Add to Pool"><i class="fa fa-fw fa-plus-circle"></i></a>
                             </span>
                         </div>
                     </div>
@@ -136,13 +121,11 @@
             </div>
         </div>
 
-    <div class="panel-footer">
-         <div>
-            <a ui-sref="AdminPool({testid:TestId,testname:TestName})" class="btn btn-warning pull-left"><i class="fa fa-fw fa-share"></i>Back</a>
-        </div>
-                <div class="text-center">
+        <div class="panel-footer">
+            <div>
+                <a ui-sref="AdminPool({testid:TestId,testname:TestName})" class="btn btn-warning pull-left"><i class="fa fa-fw fa-share"></i>Back</a>
+            </div>
+            <div class="text-center">
                 <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="SearchQuestions(page, newQuestion);"></custom-pager>
             </div>
-        </div>    
-    
-        
+        </div>

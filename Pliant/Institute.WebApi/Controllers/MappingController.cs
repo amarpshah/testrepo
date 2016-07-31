@@ -57,7 +57,7 @@ namespace Institute.WebApi.Controllers
             {
                 HttpResponseMessage response = null;
                 List<StandardSubjectMapping> mappings = null;
-                int totalSubjects = new int();
+                int totalMappings = new int();
 
                 if (!string.IsNullOrEmpty(filter))
                 {
@@ -70,7 +70,7 @@ namespace Institute.WebApi.Controllers
                         .Take(currentPageSize)
                         .ToList();
 
-                    totalSubjects = _mappingsRepository.GetAll()
+                    totalMappings = _mappingsRepository.GetAll()
                         .Where(c => c.Standard.Name.ToLower().Contains(filter) ||
                             c.Subject.Name.ToLower().Contains(filter))
                         .Count();
@@ -83,7 +83,7 @@ namespace Institute.WebApi.Controllers
                         .Take(currentPageSize)
                     .ToList();
 
-                    totalSubjects = _mappingsRepository.GetAll().Count();
+                    totalMappings = _mappingsRepository.GetAll().Count();
                 }
 
                 IEnumerable<MappingViewModel> mappingsVM = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(mappings);
@@ -91,8 +91,8 @@ namespace Institute.WebApi.Controllers
                 PaginationSet<MappingViewModel> pagedSet = new PaginationSet<MappingViewModel>()
                 {
                     Page = currentPage,
-                    TotalCount = totalSubjects,
-                    TotalPages = (int)Math.Ceiling((decimal)totalSubjects / currentPageSize),
+                    TotalCount = totalMappings,
+                    TotalPages = (int)Math.Ceiling((decimal)totalMappings / currentPageSize),
                     Items = mappingsVM
                 };
 
@@ -115,7 +115,7 @@ namespace Institute.WebApi.Controllers
                 int currentPageSize = pageSize.Value;
                 HttpResponseMessage response = null;
                 List<StandardSubjectMapping> mappings = null;
-                int totalmappings = new int();
+                int totalMappings = new int();
 
                 mappings = _mappingsRepository.GetAll()
                     .Where(q => (subjectid != -1 ? q.SubjectId == subjectid : 1 == 1) &&
@@ -126,7 +126,7 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalmappings = _mappingsRepository.GetAll()
+                totalMappings = _mappingsRepository.GetAll()
                 .Where(q => (subjectid != -1 ? q.SubjectId == subjectid : 1 == 1) &&
                                 (standardid != -1 ? q.StandardId == standardid : 1 == 1)
                 )
@@ -137,8 +137,8 @@ namespace Institute.WebApi.Controllers
                 PaginationSet<MappingViewModel> pagedSet = new PaginationSet<MappingViewModel>()
                 {
                     Page = currentPage,
-                    TotalCount = totalmappings,
-                    TotalPages = (int)Math.Ceiling((decimal)totalmappings / currentPageSize),
+                    TotalCount = totalMappings,
+                    TotalPages = (int)Math.Ceiling((decimal)totalMappings / currentPageSize),
                     Items = ssMappingVM
                 };
 
@@ -158,7 +158,7 @@ namespace Institute.WebApi.Controllers
             {
                 HttpResponseMessage response = null;
                 List<StandardSubjectMapping> mappings = null;
-                int totalSubjects = new int();
+                int totalMappings = new int();
 
                 mappings = _mappingsRepository.GetAll()
                     .Where(m => ((stdid == -1 ? true : m.StandardId == stdid)
@@ -166,13 +166,13 @@ namespace Institute.WebApi.Controllers
                     .OrderBy(c => c.ID)
                 .ToList();
 
-                totalSubjects = _mappingsRepository.GetAll().Count();
+                totalMappings = _mappingsRepository.GetAll().Count();
 
                 IEnumerable<MappingViewModel> mappingsVM = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(mappings);
 
                 PaginationSet<MappingViewModel> pagedSet = new PaginationSet<MappingViewModel>()
                 {
-                    TotalCount = totalSubjects,
+                    TotalCount = totalMappings,
                     Items = mappingsVM
                 };
 
@@ -200,7 +200,7 @@ namespace Institute.WebApi.Controllers
                 {
                     if (mappingList.Count() > 0)
                     {
-                        List<StandardSubjectMapping> lstMaps = new List<StandardSubjectMapping>();
+                        List<StandardSubjectMapping> listMaps = new List<StandardSubjectMapping>();
                         foreach (MappingViewModel map in mappingList)
                         {
                             StandardSubjectMapping mapModel = new StandardSubjectMapping();
@@ -208,13 +208,13 @@ namespace Institute.WebApi.Controllers
                             mapModel.StandardId = map.StandardID;
                             mapModel.SubjectId = map.SubjectID;
                             mapModel.IsActive = true;
-                            lstMaps.Add(mapModel);
+                            listMaps.Add(mapModel);
                             _mappingsRepository.Add(mapModel);
                         }
                         _unitOfWork.Commit();
 
                         // Update view model
-                        mappingList = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(lstMaps);
+                        mappingList = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(listMaps);
                         response = request.CreateResponse<IEnumerable<MappingViewModel>>(HttpStatusCode.Created, mappingList);
                     }
                 }

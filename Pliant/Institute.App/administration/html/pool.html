@@ -1,115 +1,98 @@
-﻿      <!-- Page Heading -->
-        
-
-        <div class="row" style="margin-bottom: 15px;">
+﻿<!-- Page Heading -->
+<div class="row" style="margin-bottom: 15px;">
     <div class="col-lg-12">
-        <h2 class="page-header">
-                Pools <small> Test: <label style="color:green">{{TestName}}  </label></small>
+        <h2 class="page-header">Pools <small>Test:
+            <label style="color: green">{{TestName}}  </label>
+        </small>
         </h2>
-       
-         <div class="addBlock">
-             <a ui-sref="AdminAddPool({testid:TestId, testname:TestName})" ng-if="permissionADDPOOL === 1" class="btn btn-success pull-left"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
-        </div>
-         <div class="addBlock">
-            <a data-ng-click="showSelected('lock');" ng-if="permissionLOCKPOOL === 1" class="btn btn-warning pull-left" style="margin-left:10px"><i class="fa fa-fw fa-lock"></i>Lock</a>
+        <div class="addBlock">
+            <a ui-sref="AdminAddPool({testid:TestId, testname:TestName})" ng-if="permissionADDPOOL === 1" class="btn btn-success pull-left"><i class="fa fa-fw fa-plus-circle"></i>Add</a>
         </div>
         <div class="addBlock">
-            <a data-ng-click="showSelected('unLock');" ng-if="permissionLOCKPOOL === 1" class="btn btn-primary pull-left" style="margin-left:10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
+            <a data-ng-click="showSelected('lock');" ng-if="permissionLOCKPOOL === 1" class="btn btn-warning pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-lock"></i>Lock</a>
         </div>
         <div class="addBlock">
-            <a ui-sref="AdminAddTest" class="btn btn-danger pull-left" ng-if="permissionDELETEPOOL === 1" style="margin-left:10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+            <a data-ng-click="showSelected('unLock');" ng-if="permissionLOCKPOOL === 1" class="btn btn-primary pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
         </div>
-       
-         
+        <div class="addBlock">
+            <a ui-sref="AdminAddTest" class="btn btn-danger pull-left" ng-if="permissionDELETEPOOL === 1" style="margin-left: 10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+        </div>
     </div>
 </div>
 
-        <div class="row questionControl active">
+<div class="row questionControl active">
     <div class="col-lg-12">
         <div class="row panel panel-default">
             <div class="panel-heading">
-            <div >
-                    <!--<div class="col-lg-2 col-md-2 col-xs-2 text-center">
-                     <label>Code: </label>
-                    <input type="text" ng-model="SearchText.Code" class="form-control adv-code" placeholder="Search Code here..." />
+                <div>
+                    <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+                        <input type="text" ng-model="SearchText.Name" class="form-control adv-question" placeholder="Search Pool string here..." />
                     </div>
-                    -->
-                <div class="col-lg-4 col-md-4 col-xs-4 text-center">
-                         <!--<label>Text: </label>-->
-                <input type="text" ng-model="SearchText.Name" class="form-control adv-question" placeholder="Search Pool string here..." />
+                    <div class="col-lg-2 col-md-2 col-xs-2 text-center">
+                        <select class="form-control adv-status" ng-model="SearchText.Status" ng-options="option.value as option.Text for option in pool.status">
+                            <option value="" selected>Select Status</option>
+                        </select>
                     </div>
-                <div class="col-lg-2 col-md-2 col-xs-2 text-center">
-                <select class="form-control adv-status" ng-model="SearchText.Status" ng-options="option.value as option.Text for option in pool.status">
-                    <option value="" selected>Select Status</option>
-                </select>
-                </div>
 
-                <div class="col-lg-2 col-md-4 col-xs-2 text-center">
-                     <select class="form-control adv-difficulty" ng-model="SearchText.DifficultyLevel" ng-options="option.value as option.Text for option in pool.difficulty">
-                    <option value="" selected>Select Difficulty Level</option>
-                </select>
+                    <div class="col-lg-2 col-md-4 col-xs-2 text-center">
+                        <select class="form-control adv-difficulty" ng-model="SearchText.DifficultyLevel" ng-options="option.value as option.Text for option in pool.difficulty">
+                            <option value="" selected>Select Difficulty Level</option>
+                        </select>
+                    </div>
+
                 </div>
-                   
-                </div>
-                 <div class="searchBlock active">
-                     <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
-                  <!--  <a href="" ng-click="ShowAdvancedSearch()" class="btn btn-primary toggleAdvancedSearch pull-right" toolTip="Advace Search"><i class="fa fa-fw fa-search-plus"></i></a>-->
+                <div class="searchBlock active">
+                    <a ng-click="clearSearch();" style="margin-left: 10px" class="btn btn-danger searchQuestion pull-right">Clear</a>
                     <a ng-click="search(0, SearchText);" class="btn btn-success searchQuestion pull-right"><i class="fa fa-fw fa-search"></i>Search</a>
-                    
-                  
                 </div>
-                   
-    </div>
+            </div>
 
-
-        <!--questionList-->
-        <div class="panel-body questionList">
-            <div ng-repeat="pool in Pools">
-                <div class="list-group">
-                    <div class="questionItem">
-                        <span class="questionCheck">
-                            <input type="checkbox"  ng-model="pool.selected"  ng-value="{{pool.ID}}"></input>
-                            
-                        </span>
-                        <span class="questionDetail">
-                            <label for="checkbox1" href="" class="list-group-item question">
-                                <h5>
-                                    <span class="questionCode">Pool Name </span>:
+            <!--questionList-->
+            <div class="panel-body questionList">
+                <div ng-repeat="pool in Pools">
+                    <div class="list-group">
+                        <div class="questionItem">
+                            <span class="questionCheck">
+                                <input type="checkbox" ng-model="pool.selected" ng-value="{{pool.ID}}"></input>
+                            </span>
+                            <span class="questionDetail">
+                                <label for="checkbox1" href="" class="list-group-item question">
+                                    <h5>
+                                        <span class="questionCode">Pool Name </span>:
                                     <span class="questionText">{{pool.Name}}</span>
-                                </h5>
-                                <p class="topicText">Is Mandatory - {{pool.IsMandatoryToPass}}</p>
-                                <p class="questionState">
-                                    <span class="statusText">{{pool.sStatus}}</span> - <span class="difficultyText">{{pool.sDifficultyLevel}}</span>
-                                </p>
-                            </label>
-                        </span>
-                        <div class="totalCount">
-                     <span class="countText">Questions Added:</span> <span  class="countValue">{{pool.QuestionCount}}</span>
+                                    </h5>
+                                    <p class="topicText">Is Mandatory - {{pool.IsMandatoryToPass}}</p>
+                                    <p class="questionState">
+                                        <span class="statusText">{{pool.sStatus}}</span> - <span class="difficultyText">{{pool.sDifficultyLevel}}</span>
+                                    </p>
+                                </label>
+                            </span>
+                            <div class="totalCount">
+                                <span class="countText">Questions Added:</span> <span class="countValue">{{pool.QuestionCount}}</span>
 
-                 </div>  
-                        <span class="modifiedBy text-right">
-                             <span class="modifiedByName">{{userName}}</span> <span class="modifiedDate">{{pool.OnCreated| date:"dd-MMM-yyyy 'at' h:mma"}}</span>
-                        </span>
-                        <span class="questionItemAction">
-                            <a ui-sref="AdminEditPool({poolid:pool.ID, testid:TestId, testname:TestName, islock:pool.IsLock})" ng-if="permissionLOCKPOOL === 1" class="btn btn-primary edittestt pull-right" toolTip="Edit"><i class="fa fa-edit"></i></a>
-                           <!-- <a ng-click="poolLock(pool);" class="btn btn-warning lockQuestion pull-right" toolTip="Lock/Unlock"><i ng-class="appliedClass(pool)"></i></a>-->
-                             <a ng-click="poolLock(pool);" ng-if="permissionLOCKPOOL === 1" ng-show="pool.IsLock"  class="btn btn-warning lockQuestion pull-right"><i ng-show="{{checkId == pool.LockedBy}}" class="fa fa-key"  toolTip="Locked"></i><i ng-show="!{{checkId == pool.LockedBy}}" class="fa fa-lock" toolTip="Locked By :{{pool.UserName}}"></i></a>
-                             <a ng-click="poolLock(pool);" ng-if="permissionLOCKPOOL === 1" ng-show="!pool.IsLock" class="btn btn-warning lockQuestion pull-right" toolTip="Unlock"><i class="fa fa-unlock"></i></a>
-                            <a ng-click="deletePool(pool.ID);"  ng-if="permissionDELETEPOOL === 1" class="btn btn-danger deleteQuestion pull-right" toolTip="Delete"><i class="fa fa-trash"></i></a>
-                            <a ui-sref="AdminAddPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" ng-if="permissionADDQUESTIONPOOL === 1"  class="btn btn-success pull-right view" toolTip="Add Question"><i class="fa fa-fw fa-plus-circle"></i></a>
-                            <a ui-sref="AdminViewPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" ng-if="permissionVIEWQUESTIONPOOL === 1"   class="btn btn-primary pull-right view" toolTip="Show Question"><i class="fa fa-eye"></i></a>
-                        </span>
+                            </div>
+                            <span class="modifiedBy text-right">
+                                <span class="modifiedByName">{{userName}}</span> <span class="modifiedDate">{{pool.OnCreated| date:"dd-MMM-yyyy 'at' h:mma"}}</span>
+                            </span>
+                            <span class="questionItemAction">
+                                <a ui-sref="AdminEditPool({poolid:pool.ID, testid:TestId, testname:TestName, islock:pool.IsLock})" ng-if="permissionLOCKPOOL === 1" class="btn btn-primary edittestt pull-right" tooltip="Edit"><i class="fa fa-edit"></i></a>
+                                <a ng-click="poolLock(pool);" ng-if="permissionLOCKPOOL === 1" ng-show="pool.IsLock" class="btn btn-warning lockQuestion pull-right"><i ng-show="{{checkId == pool.LockedBy}}" class="fa fa-key" tooltip="Locked"></i><i ng-show="!{{checkId == pool.LockedBy}}" class="fa fa-lock" tooltip="Locked By :{{pool.UserName}}"></i></a>
+                                <a ng-click="poolLock(pool);" ng-if="permissionLOCKPOOL === 1" ng-show="!pool.IsLock" class="btn btn-warning lockQuestion pull-right" tooltip="Unlock"><i class="fa fa-unlock"></i></a>
+                                <a ng-click="deletePool(pool.ID);" ng-if="permissionDELETEPOOL === 1" class="btn btn-danger deleteQuestion pull-right" tooltip="Delete"><i class="fa fa-trash"></i></a>
+                                <a ui-sref="AdminAddPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" ng-if="permissionADDQUESTIONPOOL === 1" class="btn btn-success pull-right view" tooltip="Add Question"><i class="fa fa-fw fa-plus-circle"></i></a>
+                                <a ui-sref="AdminViewPoolQuestion({poolid:pool.ID, poolname:pool.Name, testid:TestId, testname:TestName})" ng-if="permissionVIEWQUESTIONPOOL === 1" class="btn btn-primary pull-right view" tooltip="Show Question"><i class="fa fa-eye"></i></a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-  </div>
 
-            <div class="panel-footer">
+        <div class="panel-footer">
             <div class="text-center">
                 <custom-pager page="{{page}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page, SearchText);"></custom-pager>
             </div>
-         <div >
-             <a ui-sref="AdminTest" class="btn btn-warning pull-left"><i class="fa fa-fw fa-share"></i>Back</a>
-        </div>
+            <div>
+                <a ui-sref="AdminTest" class="btn btn-warning pull-left"><i class="fa fa-fw fa-share"></i>Back</a>
+            </div>
         </div>

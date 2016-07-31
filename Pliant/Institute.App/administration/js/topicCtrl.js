@@ -33,9 +33,7 @@
         $scope.editTopic = editTopic;
         $scope.updateTopic = updateTopic;
         $scope.Register = Register;
-
         $scope.IsEditMode = false;
-
         $scope.ClearTopic = ClearTopic;
 
         membershipService.redirectIfNotLoggedIn();
@@ -48,8 +46,6 @@
         $scope.newTopic.StandardId = parseInt($stateParams.stdid);
         $scope.newTopic.SubjectId = parseInt($stateParams.subid);
         $scope.newTopic.MappingID = parseInt($stateParams.mapid);
-
-
         $scope.checkId = userId;
 
         var baseUrl = webApiLocationService.get('webapi');
@@ -58,13 +54,9 @@
         $scope.permissionDELETETOPIC = permissionService.get(constantStrService.DELETE_TOPIC());
         $scope.permissionADDTOQUESTIONTOPIC = permissionService.get(constantStrService.ADD_TO_QUESTION_TOPIC());
 
-
-
         function search(page, searchItem) {
-
             if (!searchItem) {
                 page = page || 0;
-
                 $scope.loadingTopic = true;
 
                 var config = {
@@ -80,39 +72,29 @@
                     topicLoadFailed);
             }
             else {
-
                 $scope.advancedSearch(page, searchItem)
             }
         }
 
         function topicLoadCompleted(result) {
             $scope.Topics = result.data.Items;
-            //alert($scope.Topics.length);
-
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingTopic = false;
-
-
             if ($scope.filterTopic && $scope.filterTopic.length) {
                 notificationService.displayInfo(result.data.Items.length + ' topics found');
             }
-
         }
 
         function topicLoadFailed(response) {
             notificationService.displayError(response.data);
         }
-
-
-
         $scope.search();
         $scope.loadStandard();
         $scope.loadSubject();
 
         //Load Subject and  Standard
-
         function loadStandard() {
             apiService.get(baseUrl + '/api/standards/', null,
                 standardLoadCompleted,
@@ -144,10 +126,8 @@
         }
 
 
-
         //Delete Topic
         function deleteTopic(topicid) {
-
             if (topicid != null) {
                 var config = {
                     params: {
@@ -157,25 +137,17 @@
                 apiService.post(baseUrl + '/api/topic/delete/' + topicid, null,
             deleteSucceded,
             deleteFailed);
-
-
-
             }
-
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -197,20 +169,13 @@
 
             //Once Standard is changed we need to reset the subject
             $scope.newTopic.SubjectId = -1;
-
-
-
         }
 
         function standardChangeLoadCompleted(result) {
             $scope.Subjects = result.data.Items;
-
-
-
             if ($scope.Subjects.length == 0) {
                 $scope.newTopic.SubjectId = -1;
             }
-
         }
 
         function standardChangeLoadFailed(response) {
@@ -258,9 +223,6 @@
 
             //Once Standard is changed we need to reset the subject
             $scope.SearchText.SubjectId = -1;
-
-
-
         }
 
         function standardChangeSearchLoadCompleted(result) {
@@ -268,7 +230,6 @@
             if ($scope.Subjects.length == 0) {
                 $scope.SearchText.SubjectId = -1;
             }
-
         }
 
         function standardChangeSearchLoadFailed(response) {
@@ -276,7 +237,7 @@
         }
 
 
-        ///END*************** Event Handlers ****************************
+
 
 
         //******************ADD Topic Start***************************************
@@ -292,16 +253,11 @@
         }
 
         function addTopicSucceded(response) {
-            //$scope.submission.errorMessages = ['Submition errors will appear here.'];
             console.log(response);
             var standardId = $scope.newTopic.StandardId;
             var subjectId = $scope.newTopic.SubjectId;
             var mappingId = $scope.newTopic.MappingID;
-
-            //$scope.newTopic = response.data;
             notificationService.displayInfo('Data uploaded successfully');
-
-
             $scope.newTopic.Code = "";
             $scope.newTopic.Name = "";
             $scope.newTopic.Objective = "";
@@ -309,7 +265,6 @@
 
         function addTopicFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -334,11 +289,8 @@
         }
         //***********Edit Topic*End*****************************************//
 
-
-
         //Update Topic
         function updateTopic() {
-
             var newTopic = $scope.newTopic;
             apiService.post(baseUrl + '/api/topic/update', newTopic,
                     updateTopicSucceded,
@@ -364,10 +316,6 @@
                 notificationService.displayError(response.statusText);
         }
 
-        //Load Standard Subject Mapping
-
-
-
 
 
         //Functions to show Advance search
@@ -385,24 +333,16 @@
         }
 
         //Advance Search start ------------->
-        //function advancedSearch(searchItem) {
-
-        //    $scope.loadTest(searchItem);
-
-        //}
 
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
-
-
                 if (angular.isUndefined(item.Code)) {
                     item.Code = "";
                 }
                 if (angular.isUndefined(item.Name)) {
                     item.Name = "";
                 }
-
                 if (angular.isUndefined(item.StandardId)) {
                     item.StandardId = -1;
                 }
@@ -439,7 +379,6 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingTests = false;
-
             if ($scope.filterTopic && $scope.filterTopic.length) {
                 notificationService.displayInfo(result.data.Items.length + ' topics(s) found');
             }
@@ -483,8 +422,6 @@
                 return true;
             }
         }
-
-
 
     }
 

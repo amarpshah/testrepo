@@ -42,11 +42,9 @@
         $scope.permissionPOOLSTEST = permissionService.get(constantStrService.POOLS_TEST());
         $scope.permissionGENERATEPAPERTEST = permissionService.get(constantStrService.GENERATE_PAPER_TEST());
 
-              
+
 
         function loadvalues() {
-
-
             $scope.test.status = [{ value: 1, Text: "Draft" },
                                   { value: 2, Text: "Ready" },
                                   { value: 3, Text: "Locked" }
@@ -55,21 +53,20 @@
                                                   { value: 2, Text: "Medium" },
                                                   { value: 3, Text: "Difficult" }
             ];
-
-
         }
+
         $scope.loadvalues();
-     
+
         function showSelected(button) {
             $scope.button = button;
             $scope.newArray = [];
             angular.forEach($scope.Tests, function (test) {
 
-                if(!!test.selected)$scope.newArray.push(test.ID)  //Get all  testID in newArray
+                if (!!test.selected) $scope.newArray.push(test.ID)  //Get all  testID in newArray
             })
 
             angular.forEach($scope.newArray, function (testId) {  //Find object of each testID
-                                                                   //and Call web api 
+                //and Call web api 
                 var config = {
                     params: {
                         id: testId
@@ -81,22 +78,17 @@
                   testCheckFailed);
 
             })
-            
-
         }
 
         function testCheckCompleted(result) {
             var data = result.data;
             if ($scope.button == 'lock' && data[0].Lock == 0)  //if Multi Lock button clicked
             {                                                    // then check if unlock             
-
                 $scope.testLock(data[0]);
-              
             }
             if ($scope.button == 'unLock' && data[0].Lock == 1) //if Multi Unlock button clicked
             {                                                     //then check if locked               
                 $scope.testLock(data[0]);
-              
             }
             $scope.search();
         }
@@ -105,13 +97,9 @@
             notificationService.displayError(response.data);
         }
 
-              
-
         function search(page, searchItem) {
-
             if (!searchItem) {
                 page = page || 0;
-
                 $scope.loadingTests = true;
 
                 var config = {
@@ -122,13 +110,11 @@
                     }
                 };
 
-
                 apiService.get(baseUrl + '/api/tests/search/', config,
                     testLoadCompleted,
                     testLoadFailed);
             }
             else {
-
                 $scope.advancedSearch(page, searchItem);
             }
         }
@@ -140,13 +126,9 @@
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingTests = false;
 
-           
-            
-
             if ($scope.filterTests && $scope.filterTests.length) {
                 notificationService.displayInfo(result.data.Items.length + ' test(s) found');
             }
-
         }
 
         function testLoadFailed(response) {
@@ -155,127 +137,77 @@
 
         $scope.search();
 
-
-        function deleteTest(testid)
-        {
-          
-            
-            if ( testid != null) {
-                
+        function deleteTest(testid) {
+            if (testid != null) {
                 params: {
-                    id: testid
+                        id: testid
                 }
                 apiService.post(baseUrl + '/api/tests/delete/' + testid, null,
                deleteSucceded,
                deleteFailed);
-
-               
-            
             }
-         
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-          
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
                 notificationService.displayError(response.statusText);
         }
 
-
-        
-
         function testLock(value) {
-           
-            if (value.Lock==1 && value.LockedBy==userId ) {
-                                                      //Unlock Test if valid user
-                //value.Lock = 0;
-
+            if (value.Lock == 1 && value.LockedBy == userId) { //Unlock Test if valid user
                 value.LockedBy = 0;
-                           
                 unLock(value);
-               
-               
             }
-            else if (value.Lock == 0) {
-                                                       //Lock Test if unlock
-                //value.Lock = 1;
-                
+            else if (value.Lock == 0) {                     //Lock Test if unlock
                 value.LockedBy = userId;
-               
-               lock(value);
-               
+                lock(value);
             }
-            else {
-                
-               // alert("Cant Unlock");
-            }
-
-           
-           
         }
-      
 
-         function lock(value) {
-             
+
+        function lock(value) {
             apiService.post(baseUrl + '/api/tests/lockTest/', value,
               lockSucceded,
               lockFailed);
-
-
         }
 
         function lockSucceded(response) {
             console.log(response);
             $scope.search($scope.page);
-                 
             notificationService.displayInfo('Locked successfully');
-         
-        
         }
 
         function lockFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
                 notificationService.displayError(response.statusText);
         }
 
-
-
         function unLock(value) {
-
             apiService.post(baseUrl + '/api/tests/unLockTest/', value,
               unLockSucceded,
               unLockFailed);
-
         }
 
         function unLockSucceded(response) {
             console.log(response);
-           
             $scope.search($scope.page);
-        
             notificationService.displayInfo('Unlocked successfully');
-        
         }
 
         function unLockFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -286,7 +218,6 @@
         function ShowAdvancedSearch() {
             $('.questionControl .panel-heading').toggleClass('showAdvance');
             $scope.search();
-            
         }
 
         function ToggleAddSearch() {
@@ -298,7 +229,7 @@
         }
 
         //Advance Search start ------------->
-        
+
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
@@ -309,11 +240,11 @@
                 if (angular.isUndefined(item.Text)) {
                     item.Text = "";
                 }
-               
+
                 if (angular.isUndefined(item.Status)) {
                     item.Status = -1;
                 }
-               
+
                 if (angular.isUndefined(item.DifficultyLevel)) {
                     item.DifficultyLevel = -1;
                 }
@@ -329,13 +260,11 @@
                     }
                 };
 
-
                 apiService.get(baseUrl + '/api/tests/advancedsearch/', config,
                    advancedSearchCompleted,
                    advancedSearchFailed);
             }
             else {
-
                 notificationService.displayError("Please select Search item");
             }
         }
@@ -364,7 +293,5 @@
         }
         //End ------------->
 
-       
     }
-
 })(angular.module('app-administration'));

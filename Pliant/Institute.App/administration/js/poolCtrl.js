@@ -8,7 +8,6 @@
     function poolCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, $stateParams, $cookieStore, permissionService, constantStrService) {
 
         $scope.pageClass = 'page-test';
-        //$scope.Register = Register;
         $scope.filterPools = '';
         $scope.Pools = [];
         $scope.loadingPools = true;
@@ -23,13 +22,12 @@
         $scope.unLock = unLock;
         $scope.disableLock = false;
         $scope.disableDelete = false;
-        
         $scope.advancedSearch = advancedSearch;
         $scope.showSelected = showSelected;
         $scope.loadValues = loadValues;
         $scope.pool = {};
-        membershipService.redirectIfNotLoggedIn();
 
+        membershipService.redirectIfNotLoggedIn();
         $scope.TestId = parseInt($stateParams.testid);
         $scope.TestName = ($stateParams.testname);
         var userInfo = $cookieStore.get('repository');
@@ -37,9 +35,8 @@
 
         var userId = userInfo.loggedUser.userid;
         $scope.checkId = userId;
-        
-
         var baseUrl = webApiLocationService.get('webapi');
+
         $scope.permissionADDPOOL = permissionService.get(constantStrService.ADD_POOL());
         $scope.permissionUPDATEPOOL = permissionService.get(constantStrService.UPDATE_POOL());
         $scope.permissionDELETEPOOL = permissionService.get(constantStrService.DELETE_POOL());
@@ -49,8 +46,6 @@
 
 
         function loadValues() {
-
-
             $scope.pool.status = [{ value: 1, Text: "Draft" },
                                   { value: 2, Text: "Ready" },
                                   { value: 3, Text: "Locked" }
@@ -60,9 +55,8 @@
                                                   { value: 2, Text: "Medium" },
                                                   { value: 3, Text: "Difficult" }
             ];
-
-
         }
+
         $scope.loadValues();
 
         function clearSearch() {
@@ -70,13 +64,9 @@
             search();
         }
 
-
-
         function search(page, searchItem) {
-
             if (!searchItem) {
                 page = page || 0;
-
                 $scope.loadingPools = true;
 
                 if (isNaN($scope.TestId)) {
@@ -89,19 +79,16 @@
                 };
 
                 apiService.get(baseUrl + '/api/pools/filtertests/', config,
-                    testLoadCompleted,
-                    testLoadFailed);
+                    poolLoadCompleted,
+                    poolLoadFailed);
             }
             else {
                 $scope.advancedSearch(page, searchItem);
             }
         }
 
-        function testLoadCompleted(result) {
+        function poolLoadCompleted(result) {
             $scope.Pools = result.data.Items;
-            //if ($scope.Pools.length>0) {
-            //    $scope.TestName = $scope.Pools[0].Test.Text
-            //}
             $scope.page = result.data.Page;
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
@@ -110,16 +97,15 @@
             if ($scope.filterPools && $scope.filterPools.length) {
                 notificationService.displayInfo(result.data.Items.length + ' pool(s) found');
             }
-
         }
 
-        function testLoadFailed(response) {
+        function poolLoadFailed(response) {
             notificationService.displayError(response.data);
         }
 
         $scope.search();
 
-        
+
         //Delete Subject
         function deletePool(poolid) {
 
@@ -132,25 +118,17 @@
                 apiService.post(baseUrl + '/api/pools/delete/' + poolid, null,
             deleteSucceded,
             deleteFailed);
-
-
-
             }
-
-
         }
 
 
         function deleteSucceded(response) {
             console.log(response);
-
             notificationService.displayInfo('Deleted successfully');
-
         }
 
         function deleteFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -160,79 +138,51 @@
 
         //Show lock , unlock and key icon
         function appliedClass(value) {
-
             if (value.IsLock == 1 && value.LockedBy != userId) {
-
                 $scope.disableDelete = true;
                 $scope.disableLock = true;//disable lock if  locked by other user
                 return "fa fa-lock";
-
-
             }
             else if (value.IsLock == 1 && value.LockedBy == userId) {
-
                 $scope.disableDelete = false;
                 $scope.disableLock = false;
                 return "fa fa-key";
-
             }
             else {
-
                 $scope.disableDelete = false;
                 $scope.disableLock = false; //enable lock if unlock
                 return "fa fa-unlock";
             }
-            // $scope.search();
         }
 
         function poolLock(value) {
 
-            if (value.IsLock == 1 && value.LockedBy == userId) {
-                                                        //Unlock Test if valid user
-               value.LockedBy = 0;
-
+            if (value.IsLock == 1 && value.LockedBy == userId) {  //Unlock Test if valid user
+                value.LockedBy = 0;
                 unLock(value);
-
-
             }
-            else if (value.IsLock == 0) {
-                                                    //Lock Test if unlock
-                
+            else if (value.IsLock == 0) {            //Lock Test if unlock
                 value.LockedBy = userId;
-
                 lock(value);
-
             }
-            
-
-
         }
 
 
         function lock(value) {
-
             apiService.post(baseUrl + '/api/pools/lockTest/', value,
               lockSucceded,
               lockFailed);
-
-
         }
 
         function lockSucceded(response) {
             console.log(response);
             $scope.search($scope.page);
             $scope.appliedClass(response.data);
-
             notificationService.displayInfo('Locked successfully');
-
-            //$scope.appliedClass(response.data);
-
-
         }
 
         function lockFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -249,20 +199,13 @@
 
         function unLockSucceded(response) {
             console.log(response);
-
             $scope.search($scope.page);
             $scope.appliedClass(response.data);
             notificationService.displayInfo('Unlocked successfully');
-
-
-
-
-
         }
 
         function unLockFailed(response) {
             console.log(response);
-
             if (response.status == '400')
                 notificationService.displayError(response.data);
             else
@@ -270,19 +213,16 @@
         }
 
         //Functions to show Advance search
-        
+
         function advancedSearch(page, searchItem) {
             var item = searchItem
             if (searchItem != null) {
-
                 if (angular.isUndefined(item.Name)) {
                     item.Name = "";
                 }
-
                 if (angular.isUndefined(item.Status)) {
                     item.Status = -1;
                 }
-
                 if (angular.isUndefined(item.DifficultyLevel)) {
                     item.DifficultyLevel = -1;
                 }
@@ -297,8 +237,6 @@
                         difficultyLevel: item.DifficultyLevel
                     }
                 };
-
-
                 apiService.get(baseUrl + '/api/pools/advancedsearch/', config,
                    advancedSearchCompleted,
                    advancedSearchFailed);
@@ -320,7 +258,6 @@
             if ($scope.filterPools && $scope.filterPools.length) {
                 notificationService.displayInfo(result.data.Items.length + ' Pools(s) found');
             }
-
         }
 
         function advancedSearchFailed(response) {
@@ -339,7 +276,6 @@
             $scope.button = button;
             $scope.newArray = [];
             angular.forEach($scope.Pools, function (pool) {
-              
                 if (!!pool.selected) $scope.newArray.push(pool.ID)  //Get all  testID in newArray
             })
 
@@ -356,25 +292,17 @@
                   poolCheckFailed);
 
             })
-
-
         }
 
         function poolCheckCompleted(result) {
             var data = result.data;
             if ($scope.button == 'lock' && data[0].IsLock == 0)  //if Multi Lock button clicked
             {                                                    // then check if unlock             
-
                 $scope.poolLock(data[0]);
-                //$scope.search();
-
-                //$scope.appliedClass(data[0]);
             }
             if ($scope.button == 'unLock' && data[0].IsLock == 1) //if Multi Unlock button clicked
             {                                                     //then check if locked               
                 $scope.poolLock(data[0]);
-                //  $scope.search();
-                //$scope.appliedClass(data[0]);
             }
             $scope.search();
         }
@@ -382,8 +310,6 @@
         function poolCheckFailed(response) {
             notificationService.displayError(response.data);
         }
-
-
     }
 
 })(angular.module('app-administration'));
