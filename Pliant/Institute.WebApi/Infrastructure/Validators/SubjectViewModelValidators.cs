@@ -13,8 +13,10 @@ namespace Institute.WebApi.Infrastructure.Validators
     {
         public SubjectViewModelValidators()
         {
+            RuleFor(r => r.Code).NotEmpty()
+               .WithMessage("Invalid Code");
             RuleFor(r => r.Subject).NotEmpty()
-                .WithMessage("Invalid subject name");
+                .WithMessage("Invalid Subject Name");
         }
     }
 }

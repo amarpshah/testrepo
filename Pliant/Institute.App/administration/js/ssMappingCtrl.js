@@ -178,17 +178,22 @@
         $scope.loadSubject();
 
         //Delete Mapping
-        function deleteMapping(mappingid) {
-
-            if (mappingid != null) {
-                var config = {
-                    params: {
-                        id: mappingid
-                    }
-                };
-                apiService.post(baseUrl + '/api/mapping/delete/' + mappingid, null,
-            deleteSucceded,
-            deleteFailed);
+        function deleteMapping(mapping) {
+            if (mapping.TopicCount > 0) {
+                notificationService.displayError("Mapping is associated with " + mapping.TopicCount + " topics");
+            }
+            else {
+                var mappingid = mapping.ID;
+                if (mappingid != null) {
+                    var config = {
+                        params: {
+                            id: mappingid
+                        }
+                    };
+                    apiService.post(baseUrl + '/api/mapping/delete/' + mappingid, null,
+                deleteSucceded,
+                deleteFailed);
+                }
             }
         }
 

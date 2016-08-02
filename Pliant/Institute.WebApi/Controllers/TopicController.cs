@@ -23,7 +23,7 @@ namespace Institute.WebApi.Controllers
         private readonly IEntityBaseRepository<Topic> _topicRepository;
 
         public TopicController(
-            IEntityBaseRepository<Topic> topicRepository, 
+            IEntityBaseRepository<Topic> topicRepository,
             IEntityBaseRepository<Error> _errorsRepository, IUnitOfWork _unitOfWork)
             : base(_errorsRepository, _unitOfWork)
         {
@@ -83,7 +83,7 @@ namespace Institute.WebApi.Controllers
                     filter = filter.Trim().ToLower();
 
                     topics = _topicRepository.FindBy(c => c.Name.ToLower().Contains(filter) ||
-                            c.Objective.ToLower().Contains(filter)||
+                            c.Objective.ToLower().Contains(filter) ||
                             c.Code.ToLower().Contains(filter))
                         .OrderBy(c => c.ID)
                         .Skip(currentPage * currentPageSize)
@@ -128,7 +128,7 @@ namespace Institute.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("advancedsearch")]
-        public HttpResponseMessage AdvancedSearch(HttpRequestMessage request, int? page, int? pageSize, string code, string name,  int? subjectid, int? standardid)
+        public HttpResponseMessage AdvancedSearch(HttpRequestMessage request, int? page, int? pageSize, string code, string name, int? subjectid, int? standardid)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -142,7 +142,7 @@ namespace Institute.WebApi.Controllers
                     .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
                                 (name != null ? q.Name.Contains(name) : 1 == 1) &&
                                 (subjectid != -1 ? q.Mapping.SubjectId == subjectid : 1 == 1) &&
-                                (standardid != -1 ? q.Mapping.StandardId == standardid : 1 == 1)                               
+                                (standardid != -1 ? q.Mapping.StandardId == standardid : 1 == 1)
 
                     )
                     .OrderBy(c => c.ID)
@@ -153,17 +153,17 @@ namespace Institute.WebApi.Controllers
                 totaltopics = _topicRepository.GetAll()
                 .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
                             (name != null ? q.Name.Contains(name) : 1 == 1) &&
-                            
+
                             (subjectid != -1 ? q.Mapping.SubjectId == subjectid : 1 == 1) &&
-                            (standardid != -1 ? q.Mapping.StandardId == standardid : 1 == 1) 
-                            
+                            (standardid != -1 ? q.Mapping.StandardId == standardid : 1 == 1)
+
 
                 )
                 .Count();
 
                 IEnumerable<TopicViewModel> topicsVM = Mapper.Map<IEnumerable<Topic>, IEnumerable<TopicViewModel>>(topics);
 
-                
+
 
                 PaginationSet<TopicViewModel> pagedSet = new PaginationSet<TopicViewModel>()
                 {
@@ -195,7 +195,7 @@ namespace Institute.WebApi.Controllers
                 int totalTopics = new int();
 
                 topics = _topicRepository.GetAll()
-                    .Where(c => (mappingid == -1 ? true: c.MappingID == mappingid) )
+                    .Where(c => (mappingid == -1 ? true : c.MappingID == mappingid))
                                  .OrderBy(c => c.ID)
                                  .ToList();
 
@@ -243,11 +243,11 @@ namespace Institute.WebApi.Controllers
 
                     if (topics != null && topics.Count > 0)
                     {
-
                         response = request.CreateResponse(HttpStatusCode.BadRequest,
-                          "Duplicate code cannot be inserted"); 
+                          "Duplicate code cannot be inserted");
                     }
-                    else {
+                    else
+                    {
 
                         _topicRepository.Add(topic);
                         _unitOfWork.Commit();
@@ -257,7 +257,7 @@ namespace Institute.WebApi.Controllers
                         response = request.CreateResponse<TopicViewModel>(HttpStatusCode.Created, topicVM);
                     }
 
-                    
+
                 }
 
                 return response;
@@ -282,21 +282,29 @@ namespace Institute.WebApi.Controllers
                     Topic topic = new Topic();
 
                     topic = _topicRepository.GetSingle(topicVM.ID);
+                    var topics = _topicRepository.FindBy(c => c.Code.ToLower().Contains(topicVM.Code.ToLower())).ToList();
 
-                    topic.Code = topicVM.Code;
-                    topic.Name = topicVM.Name;
-                    topic.Objective = topicVM.Objective;
-                    topic.MappingID = topicVM.MappingID;
-                    topic.IsActive = true;
+                    if (topic.Code != topicVM.Code && topics != null && topics.Count > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                          "Duplicate code cannot be inserted");
+                    }
+                    else
+                    {
+                        topic.Code = topicVM.Code;
+                        topic.Name = topicVM.Name;
+                        topic.Objective = topicVM.Objective;
+                        topic.MappingID = topicVM.MappingID;
+                        topic.IsActive = true;
 
-                    _topicRepository.Edit(topic);
-                    _unitOfWork.Commit();
+                        _topicRepository.Edit(topic);
+                        _unitOfWork.Commit();
 
-                    // Update view model
-                    topicVM = Mapper.Map<Topic, TopicViewModel>(topic);
-                    response = request.CreateResponse<TopicViewModel>(HttpStatusCode.Created, topicVM);
+                        // Update view model
+                        topicVM = Mapper.Map<Topic, TopicViewModel>(topic);
+                        response = request.CreateResponse<TopicViewModel>(HttpStatusCode.Created, topicVM);
+                    }
                 }
-
 
                 return response;
             });
@@ -321,16 +329,23 @@ namespace Institute.WebApi.Controllers
                 else
                 {
                     Topic deleteTopic = _topicRepository.GetSingle(id);
-                    _topicRepository.Delete(deleteTopic);
 
-                    _unitOfWork.Commit();
+                    if (deleteTopic.Questions.Count() > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Can not delete because topic is associated with " + deleteTopic.Questions.Count() + " questions");
+                    }
+                    else
+                    {
 
-                    // Update view model
-                    //standard = Mapper.Map<Subject, SubjectViewModel>(newSubject);
-                    TopicViewModel topicVM = Mapper.Map<Topic, TopicViewModel>(deleteTopic);
-                    response = request.CreateResponse<TopicViewModel>(HttpStatusCode.OK, topicVM);
+                        _topicRepository.Delete(deleteTopic);
+                        _unitOfWork.Commit();
+
+                        // Update view model
+                        TopicViewModel topicVM = Mapper.Map<Topic, TopicViewModel>(deleteTopic);
+                        response = request.CreateResponse<TopicViewModel>(HttpStatusCode.OK, topicVM);
+                    }
                 }
-
                 return response;
             });
         }

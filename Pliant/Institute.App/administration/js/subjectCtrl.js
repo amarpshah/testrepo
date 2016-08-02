@@ -99,16 +99,23 @@
         }
 
         //Delete Subject
-        function deleteSubject(subjectid) {
-            if (subjectid != null) {
-                var config = {
-                    params: {
-                        id: subjectid
-                    }
-                };
-                apiService.post(baseUrl + '/api/subjects/delete/' + subjectid, null,
-            deleteSucceded,
-            deleteFailed);
+        function deleteSubject(subject) {
+            if (subject.StandardCount > 0) {
+                notificationService.displayError("Subject is associated with " + subject.StandardCount + " standards");
+            }
+
+            else {
+                var subjectid = subject.ID;
+                if (subjectid != null) {
+                    var config = {
+                        params: {
+                            id: subjectid
+                        }
+                    };
+                    apiService.post(baseUrl + '/api/subjects/delete/' + subjectid, null,
+                deleteSucceded,
+                deleteFailed);
+                }
             }
         }
 

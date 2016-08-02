@@ -217,6 +217,11 @@ namespace Institute.WebApi.Controllers
                         mappingList = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(listMaps);
                         response = request.CreateResponse<IEnumerable<MappingViewModel>>(HttpStatusCode.Created, mappingList);
                     }
+                    else
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                             "Select Standard and Subject");
+                    }
                 }
                 return response;
             });
@@ -238,17 +243,23 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-                    StandardSubjectMapping deleteSub = _mappingsRepository.GetSingle(id);
-                    _mappingsRepository.Delete(deleteSub);
+                    StandardSubjectMapping deleteMapping = _mappingsRepository.GetSingle(id);
 
-                    _unitOfWork.Commit();
+                    if (deleteMapping.Topic.Count() > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Can not delete because Mapping is associated with " + deleteMapping.Topic.Count() + " topics");
+                    }
+                    else
+                    {
+                        _mappingsRepository.Delete(deleteMapping);
+                        _unitOfWork.Commit();
 
-                    // Update view model
-
-                    MappingViewModel subjectsVM = Mapper.Map<StandardSubjectMapping, MappingViewModel>(deleteSub);
-                    response = request.CreateResponse<MappingViewModel>(HttpStatusCode.OK, subjectsVM);
+                        // Update view model
+                        MappingViewModel subjectsVM = Mapper.Map<StandardSubjectMapping, MappingViewModel>(deleteMapping);
+                        response = request.CreateResponse<MappingViewModel>(HttpStatusCode.OK, subjectsVM);
+                    }
                 }
-
                 return response;
             });
         }

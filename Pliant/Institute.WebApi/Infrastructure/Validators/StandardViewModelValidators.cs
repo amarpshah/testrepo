@@ -13,8 +13,10 @@ namespace Institute.WebApi.Infrastructure.Validators
     {
         public StandardViewModelValidators()
         {
+            RuleFor(r => r.Code).NotEmpty()
+                  .WithMessage("Invalid Code");
             RuleFor(r => r.Standard).NotEmpty()
-                .WithMessage("Invalid name");
+                .WithMessage("Invalid Standard");
         }
     }
 }

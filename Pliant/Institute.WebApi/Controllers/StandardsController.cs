@@ -56,7 +56,7 @@ namespace Institute.WebApi.Controllers
             {
                 HttpResponseMessage response = null;
                 List<Standard> standard = null;
-                int totalCustomers = new int();
+                int totalStandards = new int();
 
                 if (!string.IsNullOrEmpty(filter))
                 {
@@ -69,7 +69,7 @@ namespace Institute.WebApi.Controllers
                         .Take(currentPageSize)
                         .ToList();
 
-                    totalCustomers = _standardsRepository.GetAll()
+                    totalStandards = _standardsRepository.GetAll()
                         .Where(c => c.Code.ToLower().Contains(filter) ||
                             c.Name.ToLower().Contains(filter))
                         .Count();
@@ -82,17 +82,17 @@ namespace Institute.WebApi.Controllers
                         .Take(currentPageSize)
                     .ToList();
 
-                    totalCustomers = _standardsRepository.GetAll().Count();
+                    totalStandards = _standardsRepository.GetAll().Count();
                 }
 
-                IEnumerable<StandardViewModel> studentsVM = Mapper.Map<IEnumerable<Standard>, IEnumerable<StandardViewModel>>(standard);
+                IEnumerable<StandardViewModel> standardVM = Mapper.Map<IEnumerable<Standard>, IEnumerable<StandardViewModel>>(standard);
 
                 PaginationSet<StandardViewModel> pagedSet = new PaginationSet<StandardViewModel>()
                 {
                     Page = currentPage,
-                    TotalCount = totalCustomers,
-                    TotalPages = (int)Math.Ceiling((decimal)totalCustomers / currentPageSize),
-                    Items = studentsVM
+                    TotalCount = totalStandards,
+                    TotalPages = (int)Math.Ceiling((decimal)totalStandards / currentPageSize),
+                    Items = standardVM
                 };
 
                 response = request.CreateResponse<PaginationSet<StandardViewModel>>(HttpStatusCode.OK, pagedSet);
@@ -119,7 +119,7 @@ namespace Institute.WebApi.Controllers
 
                 standards = _standardsRepository.GetAll()
                     .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                                (standard != null ? q.Name.Contains(standard) : 1 == 1)&&
+                                (standard != null ? q.Name.Contains(standard) : 1 == 1) &&
                                 (division != null ? q.Division.Contains(division) : 1 == 1)
 
                     )
@@ -173,7 +173,7 @@ namespace Institute.WebApi.Controllers
                 else
                 {
                     Standard newStandard = new Standard();
-                    //newStudent.Update(student);
+
                     newStandard.Code = standard.Code;
                     newStandard.Name = standard.Standard;
                     newStandard.Division = standard.Division;
@@ -181,25 +181,19 @@ namespace Institute.WebApi.Controllers
                     var standards = _standardsRepository.FindBy(c => c.Code.ToLower().Contains(newStandard.Code.ToLower())).ToList();
                     if (standards != null && standards.Count > 0)
                     {
-
                         response = request.CreateResponse(HttpStatusCode.BadRequest,
                           "Duplicate code cannot be inserted");
                     }
                     else
                     {
-
-
                         _standardsRepository.Add(newStandard);
-
                         _unitOfWork.Commit();
 
                         // Update view model
                         standard = Mapper.Map<Standard, StandardViewModel>(newStandard);
                         response = request.CreateResponse<StandardViewModel>(HttpStatusCode.Created, standard);
-
                     }
-                 }
-
+                }
                 return response;
             });
         }
@@ -223,19 +217,26 @@ namespace Institute.WebApi.Controllers
                     Standard standard = new Standard();
 
                     standard = _standardsRepository.GetSingle(standardVM.ID);
+                    var standards = _standardsRepository.FindBy(c => c.Code.ToLower().Contains(standardVM.Code.ToLower())).ToList();
+                    if (standard.Code != standardVM.Code && standards != null && standards.Count > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Duplicate code cannot be inserted");
 
-                    standard.Code = standardVM.Code;
-                    standard.Name = standardVM.Standard;
-                    standard.Division = standardVM.Division;
+                    }
+                    else
+                    {
+                        standard.Code = standardVM.Code;
+                        standard.Name = standardVM.Standard;
+                        standard.Division = standardVM.Division;
 
-                 
                         _standardsRepository.Edit(standard);
                         _unitOfWork.Commit();
 
                         // Update view model
                         standardVM = Mapper.Map<Standard, StandardViewModel>(standard);
                         response = request.CreateResponse<StandardViewModel>(HttpStatusCode.Created, standardVM);
-                    
+                    }
                 }
 
 
@@ -261,14 +262,23 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
+
                     Standard deleteStd = _standardsRepository.GetSingle(id);
-                    _standardsRepository.Delete(deleteStd);
 
-                    _unitOfWork.Commit();
+                    if (deleteStd.SubjectMapping.Count() > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Can not delete because standard is associated with " + deleteStd.SubjectMapping.Count() + " subjects");
+                    }
+                    else
+                    {
+                        _standardsRepository.Delete(deleteStd);
 
-                    // Update view model
-                    //standard = Mapper.Map<Standard, StandardViewModel>(newStandard);
-                    response = request.CreateResponse<StandardViewModel>(HttpStatusCode.Created, new StandardViewModel());
+                        _unitOfWork.Commit();
+
+                        // Update view model
+                        response = request.CreateResponse<StandardViewModel>(HttpStatusCode.Created, new StandardViewModel());
+                    }
                 }
 
                 return response;

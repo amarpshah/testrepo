@@ -92,7 +92,7 @@
                             </div>
                             <span class="questionItemAction">
                                 <a ui-sref="AdminTopicNav({stdid:mapping.StandardID, subid:mapping.SubjectID, mapid: mapping.ID})" ng-if="permissionADDTOTOPICSTDSUBMAP === 1" class="btn btn-primary edittestt pull-right" tooltip="Add To Topic"><i class="fa fa-eye"></i></a>
-                                <a ng-click="deleteMapping(mapping.ID)" class="btn btn-danger deleteQuestion pull-right" ng-if="permissionDELETESTDSUBMAP === 1" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
+                                <a ng-click="deleteMapping(mapping)" class="btn btn-danger deleteQuestion pull-right" ng-if="permissionDELETESTDSUBMAP === 1" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
                             </span>
                         </div>
                     </div>

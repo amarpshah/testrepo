@@ -19,6 +19,10 @@ namespace Institute.WebApi.Infrastructure.Validators
                 .WithMessage("Invalid Topic Name");
             RuleFor(r => r.Objective).NotEmpty()
                 .WithMessage("Invalid Topic Objective");
+            RuleFor(r => r.StandardId).NotEmpty()
+                .WithMessage("Select Standard");
+            RuleFor(r => r.SubjectId).NotEmpty()
+                .WithMessage("Select Subject");
         }
     }
 }

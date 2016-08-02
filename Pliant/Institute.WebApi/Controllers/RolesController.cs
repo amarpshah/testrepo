@@ -296,7 +296,6 @@ namespace Institute.WebApi.Controllers
                         .Where(u => u.RoleId == id);
                     if (UserRoles.Count() > 0)
                     {
-
                         response = request.CreateResponse<RoleViewModel>(HttpStatusCode.NotAcceptable, new RoleViewModel());
                     }
                     else

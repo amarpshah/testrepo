@@ -40,19 +40,19 @@
                                 <label class="control-label" for="standardCode">Code</label>
                                 <input class="form-control" type="text" ng-model="newTopic.Code" name="code" id="code" placeholder="Code"
                                     validate-on="blur" required>
-                                <span style="color: #a94442; font-weight: bold;" ng-if="vCode" ng-show="addCustomerForm.code.$error.required">Code is required</span>
+                                <span style="color: #a94442; font-weight: bold;" ng-if="vCode" ng-show="addCustomerForm.code.$error.required">Code is Required</span>
                             </div>
                             <div class="col-md-4 col-sm-4">
                                 <label class="control-label" for="standard">Topic Name</label>
                                 <input type="text" class="form-control" ng-model="newTopic.Name" name="name" id="name" placeholder="Topic Name"
                                     validate-on="blur" required>
-                                <span style="color: #a94442; font-weight: bold;" ng-if="vName" ng-show="addCustomerForm.name.$error.required">Name is required</span>
+                                <span style="color: #a94442; font-weight: bold;" ng-if="vName" ng-show="addCustomerForm.name.$error.required">Name is Required</span>
                             </div>
                             <div class="col-md-4 col-sm-4">
                                 <label class="control-label" for="division">Objective</label>
                                 <input class="form-control" type="text" ng-model="newTopic.Objective" name="objective" id="objective" placeholder="Objective"
                                     validate-on="blur" required>
-                                <span style="color: #a94442; font-weight: bold;" ng-if="vObjective" ng-show="addCustomerForm.objective.$error.required">Objective is required</span>
+                                <span style="color: #a94442; font-weight: bold;" ng-if="vObjective" ng-show="addCustomerForm.objective.$error.required">Objective is Required</span>
                             </div>
                             <div class="col-md-2 col-sm-2  pull-right">
                                 <div class="row">
@@ -132,7 +132,7 @@
                             </div>
                             <span class="questionItemAction">
                                 <a ng-click="editTopic(topic)" ng-if="permissionUPDATETOPIC === 1" class="btn btn-primary edittestt pull-right" tooltip="Edit"><i class="fa fa-edit"></i></a>
-                                <a ng-click="deleteTopic(topic.ID)" ng-if="permissionDELETETOPIC === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
+                                <a ng-click="deleteTopic(topic)" ng-if="permissionDELETETOPIC === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
                                 <a ui-sref="AdminQuestionNav({stdid: topic.StandardId, subid: topic.SubjectId,topicid: topic.ID})" ng-if="permissionADDTOQUESTIONTOPIC === 1" class="btn btn-success pull-right view" tooltip="Add To Question"><i class="fa fa-fw fa-plus-circle"></i></a>
                             </span>
                         </div>

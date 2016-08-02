@@ -508,33 +508,41 @@ namespace Institute.WebApi.Controllers
                     Question question = new Question();
 
                     question = _questionRepository.GetSingle(questionVM.ID);
-
-                    if (question != null)
+                    var questions = _questionRepository.FindBy(c => c.Code.ToLower().Contains(questionVM.Code.ToLower())).ToList();
+                    if (question.Code != questionVM.Code && questions != null && questions.Count > 0)
                     {
-                        question.Code = questionVM.Code;
-                        question.Text = questionVM.Text;
-                        question.Objective = questionVM.Objective;
-                        question.Hint = questionVM.Hint;
-                        question.TopicId = questionVM.TopicID;
-                        question.Type = questionVM.Type;
-                        question.DifficultyLevel = questionVM.DifficultyLevel;
-                        question.Points = questionVM.Points;
-                        question.Status = questionVM.Status;
-                        question.Randomize = questionVM.Randomize;
-                        question.IsActive = true;
-                        question.IsLock = questionVM.IsLock;
-                        question.LockedBy = questionVM.LockedBy;
-                        question.OnUpdated = DateTime.Now;
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Duplicate code cannot be inserted");
+                    }
+                    else
+                    {
+                        if (question != null)
+                        {
+                            question.Code = questionVM.Code;
+                            question.Text = questionVM.Text;
+                            question.Objective = questionVM.Objective;
+                            question.Hint = questionVM.Hint;
+                            question.TopicId = questionVM.TopicID;
+                            question.Type = questionVM.Type;
+                            question.DifficultyLevel = questionVM.DifficultyLevel;
+                            question.Points = questionVM.Points;
+                            question.Status = questionVM.Status;
+                            question.Randomize = questionVM.Randomize;
+                            question.IsActive = true;
+                            question.IsLock = questionVM.IsLock;
+                            question.LockedBy = questionVM.LockedBy;
+                            question.OnUpdated = DateTime.Now;
 
-                        //Update Question Type
-                        UpdateQuestionType(question, questionVM);
+                            //Update Question Type
+                            UpdateQuestionType(question, questionVM);
 
-                        _questionRepository.Edit(question);
-                        _unitOfWork.Commit();
+                            _questionRepository.Edit(question);
+                            _unitOfWork.Commit();
 
-                        // Update view model
-                        questionVM = Mapper.Map<Question, QuestionViewModel>(question);
-                        response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.Created, questionVM);
+                            // Update view model
+                            questionVM = Mapper.Map<Question, QuestionViewModel>(question);
+                            response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.Created, questionVM);
+                        }
                     }
                 }
 

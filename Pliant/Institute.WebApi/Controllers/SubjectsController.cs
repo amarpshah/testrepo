@@ -119,8 +119,8 @@ namespace Institute.WebApi.Controllers
 
                 subjects = _subjectsRepository.GetAll()
                     .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                                (subject != null ? q.Name.Contains(subject) : 1 == 1) 
-                                
+                                (subject != null ? q.Name.Contains(subject) : 1 == 1)
+
                     )
                     .OrderBy(c => c.ID)
                     .Skip(currentPage * currentPageSize)
@@ -129,9 +129,9 @@ namespace Institute.WebApi.Controllers
 
                 totalSubjects = _subjectsRepository.GetAll()
                 .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                            (subject != null ? q.Name.Contains(subject) : 1 == 1) 
+                            (subject != null ? q.Name.Contains(subject) : 1 == 1)
 
-                            
+
                 )
                 .Count();
 
@@ -167,7 +167,7 @@ namespace Institute.WebApi.Controllers
                 int totalSubjects = new int();
 
                 subjects = _subjectsRepository.GetAll()
-                    .Where(c => c.StandardMapping.Where(s=> s.StandardId == (int)stdid).Any())
+                    .Where(c => c.StandardMapping.Where(s => s.StandardId == (int)stdid).Any())
                     .OrderBy(c => c.ID)
                 .ToList();
 
@@ -199,7 +199,7 @@ namespace Institute.WebApi.Controllers
                 int totalSubjects = new int();
 
                 subjects = _subjectsRepository.GetAll()
-                    .Where(c=> c.ID == subid)
+                    .Where(c => c.ID == subid)
                     //.Where(c => c.StandardMapping.Where(s => s.SubjectId == (int)subid).Any())
                     .OrderBy(c => c.ID)
                 .ToList();
@@ -245,7 +245,7 @@ namespace Institute.WebApi.Controllers
                 else
                 {
                     Subject newSubject = new Subject();
-                    //newStudent.Update(student);
+
                     newSubject.Code = subject.Code;
                     newSubject.Name = subject.Subject;
 
@@ -292,20 +292,24 @@ namespace Institute.WebApi.Controllers
                     Subject subject = new Subject();
 
                     subject = _subjectsRepository.GetSingle(subjectVM.ID);
+                    var subjects = _subjectsRepository.FindBy(c => c.Code.ToLower().Contains(subjectVM.Code.ToLower())).ToList();
+                    if (subject.Code != subjectVM.Code && subjects != null && subjects.Count > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                          "Duplicate code cannot be inserted");
+                    }
+                    else
+                    {
+                        subject.Code = subjectVM.Code;
+                        subject.Name = subjectVM.Subject;
+                        _subjectsRepository.Edit(subject);
+                        _unitOfWork.Commit();
 
-                    subject.Code = subjectVM.Code;
-                    subject.Name = subjectVM.Subject;
-
-
-
-                    _subjectsRepository.Edit(subject);
-                    _unitOfWork.Commit();
-
-                    // Update view model
-                    subjectVM = Mapper.Map<Subject, SubjectViewModel>(subject);
-                    response = request.CreateResponse<SubjectViewModel>(HttpStatusCode.Created, subjectVM);
+                        // Update view model
+                        subjectVM = Mapper.Map<Subject, SubjectViewModel>(subject);
+                        response = request.CreateResponse<SubjectViewModel>(HttpStatusCode.Created, subjectVM);
+                    }
                 }
-
 
                 return response;
             });
@@ -329,16 +333,21 @@ namespace Institute.WebApi.Controllers
                 else
                 {
                     Subject deleteSub = _subjectsRepository.GetSingle(id);
-                    _subjectsRepository.Delete(deleteSub);
+                    if (deleteSub.StandardMapping.Count() > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                        "Can not delete because subject is associated with " + deleteSub.StandardMapping.Count() + " standards");
+                    }
+                    else
+                    {
+                        _subjectsRepository.Delete(deleteSub);
+                        _unitOfWork.Commit();
 
-                    _unitOfWork.Commit();
-
-                    // Update view model
-                    //standard = Mapper.Map<Subject, SubjectViewModel>(newSubject);
-                    SubjectViewModel subjectsVM = Mapper.Map<Subject, SubjectViewModel>(deleteSub);
-                    response = request.CreateResponse<SubjectViewModel>(HttpStatusCode.OK, subjectsVM);
+                        // Update view model
+                        SubjectViewModel subjectsVM = Mapper.Map<Subject, SubjectViewModel>(deleteSub);
+                        response = request.CreateResponse<SubjectViewModel>(HttpStatusCode.OK, subjectsVM);
+                    }
                 }
-
                 return response;
             });
         }

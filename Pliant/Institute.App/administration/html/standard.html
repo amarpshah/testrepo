@@ -21,13 +21,13 @@
                                 <label class="control-label" for="standardCode">Code</label>
                                 <input class="form-control" type="text" ng-model="newStandard.Code" name="code" id="code" placeholder="Code"
                                     validate-on="blur" required>
-                                <span style="color: #a94442; font-weight: bold;" ng-if="vCode" ng-show="addCustomerForm.code.$error.required">Code is required</span>
+                                <span style="color: #a94442; font-weight: bold;" ng-if="vCode" ng-show="addCustomerForm.code.$error.required">Code is Required</span>
                             </div>
                             <div class="col-md-4 col-sm-4">
                                 <label class="control-label" for="standard">Standard</label>
                                 <input type="text" class="form-control" ng-model="newStandard.Standard" name="name" id="name" placeholder="Standard"
                                     validate-on="blur" required>
-                                <span style="color: #a94442; font-weight: bold;" ng-if="vName" ng-show="addCustomerForm.name.$error.required">Standard is required</span>
+                                <span style="color: #a94442; font-weight: bold;" ng-if="vName" ng-show="addCustomerForm.name.$error.required">Standard is Required</span>
                             </div>
                             <div class="col-md-4 col-sm-4">
                                 <label class="control-label" for="division">Division</label>
@@ -99,7 +99,7 @@
                             </div>
                             <span class="questionItemAction">
                                 <a ng-click="editStandard(standard)" ng-if="permissionUPDATESTD === 1" class="btn btn-primary edittestt pull-right" tooltip="Edit"><i class="fa fa-edit"></i></a>
-                                <a ng-click="deleteStandard(standard.ID)" ng-if="permissionDELETESTD === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
+                                <a ng-click="deleteStandard(standard)" ng-if="permissionDELETESTD === 1" class="btn btn-danger deleteQuestion pull-right" ng-disabled="disableDelete" tooltip="Delete"><i class="fa fa-trash"></i></a>
                             </span>
                         </div>
                     </div>

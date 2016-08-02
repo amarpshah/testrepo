@@ -32,7 +32,7 @@
         $scope.addTopic = addTopic;
         $scope.editTopic = editTopic;
         $scope.updateTopic = updateTopic;
-        $scope.Register = Register;
+        $scope.ValidateTopic = ValidateTopic;
         $scope.IsEditMode = false;
         $scope.ClearTopic = ClearTopic;
 
@@ -127,16 +127,22 @@
 
 
         //Delete Topic
-        function deleteTopic(topicid) {
-            if (topicid != null) {
-                var config = {
-                    params: {
-                        id: topicid
-                    }
-                };
-                apiService.post(baseUrl + '/api/topic/delete/' + topicid, null,
-            deleteSucceded,
-            deleteFailed);
+        function deleteTopic(topic) {
+            if (topic.QuestionCount > 0) {
+                notificationService.displayError("Topic is associated with " + topic.QuestionCount + " questions");
+            }
+            else {
+                var topicid = topic.ID;
+                if (topicid != null) {
+                    var config = {
+                        params: {
+                            id: topicid
+                        }
+                    };
+                    apiService.post(baseUrl + '/api/topic/delete/' + topicid, null,
+                deleteSucceded,
+                deleteFailed);
+                }
             }
         }
 
@@ -244,7 +250,7 @@
 
         function addTopic() {
             {
-                if ($scope.Register()) {
+                if ($scope.ValidateTopic()) {
                     apiService.post(baseUrl + '/api/topic/add', $scope.newTopic,
                    addTopicSucceded,
                    addTopicFailed);
@@ -401,7 +407,7 @@
         //End ------------->
 
         //Validation function
-        function Register() {
+        function ValidateTopic() {
             if (isNaN($scope.newTopic.StandardId)) {
                 $scope.vStandardId = true;
             }

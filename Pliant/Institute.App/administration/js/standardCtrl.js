@@ -39,7 +39,7 @@
                 var config = {
                     params: {
                         page: page,
-                        pageSize: 20,
+                        pageSize: 5,
                         filter: $scope.filterStudents
                     }
                 };
@@ -81,7 +81,7 @@
         function addStandardSucceded(response) {
             console.log(response);
             $scope.newStandard = response.data;
-            notificationService.displayInfo('Subject added successfully');
+            notificationService.displayInfo('Standard added successfully');
             $scope.search();
             $scope.newStandard = {};
         }
@@ -109,16 +109,23 @@
         }
 
         //Delete Standard
-        function deleteStandard(standardid) {
-            if (standardid != null) {
-                var config = {
-                    params: {
-                        id: standardid
-                    }
-                };
-                apiService.post(baseUrl + '/api/standards/delete/' + standardid, null,
-            deleteSucceded,
-            deleteFailed);
+        function deleteStandard(standard) {
+            if (standard.SubjectCount > 0) {
+                notificationService.displayError("Standard is associated with " + standard.SubjectCount + " subjects");
+            }
+
+            else {
+                var standardid = standard.ID
+                if (standardid != null) {
+                    var config = {
+                        params: {
+                            id: standardid
+                        }
+                    };
+                    apiService.post(baseUrl + '/api/standards/delete/' + standardid, null,
+                deleteSucceded,
+                deleteFailed);
+                }
             }
         }
 
@@ -193,7 +200,7 @@
                 var config = {
                     params: {
                         page: page,
-                        pageSize: 20,
+                        pageSize: 5,
                         code: item.Code,
                         standard: item.Standard,
                         division: item.Division,
