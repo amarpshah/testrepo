@@ -7,7 +7,7 @@
 
     function standardCtrl($scope, $modal, apiService, membershipService, webApiLocationService, notificationService, permissionService, constantStrService) {
 
-        $scope.register = register;
+        $scope.validateStandard = validateStandard;
         $scope.filterStudents = '';
         $scope.page = 0;
         $scope.pagesCount = 0;
@@ -71,7 +71,7 @@
         //Add Standard
 
         function addStandard() {
-            if ($scope.register()) {
+            if ($scope.validateStandard()) {
                 apiService.post(baseUrl + '/api/standards/add', $scope.newStandard,
                addStandardSucceded,
                addStandardFailed);
@@ -95,16 +95,21 @@
         }
 
         //Validation function
-        function register() {
+        function validateStandard() {
+            var flag = true;
             if (angular.isUndefined($scope.newStandard.Code)) {
                 $scope.vCode = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newStandard.Standard)) {
                 $scope.vName = true;
-                return false;
+                flag = false;
+            }
+            if (flag) {
+                return true;
             }
             else {
-                return true;
+                return false;
             }
         }
 

@@ -86,24 +86,32 @@
 
         function ValidatePool()
         {
+            var flag = true;
             if (angular.isUndefined($scope.newPool.Name)) {
                 $scope.vName = true;
+                flag = false;
             }
             if (isNaN($scope.newPool.Status)) {
                 $scope.vStatus = true;
+                flag = false;
             }
             if (isNaN($scope.newPool.DifficultyLevel)) {
                 $scope.vDifficultyLevel = true;
+                flag = false;
             }
             if (isNaN($scope.newPool.PassingScore)) {
                 $scope.vPassingScore = true;
+                flag = false;
             }
             if (isNaN($scope.newPool.PoolTotalMarks)) {
                 $scope.vPoolTotalMarks = true;
-                return false;
+                flag = false;
+            }
+            if (flag) {
+                return true;
             }
             else {
-                return true;
+                return false;
             }
         }
         $scope.editPool();

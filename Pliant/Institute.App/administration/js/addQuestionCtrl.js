@@ -609,43 +609,56 @@
         //Validation Question
 
         function ValidateQuestion() {
+            var flag = true;
             if (isNaN($scope.newQuestion.StandardId)) {
                 $scope.vStandardId = true;
+                flag = false;
             }
             if (isNaN($scope.newQuestion.SubjectId)) {
                 $scope.vSubjectId = true;
+                flag = false;
             }
             if (isNaN($scope.newQuestion.TopicId)) {
                 $scope.vTopicId = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newQuestion.Code)) {
                 $scope.vCode = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newQuestion.Question)) {
                 $scope.vQuestion = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newQuestion.Objective)) {
                 $scope.vObjective = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newQuestion.Hint)) {
                 $scope.vHint = true;
+                flag = false;
             }
             if (isNaN($scope.newQuestion.QuestionType)) {
                 $scope.vQuestionType = true;
+                flag = false;
             }
             if (isNaN($scope.newQuestion.Points)) {
                 $scope.vPoints = true;
+                flag = false;
             }
             if (isNaN($scope.newQuestion.Status)) {
                 $scope.vStatus = true;
+                flag = false;
             }
             if (isNaN($scope.newQuestion.Difficulty)) {
                 $scope.vDifficulty = true;
-                return false;
+                flag = false;
             }
-
-            else {
+            if (flag) {
                 return true;
+            }
+            else {
+                return false;
             }
 
         }

@@ -137,21 +137,44 @@
 
         $scope.search();
 
-        function deleteTest(testid) {
-            if (testid != null) {
-                params: {
-                        id: testid
+        function deleteTest(test) {
+            var TestSet = [];
+            var flag = false;
+            if (test != null) {
+                if (test.PoolCount > 0) {
+                    notificationService.displayError("Test is associated with " + test.PoolCount + " pools");
+                    flag = true;
                 }
-                apiService.post(baseUrl + '/api/tests/delete/' + testid, null,
-               deleteSucceded,
-               deleteFailed);
+                else {
+                    TestSet.push(test.ID);
+                }
+            }
+            else {
+                for (var i = 0; i < $scope.Tests.length; i++) {
+                    if ($scope.Tests[i].selected == true) {
+                        if ($scope.Tests[i].PoolCount > 0) {
+                            notificationService.displayError("Test is associated with " + $scope.Tests[i].PoolCount + " pools");
+                            flag = true;
+                            break;
+                        }
+                        else {
+                            var testid = $scope.Tests[i].ID;
+                            TestSet.push(testid);
+                        }
+                    }
+                }
+            }
+            if (!flag && TestSet.length > 0) {
+                apiService.post(baseUrl + '/api/tests/delete/', TestSet,
+                  deleteSucceded,
+                  deleteFailed);
             }
         }
-
 
         function deleteSucceded(response) {
             console.log(response);
             notificationService.displayInfo('Deleted successfully');
+            $scope.search($scope.page);
         }
 
         function deleteFailed(response) {

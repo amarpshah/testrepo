@@ -105,26 +105,43 @@
 
         $scope.search();
 
-
-        //Delete Subject
-        function deletePool(poolid) {
-
-            if (poolid != null) {
-                var config = {
-                    params: {
-                        id: poolid
+        function deletePool(pool) {
+            var PoolSet = [];
+            var flag = false;
+            if (pool != null) {
+                if (pool.QuestionCount > 0) {
+                    notificationService.displayError("Pool is associated with " + pool.QuestionCount + " Questions");
+                }
+                else {
+                    PoolSet.push(pool.ID);
+                }
+            }
+            else {
+                for (var i = 0; i < $scope.Pools.length; i++) {
+                    if ($scope.Pools[i].selected == true) {
+                        if ($scope.Pools[i].QuestionCount > 0) {
+                            notificationService.displayError("Pool is associated with " + $scope.Pools[i].QuestionCount + " Questions");
+                            flag = true;
+                            break;
+                        }
+                        else {
+                            var poolid = $scope.Pools[i].ID;
+                            PoolSet.push(poolid);
+                        }
                     }
-                };
-                apiService.post(baseUrl + '/api/pools/delete/' + poolid, null,
-            deleteSucceded,
-            deleteFailed);
+                }
+                if (!flag && PoolSet.length > 0) {
+                    apiService.post(baseUrl + '/api/pools/delete/', PoolSet,
+                deleteSucceded,
+                deleteFailed);
+                }
             }
         }
-
 
         function deleteSucceded(response) {
             console.log(response);
             notificationService.displayInfo('Deleted successfully');
+            search($scope.page);
         }
 
         function deleteFailed(response) {

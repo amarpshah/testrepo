@@ -290,7 +290,6 @@ namespace Institute.WebApi.Controllers
                 else
                 {
                     Subject subject = new Subject();
-
                     subject = _subjectsRepository.GetSingle(subjectVM.ID);
                     var subjects = _subjectsRepository.FindBy(c => c.Code.ToLower().Contains(subjectVM.Code.ToLower())).ToList();
                     if (subject.Code != subjectVM.Code && subjects != null && subjects.Count > 0)

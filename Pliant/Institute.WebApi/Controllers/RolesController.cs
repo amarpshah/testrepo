@@ -198,7 +198,7 @@ namespace Institute.WebApi.Controllers
                     {
                      
                         _rolesRepository.Add(newRole);
-                      
+
                         _unitOfWork.Commit();
                         AddRoleInPermission();
                         // Update view model
@@ -256,22 +256,25 @@ namespace Institute.WebApi.Controllers
                     Role role = new Role();
 
                     role = _rolesRepository.GetSingle(roleVM.ID);
+                    var roles = _rolesRepository.FindBy(c => c.Code.ToLower().Contains(roleVM.Code.ToLower())).ToList();
+                    if (role.Code != roleVM.Code && roles != null && roles.Count > 0)
+                    {
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                          "Duplicate code cannot be inserted");
+                    }
+                    else
+                    {
+                        role.Code = roleVM.Code;
+                        role.Name = roleVM.Name;
 
-                    role.Code = roleVM.Code;
-                    role.Name = roleVM.Name;
-                    //standard.Division = standardVM.Division;
+                        _rolesRepository.Edit(role);
+                        _unitOfWork.Commit();
 
-
-                    _rolesRepository.Edit(role);
-                    _unitOfWork.Commit();
-
-                    // Update view model
-                    roleVM = Mapper.Map<Role, RoleViewModel>(role);
-                    response = request.CreateResponse<RoleViewModel>(HttpStatusCode.Created, roleVM);
-
+                        // Update view model
+                        roleVM = Mapper.Map<Role, RoleViewModel>(role);
+                        response = request.CreateResponse<RoleViewModel>(HttpStatusCode.Created, roleVM);
+                    }
                 }
-
-
                 return response;
             });
         }
@@ -292,25 +295,21 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-                    var UserRoles = _userRolesRepository.GetAll()
-                        .Where(u => u.RoleId == id);
-                    if (UserRoles.Count() > 0)
+                    Role deleteRole = _rolesRepository.GetSingle(id);
+                    if (deleteRole.RoleMapping.Count() > 0)
                     {
-                        response = request.CreateResponse<RoleViewModel>(HttpStatusCode.NotAcceptable, new RoleViewModel());
+                        response = request.CreateResponse(HttpStatusCode.BadRequest,
+                            "Can not delete because role is associated with " + deleteRole.RoleMapping.Count() + " users");
                     }
                     else
                     {
-
-                        Role deleteRole = _rolesRepository.GetSingle(id);
                         _rolesRepository.Delete(deleteRole);
-
                         _unitOfWork.Commit();
 
                         // Update view model
                         response = request.CreateResponse<RoleViewModel>(HttpStatusCode.Created, new RoleViewModel());
                     }
                 }
-
                 return response;
             });
         }

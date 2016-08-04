@@ -236,48 +236,50 @@
             $scope.newQuestion = {};
             $scope.Questions = {};
             $scope.pagesCount = 0;
-
+            $scope.ShowList = false;
         }
 
 
         //Add Question To Pool
         function AddQuestionsToPool(question) {
 
-            var question2Pool = [];
+            var questionToPool = [];
             if (question) {
                 var entry = {}
                 entry.QuestionId = question.ID;
                 entry.PoolId = $scope.PoolId;
                 entry.IsMandatory = false;
-                question2Pool.push(entry);
+                questionToPool.push(entry);
 
             }
             else {
-
                 for (var i = 0; i < $scope.Questions.length; i++) {
                     if ($scope.Questions[i].IsChecked == true) {
                         var entry = {}
                         entry.QuestionId = $scope.Questions[i].ID;
                         entry.PoolId = $scope.PoolId;
                         entry.IsMandatory = false;
-                        question2Pool.push(entry);
+                        questionToPool.push(entry);
                     }
                 }
             }
-            if (question2Pool.length > 0) {
-                apiService.post(baseUrl + '/api/pools/addquestiontopool', question2Pool,
-                    addquestionCompleted,
-                    addquestionFailed);
+            if (questionToPool.length > 0) {
+                apiService.post(baseUrl + '/api/pools/addquestiontopool', questionToPool,
+                    addQuestionCompleted,
+                    addQuestionFailed);
+            }
+            else {
+                $scope.vQuestions = true;
             }
         }
 
-        function addquestionCompleted() {
+        function addQuestionCompleted() {
             notificationService.displaySuccess('Question Added Successfully');
             $scope.loadPoolQuestionCnt();
             $scope.SearchQuestions($scope.page);
         }
 
-        function addquestionFailed(response) {
+        function addQuestionFailed(response) {
             notificationService.displayError(response.data);
         }
 
@@ -329,12 +331,29 @@
                         qPoolId: $scope.PoolId
                     }
                 };
-
+            }
+            else {
+                var config = {
+                    params: {
+                        page: page,
+                        pageSize: 10,
+                        code: "",
+                        text: "",
+                        type: -1,
+                        topicid: -1,
+                        standardid: -1,
+                        subjectid: -1,
+                        status: -1,
+                        difficultyLevel: -1,
+                        qPoolId: $scope.PoolId
+                    }
+                };
+            }
                 apiService.get(baseUrl + '/api/question/searchquestions', config,
                     searchCompleted,
                     searchFailed);
 
-            }
+            
         }
 
         function searchCompleted(result) {

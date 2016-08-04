@@ -17,6 +17,7 @@
                 <label>Total Question added in Pool :<span class="countText"> {{PoolName}} </span>are : <span class="countValue">{{PoolQuestionCnt}}</span></label>
             </span>
             <button ng-click="AddQuestionsToPool();" type="button" class="btn btn-success proceed right-side"><i class="fa fa-fw fa-plus-circle"></i>Add to Pool</button>
+             <span style="color: #a94442; font-weight: bold;" ng-if="vQuestions">Please Select Questions</span>
         </div>
     </div>
 </div>

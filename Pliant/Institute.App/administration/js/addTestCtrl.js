@@ -124,36 +124,45 @@
         }
 
         function ValidateTest() {
-
+            var flag = true;
             if (angular.isUndefined($scope.newTest.Code)) {
                 $scope.vCode = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newTest.Text)) {
                 $scope.vText = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newTest.Description)) {
                 $scope.vDescription = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newTest.Objective)) {
                 $scope.vObjective = true;
+                flag = false;
             }
             if (isNaN($scope.newTest.Status)) {
                 $scope.vStatus = true;
+                flag = false;
             }
             if (isNaN($scope.newTest.Difficulty)) {
                 $scope.vDifficulty = true;
+                flag = false;
             }
             if (isNaN($scope.newTest.TotalMarks)) {
                 $scope.vTotalMarks = true;
+                flag = false;
             }
             if (isNaN($scope.newTest.PassingMarks)) {
                 $scope.vPassingMarks = true;
-                return false;
+                flag = false;
             }
-            else {
+            if (flag) {
                 return true;
             }
-
+            else {
+                return false;
+            }
 
         }
 

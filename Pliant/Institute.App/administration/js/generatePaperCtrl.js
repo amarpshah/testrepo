@@ -59,20 +59,24 @@
         }
 
         function ValidatePaperSets() {
+            var flag = true;
             if (isNaN($scope.newPaper.NoOfSets)) {
                 $scope.vNoOfSets = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newPaper.Description)) {
                 $scope.vDescription = true;
-
+                flag = false;
             }
             if ($scope.PoolCount < 1) {
                 $scope.vPoolCount = true;
-                return false;
+                flag = false;
+            }
+            if(flag){
+                return true;
             }
             else {
-
-                return true;
+                return false;
             }
 
         }

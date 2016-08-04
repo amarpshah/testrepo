@@ -838,13 +838,9 @@ namespace Institute.WebApi.Controllers
             });
         }
 
-
-
-
-
         [HttpPost]
-        [Route("delete/{id:int}")]
-        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
+        [Route("delete")]
+        public HttpResponseMessage Delete(HttpRequestMessage request, List<int> questionid)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -858,17 +854,17 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-                    Question deleteQuestion = _questionRepository.GetSingle(id);
-                    _questionRepository.Delete(deleteQuestion);
-
+                    foreach (var id in questionid)
+                    {
+                        Question deleteQuestion = _questionRepository.GetSingle(id);
+                        if (deleteQuestion != null)
+                        {
+                            _questionRepository.Delete(deleteQuestion);
+                        }
+                    }
                     _unitOfWork.Commit();
-
-                    // Update view model
-
-                    QuestionViewModel questionVM = Mapper.Map<Question, QuestionViewModel>(deleteQuestion);
-                    response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.OK, questionVM);
+                    response = request.CreateResponse<QuestionViewModel>(HttpStatusCode.OK, null);
                 }
-
                 return response;
             });
         }

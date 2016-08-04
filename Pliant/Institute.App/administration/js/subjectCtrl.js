@@ -19,7 +19,7 @@
         $scope.newSubject = {};
         $scope.IsEditMode = false;
         $scope.clearSubject = clearSubject;
-        $scope.register = register
+        $scope.validateSubject = validateSubject;
         $scope.advancedSearch = advancedSearch;
         $scope.clearSearch = clearSearch;
 
@@ -75,7 +75,7 @@
         //Add Subjects
 
         function addSubject() {
-            if ($scope.register()) {
+            if ($scope.validateSubject()) {
                 apiService.post(baseUrl + '/api/subjects/add', $scope.newSubject,
                addSubjectSucceded,
                addSubjectFailed);
@@ -177,16 +177,21 @@
         }
 
         //Validation function
-        function register() {
+        function validateSubject() {
+            var flag = true;
             if (angular.isUndefined($scope.newSubject.Code)) {
                 $scope.vCode = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newSubject.Subject)) {
                 $scope.vName = true;
-                return false;
+                flag = false;
+            }
+            if (flag) {
+                return true;
             }
             else {
-                return true;
+                return false;
             }
         }
 

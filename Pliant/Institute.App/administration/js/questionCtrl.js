@@ -107,24 +107,30 @@
         }
 
         //Delete Question
+       
         function deleteQuestion(questionid) {
-
-            if (questionid != null) {
-                var config = {
-                    params: {
-                        id: questionid
+            var QuestionSet = [];
+            if (questionid) {
+                QuestionSet.push(questionid);
+            }
+            else {
+                for (var i = 0; i < $scope.Questions.length; i++) {
+                    if ($scope.Questions[i].selected == true) {
+                        var questionid = $scope.Questions[i].ID;
+                        QuestionSet.push(questionid);
                     }
-                };
-                apiService.post(baseUrl + '/api/question/delete/' + questionid, null,
-            deleteSucceded,
-            deleteFailed);
+                }
+            }
+            if (QuestionSet.length > 0) {
+                apiService.post(baseUrl + '/api/question/delete/', QuestionSet,
+                deleteSucceded,
+                deleteFailed);
             }
         }
-
-
         function deleteSucceded(response) {
             console.log(response);
             notificationService.displayInfo('Deleted successfully');
+            $scope.search($scope.Page);
         }
 
         function deleteFailed(response) {

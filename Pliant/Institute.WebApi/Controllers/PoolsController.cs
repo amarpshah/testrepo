@@ -620,10 +620,9 @@ namespace Institute.WebApi.Controllers
         }
 
 
-
         [HttpPost]
-        [Route("delete/{id:int}")]
-        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
+        [Route("delete")]
+        public HttpResponseMessage Delete(HttpRequestMessage request, List<int> poolid)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -637,16 +636,28 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-                    Pool deleteTest = _poolRepository.GetSingle(id);
-                    _poolRepository.Delete(deleteTest);
-
-                    _unitOfWork.Commit();
-
-                    // Update view model
-                    PoolViewModel testVM = Mapper.Map<Pool, PoolViewModel>(deleteTest);
-                    response = request.CreateResponse<PoolViewModel>(HttpStatusCode.OK, testVM);
+                    bool flag = false;
+                    foreach (var id in poolid)
+                    {
+                        Pool deletePool = _poolRepository.GetSingle(id);
+                        if (deletePool.PoolQuestionMapping.Count() > 0)
+                        {
+                            response = request.CreateResponse(HttpStatusCode.BadRequest,
+                               "Can not delete because pool is associated with " + deletePool.PoolQuestionMapping.Count() + " quetions");
+                            flag = true;
+                            break;
+                        }
+                        else
+                        {
+                            _poolRepository.Delete(deletePool);
+                        }
+                    }
+                    if (!flag)
+                    {
+                        _unitOfWork.Commit();
+                        response = request.CreateResponse<PoolViewModel>(HttpStatusCode.OK, null);
+                    }
                 }
-
                 return response;
             });
         }
@@ -680,15 +691,12 @@ namespace Institute.WebApi.Controllers
                     }
                     _unitOfWork.Commit();
 
-                    // Update view model
-                    //poolVM = Mapper.Map<List<PoolQuestionMapping>, List<PoolQuestionViewModel>>(pool);
-                    //response = request.CreateResponse<PoolQuestionViewModel>(HttpStatusCode.Created, poolVM);
                     response = request.CreateResponse<PoolQuestionViewModel>(HttpStatusCode.Created, null);
                 }
                 return response;
             });
         }
-    
+
         [HttpPost]
         [Route("removequestionpoolmap")]
         public HttpResponseMessage RemoveQuestionFromPool(HttpRequestMessage request, List<PoolQuestionViewModel> questions)
@@ -718,8 +726,5 @@ namespace Institute.WebApi.Controllers
                 return response;
             });
         }
-    
-    
-    
     }
 }

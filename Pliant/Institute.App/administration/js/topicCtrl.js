@@ -408,24 +408,32 @@
 
         //Validation function
         function ValidateTopic() {
+            var flag = true;
             if (isNaN($scope.newTopic.StandardId)) {
                 $scope.vStandardId = true;
+                flag = false;
             }
             if (isNaN($scope.newTopic.SubjectId)) {
                 $scope.vSubjectId = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newTopic.Code)) {
                 $scope.vCode = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newTopic.Name)) {
                 $scope.vName = true;
+                flag = false;
             }
             if (angular.isUndefined($scope.newTopic.Objective)) {
                 $scope.vObjective = true;
-                return false;
+                flag = false;
+            }
+            if (flag) {
+                return true;
             }
             else {
-                return true;
+                return false;
             }
         }
 

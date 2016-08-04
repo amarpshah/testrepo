@@ -22,12 +22,12 @@ namespace Institute.WebApi.Controllers
     {
         private readonly IEntityBaseRepository<Test> _testRepository;
         private readonly IEntityBaseRepository<User> _userRepository;
-      
+
 
         public TestsController(
-            IEntityBaseRepository<Test> testRepository, 
+            IEntityBaseRepository<Test> testRepository,
             IEntityBaseRepository<User> userRepository,
-            IEntityBaseRepository<Error> _errorsRepository, 
+            IEntityBaseRepository<Error> _errorsRepository,
 
             IUnitOfWork _unitOfWork)
             : base(_errorsRepository, _unitOfWork)
@@ -113,11 +113,11 @@ namespace Institute.WebApi.Controllers
 
                     totalTests = _testRepository.GetAll().Count();
                 }
-                
+
                 //Get User Name
-                  List<string> UserName = new List<string>();
-                    UserName = GetUser(tests);
-                    
+                List<string> UserName = new List<string>();
+                UserName = GetUser(tests);
+
                 IEnumerable<TestViewModel> testsVM = Mapper.Map<IEnumerable<Test>, IEnumerable<TestViewModel>>(tests);
                 int i = 0;
                 foreach (TestViewModel qvm in testsVM)
@@ -149,28 +149,26 @@ namespace Institute.WebApi.Controllers
             List<string> ListNames = new List<string>();
             foreach (var t in tests)
             {
-                
                 if (t.LockedBy != 0)
                 {
                     User user = new User();
                     user = _userRepository.GetSingle(t.LockedBy);
                     ListNames.Add(user.Username);
                 }
-                else {
-
+                else
+                {
                     ListNames.Add("");
                 }
-            
             }
             return ListNames;
         }
 
-      
+
 
         [AllowAnonymous]
         [HttpGet]
         [Route("filtertests")] //{stdid:int=-1}/{subid:int=-1}
-        public HttpResponseMessage FilteredTests(HttpRequestMessage request ) //, int? stdid, int? subid
+        public HttpResponseMessage FilteredTests(HttpRequestMessage request) //, int? stdid, int? subid
         {
             return CreateHttpResponse(request, () =>
             {
@@ -179,10 +177,10 @@ namespace Institute.WebApi.Controllers
                 int totalTests = new int();
 
                 tests = _testRepository.GetAll()
-//                    .Where(c => ((stdid == -1 ? true : c.Mapping.StandardId == stdid) &&
-//                                 (subid == -1 ? true : c.Mapping.SubjectId == subid)))
+                    //                    .Where(c => ((stdid == -1 ? true : c.Mapping.StandardId == stdid) &&
+                    //                                 (subid == -1 ? true : c.Mapping.SubjectId == subid)))
 
-                     
+
                     .OrderBy(c => c.ID)
                 .ToList();
 
@@ -263,50 +261,56 @@ namespace Institute.WebApi.Controllers
         [HttpPost]
         [Route("update")]
         public HttpResponseMessage Update(HttpRequestMessage request, TestViewModel testVM)
-        { 
-             return CreateHttpResponse(request, () => 
-            {
-                HttpResponseMessage response = null;
-                 if (!ModelState.IsValid)
-                {
-                    response = request.CreateResponse(HttpStatusCode.BadRequest,
-                        ModelState.Keys.SelectMany(k => ModelState[k].Errors)
-                              .Select(m => m.ErrorMessage).ToArray());
-                }
-                else
-                {
-                    Test test = new Test();
+        {
+            return CreateHttpResponse(request, () =>
+           {
+               HttpResponseMessage response = null;
+               if (!ModelState.IsValid)
+               {
+                   response = request.CreateResponse(HttpStatusCode.BadRequest,
+                       ModelState.Keys.SelectMany(k => ModelState[k].Errors)
+                             .Select(m => m.ErrorMessage).ToArray());
+               }
+               else
+               {
+                   Test test = new Test();
 
                    test = _testRepository.GetSingle(testVM.ID);
+                   var tests = _testRepository.FindBy(c => c.Code.ToLower().Contains(testVM.Code.ToLower())).ToList();
+                   if (test.Code != testVM.Code && tests != null && tests.Count > 0)
+                   {
+                       response = request.CreateResponse(HttpStatusCode.BadRequest,
+                         "Duplicate code cannot be inserted");
+                   }
+                   else
+                   {
+                       test.Code = testVM.Code;
+                       test.Text = testVM.Text;
+                       test.Description = testVM.Description;
+                       test.Objective = testVM.Objective;
+                       test.Status = testVM.Status;
+                       test.NegativeMarks = testVM.NegativeMarks;
+                       test.PointsPerQuestion = testVM.PointPerQuestion;
+                       test.TotalMarks = testVM.TotalMarks;
+                       test.PassingMarks = testVM.PassingMarks;
+                       test.ScoringMode = testVM.ScoringMode;
+                       test.DifficultyLevel = testVM.DifficultyLevel;
+                       test.PoolSequence = testVM.PoolSequence;
+                       test.ShowHint = testVM.ShowHint;
+                       test.Lock = testVM.Lock;
+                       test.LockedBy = testVM.LockedBy;
 
-                    test.Code = testVM.Code;
-                    test.Text = testVM.Text;
-                    test.Description = testVM.Description;
-                    test.Objective = testVM.Objective;
-                    test.Status = testVM.Status;
-                    test.NegativeMarks = testVM.NegativeMarks;
-                    test.PointsPerQuestion = testVM.PointPerQuestion;
-                    test.TotalMarks = testVM.TotalMarks;
-                    test.PassingMarks = testVM.PassingMarks;
-                    test.ScoringMode = testVM.ScoringMode;
-                    test.DifficultyLevel = testVM.DifficultyLevel;
-                    test.PoolSequence = testVM.PoolSequence;
-                    test.ShowHint = testVM.ShowHint;
-                    test.Lock = testVM.Lock;
-                    test.LockedBy = testVM.LockedBy;
+                       _testRepository.Edit(test);
+                       _unitOfWork.Commit();
 
+                       // Update view model
+                       testVM = Mapper.Map<Test, TestViewModel>(test);
+                       response = request.CreateResponse<TestViewModel>(HttpStatusCode.Created, testVM);
+                   }
+               }
 
-                     _testRepository.Edit(test);
-                        _unitOfWork.Commit();
-
-                        // Update view model
-                        testVM = Mapper.Map<Test, TestViewModel>(test);
-                        response = request.CreateResponse<TestViewModel>(HttpStatusCode.Created, testVM);
-                 }
-                    
-                
-                return response;
-            });
+               return response;
+           });
         }
 
         //Advaced Search
@@ -314,7 +318,7 @@ namespace Institute.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("advancedsearch")]
-        public HttpResponseMessage AdvancedSearch(HttpRequestMessage request, string code, string text,int? page, int? pageSize, int? status, int? difficultyLevel)
+        public HttpResponseMessage AdvancedSearch(HttpRequestMessage request, string code, string text, int? page, int? pageSize, int? status, int? difficultyLevel)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -372,13 +376,13 @@ namespace Institute.WebApi.Controllers
         }
 
 
-// Lock and Unlock
+        // Lock and Unlock
         [HttpPost]
         [Route("lockTest")]
         public HttpResponseMessage LockTest(HttpRequestMessage request, TestViewModel testVM)
         {
             return CommonLockUnLockTest(request, testVM, true);
-        
+
         }
 
 
@@ -391,22 +395,22 @@ namespace Institute.WebApi.Controllers
         }
 
 
-       
+
         private HttpResponseMessage CommonLockUnLockTest(HttpRequestMessage request, TestViewModel testVM, bool isLock)
         {
- 
-             return CreateHttpResponse(request, () => 
-            {
-                HttpResponseMessage response = null;
-                 if (!ModelState.IsValid)
-                {
-                    response = request.CreateResponse(HttpStatusCode.BadRequest,
-                        ModelState.Keys.SelectMany(k => ModelState[k].Errors)
-                              .Select(m => m.ErrorMessage).ToArray());
-                }
-                else
-                {
-                    Test test = new Test();
+
+            return CreateHttpResponse(request, () =>
+           {
+               HttpResponseMessage response = null;
+               if (!ModelState.IsValid)
+               {
+                   response = request.CreateResponse(HttpStatusCode.BadRequest,
+                       ModelState.Keys.SelectMany(k => ModelState[k].Errors)
+                             .Select(m => m.ErrorMessage).ToArray());
+               }
+               else
+               {
+                   Test test = new Test();
 
                    test = _testRepository.GetSingle(testVM.ID);
 
@@ -426,12 +430,13 @@ namespace Institute.WebApi.Controllers
                            response = request.CreateResponse<TestViewModel>(HttpStatusCode.Created, testVM);
 
                        }
-                       else {
+                       else
+                       {
                            // Update view model
                            testVM = Mapper.Map<Test, TestViewModel>(test);
                            response = request.CreateResponse<TestViewModel>(HttpStatusCode.NotAcceptable, testVM);
 
-                       
+
                        }
 
 
@@ -459,16 +464,16 @@ namespace Institute.WebApi.Controllers
                            response = request.CreateResponse<TestViewModel>(HttpStatusCode.NotAcceptable, testVM);
                        }
                    }
-                }
-                 return response;
-            });
+               }
+               return response;
+           });
         }
 
 
-        [AllowAnonymous]
+
         [HttpPost]
-        [Route("delete/{id:int}")]
-        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
+        [Route("delete")]
+        public HttpResponseMessage Delete(HttpRequestMessage request, List<int> testid)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -482,20 +487,31 @@ namespace Institute.WebApi.Controllers
                 }
                 else
                 {
-                    Test deleteTest = _testRepository.GetSingle(id);
-                    _testRepository.Delete(deleteTest);
-
-                    _unitOfWork.Commit();
-
-                    // Update view model
-                    TestViewModel testVM = Mapper.Map<Test, TestViewModel>(deleteTest);
-                    response = request.CreateResponse<TestViewModel>(HttpStatusCode.OK, testVM);
+                    bool flag = false;
+                    foreach (var id in testid)
+                    {
+                        Test deleteTest = _testRepository.GetSingle(id);
+                        if (deleteTest.Pools.Count() > 0)
+                        {
+                            response = request.CreateResponse(HttpStatusCode.BadRequest,
+                               "Can not delete because test is associated with " + deleteTest.Pools.Count() + " pools");
+                            flag = true;
+                            break;
+                        }
+                        else
+                        {
+                            _testRepository.Delete(deleteTest);
+                        }
+                    }
+                    if (!flag)
+                    {
+                        _unitOfWork.Commit();
+                        response = request.CreateResponse<TestViewModel>(HttpStatusCode.OK, null);
+                    }
                 }
-
                 return response;
             });
         }
-
     }
 }
 

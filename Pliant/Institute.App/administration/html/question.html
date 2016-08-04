@@ -19,7 +19,7 @@
             <a data-ng-click="showSelected('unLock');" ng-if="permissionLOCKQUESTION === 1" class="btn btn-primary pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-unlock"></i>Unlock</a>
         </div>
         <div class="addBlock" ng-if="permissionDELETEQUESTION === 1">
-            <a class="btn btn-danger pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
+            <a ng-click="deleteQuestion();" class="btn btn-danger pull-left" style="margin-left: 10px"><i class="fa fa-fw fa-trash"></i>Delete</a>
         </div>
     </div>
 </div>
@@ -83,18 +83,14 @@
                     </div>
                 </div>
             </div>
-            <div>{{question.selected}}</div>
-            <div class="bulkAction btn-group" ng-class="{'active': question.selected}">
-                <a href="" class="btn btn-warning lockQuestionAll"><i class="fa fa-lock"></i>Lock All</a>
-                <a href="" class="btn btn-danger deleteQuestionAll"><i class="fa fa-trash"></i>Delete All</a>
-            </div>
+       
             <div class="panel-body questionList">
                 <div ng-if="!Questions">There are no Questions to be displayed</div>
                 <div ng-repeat="question in Questions">
                     <div class="list-group">
                         <div class="questionItem">
                             <span class="questionCheck">
-                                <input type="checkbox" ng-model="question.selected" ng-value="{{question.ID}}" ang-disabled="{{question.LockedBy != checkId && question.IsLock != 0}}"></input>
+                                <input type="checkbox" ng-model="question.selected" ng-value="{{question.ID}}" ng-disabled="{{question.LockedBy != checkId && question.IsLock != 0}}"></input>
                                 <!--id="checkbox1"-->
                             </span>
                             <span class="questionTypeIcon" tooltip="{{question.sType}}">{{question.sTypeShort}}</span>
