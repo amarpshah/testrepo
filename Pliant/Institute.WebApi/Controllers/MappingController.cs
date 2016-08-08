@@ -126,24 +126,25 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalMappings = _mappingsRepository.GetAll()
-                .Where(q => (subjectid != -1 ? q.SubjectId == subjectid : 1 == 1) &&
-                                (standardid != -1 ? q.StandardId == standardid : 1 == 1)
-                )
-                .Count();
-
-                IEnumerable<MappingViewModel> ssMappingVM = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(mappings);
-
-                PaginationSet<MappingViewModel> pagedSet = new PaginationSet<MappingViewModel>()
+                totalMappings = mappings.Count();
+                if (totalMappings > 0)
                 {
-                    Page = currentPage,
-                    TotalCount = totalMappings,
-                    TotalPages = (int)Math.Ceiling((decimal)totalMappings / currentPageSize),
-                    Items = ssMappingVM
-                };
 
-                response = request.CreateResponse<PaginationSet<MappingViewModel>>(HttpStatusCode.OK, pagedSet);
+                    IEnumerable<MappingViewModel> ssMappingVM = Mapper.Map<IEnumerable<StandardSubjectMapping>, IEnumerable<MappingViewModel>>(mappings);
 
+                    PaginationSet<MappingViewModel> pagedSet = new PaginationSet<MappingViewModel>()
+                    {
+                        Page = currentPage,
+                        TotalCount = totalMappings,
+                        TotalPages = (int)Math.Ceiling((decimal)totalMappings / currentPageSize),
+                        Items = ssMappingVM
+                    };
+
+                    response = request.CreateResponse<PaginationSet<MappingViewModel>>(HttpStatusCode.OK, pagedSet);
+                }
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");                
+                }
                 return response;
             });
         }

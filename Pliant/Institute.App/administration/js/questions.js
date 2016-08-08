@@ -222,6 +222,7 @@ $(document)
 		var isMultiChoice = $('.questionType.active').is('.multiChoice') ? true : false;
 		var isDescriptive = $('.questionType.active').is('.descriptive') ? true : false;
 		var isTrueOrFalse = $('.questionType.active').is('.trueOrFalse') ? true : false;
+		
 
 		if ( standard== "1" ) {
 			superscript = 'st'

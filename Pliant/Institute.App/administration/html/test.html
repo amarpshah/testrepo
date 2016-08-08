@@ -53,6 +53,7 @@
             </div>
             <!--questionList-->
             <div class="panel-body questionList">
+                  <div ng-if="!Tests">There are no Tests to be displayed</div>
                 <div ng-repeat="test in Tests">
                     <div class="list-group">
                         <div class="questionItem">

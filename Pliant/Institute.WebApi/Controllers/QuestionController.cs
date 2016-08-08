@@ -711,43 +711,38 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalQuestions = _questionRepository.GetAll()
-                .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                            (text != null ? q.Text.Contains(text) : 1 == 1) &&
-                            (type != -1 ? q.Type == type : 1 == 1) &&
-                            (topicid != -1 ? q.TopicId == topicid : 1 == 1) &&
-                            (subjectid != -1 ? q.Topic.Mapping.SubjectId == subjectid : 1 == 1) &&
-                            (standardid != -1 ? q.Topic.Mapping.StandardId == standardid : 1 == 1) &&
-                            (status != -1 ? q.Status == status : 1 == 1) &&
-                            (difficultyLevel != -1 ? q.DifficultyLevel == difficultyLevel : 1 == 1)
+                totalQuestions = questions.Count();
 
-                )
-                .Count();
-                List<string> UserName = new List<string>();
-                UserName = GetUser(questions);
-
-                IEnumerable<QuestionViewModel> questionsVM = Mapper.Map<IEnumerable<Question>, IEnumerable<QuestionViewModel>>(questions);
-                int i = 0;
-                foreach (QuestionViewModel qvm in questionsVM)
+                if (totalQuestions > 0)
                 {
-                    qvm.sDifficultyLevel = CommonMethods.getDifficultyLevel(qvm.DifficultyLevel);
-                    qvm.sStatus = CommonMethods.getStatus(qvm.Status);
-                    qvm.sType = CommonMethods.getType(qvm.Type);
-                    qvm.sTypeShort = CommonMethods.getTypeShort(qvm.Type);
-                    qvm.UserName = UserName[i];
-                    i++;
+                    List<string> UserName = new List<string>();
+                    UserName = GetUser(questions);
+
+                    IEnumerable<QuestionViewModel> questionsVM = Mapper.Map<IEnumerable<Question>, IEnumerable<QuestionViewModel>>(questions);
+                    int i = 0;
+                    foreach (QuestionViewModel qvm in questionsVM)
+                    {
+                        qvm.sDifficultyLevel = CommonMethods.getDifficultyLevel(qvm.DifficultyLevel);
+                        qvm.sStatus = CommonMethods.getStatus(qvm.Status);
+                        qvm.sType = CommonMethods.getType(qvm.Type);
+                        qvm.sTypeShort = CommonMethods.getTypeShort(qvm.Type);
+                        qvm.UserName = UserName[i];
+                        i++;
+                    }
+
+                    PaginationSet<QuestionViewModel> pagedSet = new PaginationSet<QuestionViewModel>()
+                    {
+                        Page = currentPage,
+                        TotalCount = totalQuestions,
+                        TotalPages = (int)Math.Ceiling((decimal)totalQuestions / currentPageSize),
+                        Items = questionsVM
+                    };
+
+                    response = request.CreateResponse<PaginationSet<QuestionViewModel>>(HttpStatusCode.OK, pagedSet);
                 }
-
-                PaginationSet<QuestionViewModel> pagedSet = new PaginationSet<QuestionViewModel>()
-                {
-                    Page = currentPage,
-                    TotalCount = totalQuestions,
-                    TotalPages = (int)Math.Ceiling((decimal)totalQuestions / currentPageSize),
-                    Items = questionsVM
-                };
-
-                response = request.CreateResponse<PaginationSet<QuestionViewModel>>(HttpStatusCode.OK, pagedSet);
-
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }

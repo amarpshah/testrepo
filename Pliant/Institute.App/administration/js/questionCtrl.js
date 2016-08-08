@@ -70,7 +70,7 @@
 
 
         function search(page, searchItem) {
-            if (!searchItem) {
+            if (searchItem == null) {
                 page = page || 0;
                 $scope.loadingQuestion = true;
 

@@ -507,14 +507,9 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalPools = _poolRepository.GetAll()
-                       .Where(q => (testid != null ? q.TestID == testid : 1 == 1) &&
-                                (name != null ? q.Name.Contains(name) : 1 == 1) &&
-                                (status != -1 ? q.Status == status : 1 == 1) &&
-                                (difficultyLevel != -1 ? q.DifficultyLevel == difficultyLevel : 1 == 1)
-
-                        )
-                        .Count();
+                totalPools = pools.Count();
+                if (totalPools > 0)
+                {
                 //Get User Name
                 List<string> UserName = new List<string>();
                 UserName = GetUser(pools);
@@ -537,8 +532,11 @@ namespace Institute.WebApi.Controllers
                     Items = poolsVM
                 };
 
-                response = request.CreateResponse<PaginationSet<PoolViewModel>>(HttpStatusCode.OK, pagedSet);
-
+                    response = request.CreateResponse<PaginationSet<PoolViewModel>>(HttpStatusCode.OK, pagedSet);
+                }
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }

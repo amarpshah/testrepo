@@ -216,13 +216,9 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalusers = _usersRepository.GetAll()
-                                  .Where(q => (username != null ? q.Username.Contains(username) : 1 == 1) &&
-                                              (roleid != -1 ? q.UserRoles.Any(x => x.RoleId == roleid) : 1 == 1) &&
-                                              (email != null ? q.Username.Contains(email) : 1 == 1)
-
-                      )
-                      .Count();
+                totalusers = users.Count();
+                if (totalusers > 0)
+                {
 
                 IEnumerable<RegistrationViewModel> usersVM = Mapper.Map<IEnumerable<User>, IEnumerable<RegistrationViewModel>>(users);
                 int i = 0;
@@ -242,7 +238,10 @@ namespace Institute.WebApi.Controllers
                 };
 
                 response = request.CreateResponse<PaginationSet<RegistrationViewModel>>(HttpStatusCode.OK, pagedSet);
-
+                }
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }

@@ -340,37 +340,36 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalTests = _testRepository.GetAll()
-                       .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                                (text != null ? q.Text.Contains(text) : 1 == 1) &&
-                                (status != -1 ? q.Status == status : 1 == 1) &&
-                                (difficultyLevel != -1 ? q.DifficultyLevel == difficultyLevel : 1 == 1)
+                totalTests = tests.Count();
 
-                        )
-                        .Count();
-                List<string> UserName = new List<string>();
-                UserName = GetUser(tests);
-
-                IEnumerable<TestViewModel> testsVM = Mapper.Map<IEnumerable<Test>, IEnumerable<TestViewModel>>(tests);
-                int i = 0;
-                foreach (TestViewModel qvm in testsVM)
+                if (totalTests > 0)
                 {
-                    qvm.sDifficultyLevel = CommonMethods.getDifficultyLevel(qvm.DifficultyLevel);
-                    qvm.sStatus = CommonMethods.getStatus(qvm.Status);
-                    qvm.UserName = UserName[i];
-                    i++;
+                    List<string> UserName = new List<string>();
+                    UserName = GetUser(tests);
+
+                    IEnumerable<TestViewModel> testsVM = Mapper.Map<IEnumerable<Test>, IEnumerable<TestViewModel>>(tests);
+                    int i = 0;
+                    foreach (TestViewModel qvm in testsVM)
+                    {
+                        qvm.sDifficultyLevel = CommonMethods.getDifficultyLevel(qvm.DifficultyLevel);
+                        qvm.sStatus = CommonMethods.getStatus(qvm.Status);
+                        qvm.UserName = UserName[i];
+                        i++;
+                    }
+
+                    PaginationSet<TestViewModel> pagedSet = new PaginationSet<TestViewModel>()
+                    {
+                        Page = currentPage,
+                        TotalCount = totalTests,
+                        TotalPages = (int)Math.Ceiling((decimal)totalTests / currentPageSize),
+                        Items = testsVM
+                    };
+
+                    response = request.CreateResponse<PaginationSet<TestViewModel>>(HttpStatusCode.OK, pagedSet);
                 }
-
-                PaginationSet<TestViewModel> pagedSet = new PaginationSet<TestViewModel>()
-                {
-                    Page = currentPage,
-                    TotalCount = totalTests,
-                    TotalPages = (int)Math.Ceiling((decimal)totalTests / currentPageSize),
-                    Items = testsVM
-                };
-
-                response = request.CreateResponse<PaginationSet<TestViewModel>>(HttpStatusCode.OK, pagedSet);
-
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }

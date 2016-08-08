@@ -128,28 +128,23 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalStandards = _standardsRepository.GetAll()
-                .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                            (standard != null ? q.Name.Contains(standard) : 1 == 1) &&
-                            (division != null ? q.Division.Contains(division) : 1 == 1)
-
-                )
-                .Count();
-
-                IEnumerable<StandardViewModel> standardVM = Mapper.Map<IEnumerable<Standard>, IEnumerable<StandardViewModel>>(standards);
-
-
-
-                PaginationSet<StandardViewModel> pagedSet = new PaginationSet<StandardViewModel>()
+                totalStandards = standards.Count();
+                if (totalStandards > 0)
                 {
-                    Page = currentPage,
-                    TotalCount = totalStandards,
-                    TotalPages = (int)Math.Ceiling((decimal)totalStandards / currentPageSize),
-                    Items = standardVM
-                };
+                    IEnumerable<StandardViewModel> standardVM = Mapper.Map<IEnumerable<Standard>, IEnumerable<StandardViewModel>>(standards);
+                    PaginationSet<StandardViewModel> pagedSet = new PaginationSet<StandardViewModel>()
+                    {
+                        Page = currentPage,
+                        TotalCount = totalStandards,
+                        TotalPages = (int)Math.Ceiling((decimal)totalStandards / currentPageSize),
+                        Items = standardVM
+                    };
 
-                response = request.CreateResponse<PaginationSet<StandardViewModel>>(HttpStatusCode.OK, pagedSet);
-
+                    response = request.CreateResponse<PaginationSet<StandardViewModel>>(HttpStatusCode.OK, pagedSet);
+                }
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }

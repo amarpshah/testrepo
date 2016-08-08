@@ -299,11 +299,7 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingTests = false;
-
-            if ($scope.filterTests && $scope.filterTests.length) {
-                notificationService.displayInfo(result.data.Items.length + ' test(s) found');
-            }
-
+          
         }
 
         function advancedSearchFailed(response) {

@@ -20,12 +20,15 @@ namespace Institute.WebApi.Controllers
     public class SubjectsController : ApiControllerBase
     {
         private readonly IEntityBaseRepository<Subject> _subjectsRepository;
+        private readonly IEntityBaseRepository<User> _usersRepository;
 
         public SubjectsController(IEntityBaseRepository<Subject> subjectsRepository,
+            IEntityBaseRepository<User> usersRepository,
              IEntityBaseRepository<Error> _errorsRepository, IUnitOfWork _unitOfWork)
             : base(_errorsRepository, _unitOfWork)
         {
             _subjectsRepository = subjectsRepository;
+            _usersRepository = usersRepository;
         }
 
         [AllowAnonymous]
@@ -127,28 +130,23 @@ namespace Institute.WebApi.Controllers
                     .Take(currentPageSize)
                     .ToList();
 
-                totalSubjects = _subjectsRepository.GetAll()
-                .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                            (subject != null ? q.Name.Contains(subject) : 1 == 1)
-
-
-                )
-                .Count();
-
-                IEnumerable<SubjectViewModel> subjectVM = Mapper.Map<IEnumerable<Subject>, IEnumerable<SubjectViewModel>>(subjects);
-
-
-
-                PaginationSet<SubjectViewModel> pagedSet = new PaginationSet<SubjectViewModel>()
+                totalSubjects = subjects.Count();
+                if (totalSubjects > 0)
                 {
-                    Page = currentPage,
-                    TotalCount = totalSubjects,
-                    TotalPages = (int)Math.Ceiling((decimal)totalSubjects / currentPageSize),
-                    Items = subjectVM
-                };
+                    IEnumerable<SubjectViewModel> subjectVM = Mapper.Map<IEnumerable<Subject>, IEnumerable<SubjectViewModel>>(subjects);
+                    PaginationSet<SubjectViewModel> pagedSet = new PaginationSet<SubjectViewModel>()
+                    {
+                        Page = currentPage,
+                        TotalCount = totalSubjects,
+                        TotalPages = (int)Math.Ceiling((decimal)totalSubjects / currentPageSize),
+                        Items = subjectVM
+                    };
 
-                response = request.CreateResponse<PaginationSet<SubjectViewModel>>(HttpStatusCode.OK, pagedSet);
-
+                    response = request.CreateResponse<PaginationSet<SubjectViewModel>>(HttpStatusCode.OK, pagedSet);
+                }
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }
@@ -266,6 +264,7 @@ namespace Institute.WebApi.Controllers
                         // Update view model
                         subject = Mapper.Map<Subject, SubjectViewModel>(newSubject);
                         response = request.CreateResponse<SubjectViewModel>(HttpStatusCode.Created, subject);
+                        SendNotification(newSubject.Name);
                     }
                 }
 
@@ -273,6 +272,20 @@ namespace Institute.WebApi.Controllers
             });
         }
 
+        private void SendNotification(string name)
+        {
+            List<User> UserData = null;
+            List<string> Emails = new List<string>(); 
+            UserData = _usersRepository.GetAll().ToList();
+
+            foreach (var user in UserData)
+            {
+                Emails.Add(user.Email);
+            }
+
+            NotificationMail.SendMail(Emails, name, "Subject");
+        
+        }
 
         [HttpPost]
         [Route("update")]

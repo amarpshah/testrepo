@@ -1,5 +1,7 @@
-C:\github\testrepo\Pliant\bin\Institute.App.dll
-C:\github\testrepo\Pliant\bin\Institute.App.pdb
-C:\github\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.csprojResolveAssemblyReference.cache
-C:\github\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.dll
-C:\github\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.pdb
+C:\GitHub\testrepo\Pliant\bin\Institute.App.dll
+C:\GitHub\testrepo\Pliant\bin\Institute.App.pdb
+C:\GitHub\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.csprojResolveAssemblyReference.cache
+C:\GitHub\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.dll
+C:\GitHub\testrepo\Pliant\Institute.App\obj\Debug\Institute.App.pdb
+C:\GitHub\testrepo\Pliant\Institute.App\bin\Institute.App.dll
+C:\GitHub\testrepo\Pliant\Institute.App\bin\Institute.App.pdb

@@ -129,36 +129,34 @@ namespace Institute.WebApi.Controllers
                 roles = _rolesRepository.GetAll()
                     .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
                                 (name != null ? q.Name.Contains(name) : 1 == 1)
-                    //(division != null ? q.Division.Contains(division) : 1 == 1)
-
+                   
                     )
                     .OrderBy(c => c.ID)
                     .Skip(currentPage * currentPageSize)
                     .Take(currentPageSize)
                     .ToList();
 
-                totalRoles = _rolesRepository.GetAll()
-                .Where(q => (code != null ? q.Code.Contains(code) : 1 == 1) &&
-                            (name != null ? q.Name.Contains(name) : 1 == 1)
-                    //(division != null ? q.Division.Contains(division) : 1 == 1)
-
-                )
-                .Count();
-
-                IEnumerable<RoleViewModel> roleVM = Mapper.Map<IEnumerable<Role>, IEnumerable<RoleViewModel>>(roles);
-
-
-
-                PaginationSet<RoleViewModel> pagedSet = new PaginationSet<RoleViewModel>()
+                totalRoles = roles.Count();
+                if (totalRoles > 0)
                 {
-                    Page = currentPage,
-                    TotalCount = totalRoles,
-                    TotalPages = (int)Math.Ceiling((decimal)totalRoles / currentPageSize),
-                    Items = roleVM
-                };
 
-                response = request.CreateResponse<PaginationSet<RoleViewModel>>(HttpStatusCode.OK, pagedSet);
+                    IEnumerable<RoleViewModel> roleVM = Mapper.Map<IEnumerable<Role>, IEnumerable<RoleViewModel>>(roles);
 
+
+
+                    PaginationSet<RoleViewModel> pagedSet = new PaginationSet<RoleViewModel>()
+                    {
+                        Page = currentPage,
+                        TotalCount = totalRoles,
+                        TotalPages = (int)Math.Ceiling((decimal)totalRoles / currentPageSize),
+                        Items = roleVM
+                    };
+
+                    response = request.CreateResponse<PaginationSet<RoleViewModel>>(HttpStatusCode.OK, pagedSet);
+                }
+                else {
+                    response = request.CreateResponse(HttpStatusCode.NoContent, "No Record Found");
+                }
                 return response;
             });
         }

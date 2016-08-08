@@ -23,6 +23,7 @@
         $scope.clearStandard = clearStandard;
         $scope.advancedSearch = advancedSearch;
         $scope.clearSearch = clearSearch;
+        $scope.clearRole = clearRole
 
         membershipService.redirectIfNotLoggedIn();
         var baseUrl = webApiLocationService.get('webapi');
@@ -249,6 +250,9 @@
         function clearSearch() {
             $scope.SearchText = {};
             search();
+        }
+        function clearRole() {
+            $scope.newRole = {};
         }
     }
 })(angular.module('app-sysconfig'));
