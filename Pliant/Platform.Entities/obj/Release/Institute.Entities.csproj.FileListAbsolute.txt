@@ -3,3 +3,5 @@ C:\github\testrepo\Pliant\bin\Institute.Entities.pdb
 C:\github\testrepo\Pliant\Platform.Entities\obj\Release\Institute.Entities.csprojResolveAssemblyReference.cache
 C:\github\testrepo\Pliant\Platform.Entities\obj\Release\Institute.Entities.dll
 C:\github\testrepo\Pliant\Platform.Entities\obj\Release\Institute.Entities.pdb
+C:\github\testrepo\Pliant\Platform.Entities\bin\Institute.Entities.dll
+C:\github\testrepo\Pliant\Platform.Entities\bin\Institute.Entities.pdb

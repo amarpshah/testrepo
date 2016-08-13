@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>School Admin Template</title>
+    <link href="../Content/css/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="../Content/css/toastr.css" rel="stylesheet" />
+    <link href="../Content/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="../Content/css/ag-grid.css" rel="stylesheet" />
+    <link href="../Content/css/theme-fresh.css" rel="stylesheet" />
+    <link href="../Content/css/select2.css" rel="stylesheet" />
+    <link href="../Content/css/application.css" rel="stylesheet" />
+    <link href="../online/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div ng-app="app-onlineexam">
+        <div>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+                <div id="sidebar" class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li class="active">
+                        <li class="nav-divider"></li>
+                        <li><a href="../mainDashboard/MainDashboard.html"><i class="fa fa-home fa-fw"></i>Home</a></li>
+                        <li class="nav-divider"></li>
+                        <li><a ui-sref="StartExam"><i class="fa fa-gears fa-fw"></i>Start Exam</a></li>
+                        <li><a ui-sref="ExamResult"><i class="fa fa-users fa-fw"></i>Exam Results</a></li>
+                    </ul>
+                </div>
+
+                <top-bar></top-bar>
+            </nav>
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div id="main">
+                        <div class="page {{pageClass}}" ui-view>
+                            <div class="panel-body">
+                                <section class="content">
+                                    <!-- Small boxes (Stat box) -->
+                                    <div class="row">
+                                        <div class="col-lg-3 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-aqua">
+                                                <div class="inner">
+                                                    <h3>1</h3>
+                                                    <p>Home</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fa fa-gears"></i>
+                                                </div>
+                                                <a ui-sref="ExamHome" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
+                                            <div class="small-box bg-aqua">
+                                                <div class="inner">
+                                                    <h3>1</h3>
+                                                    <p>Review</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fa fa-gears"></i>
+                                                </div>
+                                                <a ui-sref="ExamReview" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
+                                        </div><!-- ./col -->
+
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/jquery.fancybox.js"></script>
+    <script src="../js/jquery.fancybox-media.js"></script>
+    <script src="../js/angular.js"></script>
+    <script src="../js/angular-route.js"></script>
+    <script src="../js/angular-cookies.js"></script>
+    <script src="../js/angular-validator.js"></script>
+    <script src="../js/angular-base64.js"></script>
+    <script src="../js/angular-file-upload.js"></script>
+    <script src="../js/angucomplete-alt.min.js"></script>
+    <script src="../js/angular-ui-router.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/toastr.js"></script>
+    <script src="../js/ui-bootstrap-tpls-0.13.1.js"></script>
+    <script src="../js/underscore.js"></script>
+    <script src="../js/loading-bar.js"></script>
+    <script src="../js/ag-grid.js"></script>
+    <script src="../js/modernizr.js"></script>
+
+    <!-- Common scripts to be used accross -->
+    <script src="../common/common.core.js"></script>
+    <script src="../common/common.ui.js"></script>
+    <script src="../common/services/apiService.js"></script>
+    <script src="../common/services/fileUploadService.js"></script>
+    <script src="../common/services/membershipService.js"></script>
+    <script src="../common/services/notificationService.js"></script>
+    <script src="../common/services/apiLocationService.js"></script>
+    <script src="../common/layout/topBar.directive.js"></script>
+    <script src="../common/layout/topBarCtrl.js"></script>
+    <script src="../account/js/loginCtrl.js"></script>
+    <script src="../account/js/registerCtrl.js"></script>
+
+    <script src="../online/app-onlineexam.js"></script>
+    <script src="../online/js/helperService.js"></script>
+    <script src="../online/js/quizCtrl.js"></script>
+    <script src="../online/js/createCtrl.js"></script>
+
+</body>
+</html>

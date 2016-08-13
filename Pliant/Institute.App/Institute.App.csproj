@@ -32,7 +32,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -122,6 +122,19 @@
     <Content Include="examination\html\pool.html" />
     <Content Include="examination\js\testCtrl.js" />
     <Content Include="examination\js\poolCtrl.js" />
+    <Content Include="online\app-onlineexam.js" />
+    <Content Include="online\css\style.css" />
+    <Content Include="online\html\create.html" />
+    <Content Include="online\html\quiz.html" />
+    <Content Include="online\js\createCtrl.js" />
+    <Content Include="online\js\data\aspnet-answer.js" />
+    <Content Include="online\js\data\aspnet.js" />
+    <Content Include="online\js\data\csharp.js" />
+    <Content Include="online\js\data\designPatterns.js" />
+    <Content Include="online\js\data\emptyQuiz.js" />
+    <Content Include="online\js\helperService.js" />
+    <Content Include="online\js\quizCtrl.js" />
+    <Content Include="online\onlineexam.html" />
     <Content Include="system\app-sysconfig.js" />
     <Content Include="system\configuration.html" />
     <Content Include="library\Library.html" />

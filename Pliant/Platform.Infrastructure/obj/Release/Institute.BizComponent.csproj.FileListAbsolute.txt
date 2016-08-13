@@ -4,3 +4,12 @@ C:\github\testrepo\Pliant\bin\Institute.BizComponent.pdb
 C:\github\testrepo\Pliant\Platform.Infrastructure\obj\Release\Institute.BizComponent.csprojResolveAssemblyReference.cache
 C:\github\testrepo\Pliant\Platform.Infrastructure\obj\Release\Institute.BizComponent.dll
 C:\github\testrepo\Pliant\Platform.Infrastructure\obj\Release\Institute.BizComponent.pdb
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\Institute.BizComponent.dll.config
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\Institute.BizComponent.dll
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\Institute.BizComponent.pdb
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\EntityFramework.dll
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\EntityFramework.SqlServer.dll
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\Institute.Entities.dll
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\Institute.Entities.pdb
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\EntityFramework.xml
+C:\github\testrepo\Pliant\Platform.Infrastructure\bin\EntityFramework.SqlServer.xml
